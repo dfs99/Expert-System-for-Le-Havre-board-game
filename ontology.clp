@@ -7,6 +7,7 @@
 (defclass PARTIDA
     (is-a USER)
     (role concrete)
+    (slot id (type INTEGER) (access initialize-only) (create-accessor read))
     ; Revisar si interesa hacer multislots que contengan el nombre del recurso y la cantidad del mismo.
     (slot oferta_francos (type INTEGER) (access read-write) (create-accessor read-write) (default 3))
     (slot oferta_pescado (type INTEGER) (access read-write) (create-accessor read-write) (default 3))  
@@ -165,4 +166,76 @@
         (allowed-values TRUE, FALSE)
         (default FALSE)
         (access initialize-only) (create-accessor read))
+)
+
+
+; RELACIONES
+
+(defclass PARTIDA_TIENE_JUGADOR
+    (is-a USER)
+    (slot id_partida (type INTEGER))
+    (slot nombre_jugador (type STRING))
+)
+
+(defclass PARTIDA_TIENE_CARTA
+    (is-a USER)
+    (slot id_partida (type INTEGER))
+    (slot nombre_carta (type STRING))
+)
+
+; Mostrar la relación de todas las instancias de ronda o directamente
+; hacer una relación que muestre la ronda actual del juego? Partidario
+; de hacer la segunda opción.
+(defclass PARTIDA_TIENE_RONDA
+    ; las relaciones no pueden heredar de las clases de sus conceptos para obtener sus 
+    ; atributos directamente?
+    (is-a USER)
+    (slot id_partida (type INTEGER))
+    (slot nombre_ronda (type SYMBOL))
+    (slot numero_fase (type INTEGER))
+)
+
+(defclass JUGADOR_GANA_PARTIDA
+    (is-a USER)
+    (slot id_partida (type INTEGER))
+    (slot nombre_jugador (type STRING))
+)
+
+; Se puede realizar herencia en una relación? Por ejemplo de esta relación 
+; generar subclases del tipo jugador_tiene_barco, jugador_tiene_edificio_generador, etc, etc
+(defclass JUGADOR_TIENE_CARTA
+    (is-a USER)
+    (slot nombre_jugador (type INTEGER))
+    (slot nombre_carta (type STRING))
+)
+
+(defclass JUGADOR_TOMA_RECURSOS_OFERTA
+    (is-a USER)
+    (slot id_partida (type INTEGER))
+    (slot nombre_jugador (type STRING))
+    (slot recurso (type SYMBOL))
+    (slot num_recursos (type INTEGER))
+)
+
+
+(defclass RONDA_INTRODUCE_BARCO
+    (is-a USER)
+    (slot nombre_ronda (type SYMBOL))
+    (slot nombre_carta (type STRING))
+    (slot tipo_barco (type SYMBOL))
+    (slot valor_proporciona (type INTEGER))
+)
+
+(defclass RONDA_INTRODUCE_EDIFICIO
+    (is-a USER)
+    (slot nombre_ronda (type SYMBOL))
+    (slot nombre_carta (type STRING))
+    (slot valor_proporciona (type INTEGER))
+    (slot tipo (type SYMBOL))
+)
+
+(defclass JUGADOR_DENTRO_EDIFICIO
+    (is-a USER)
+    (slot nombre_jugador (type STRING))
+    (slot nombre_edificio (type STRING))
 )
