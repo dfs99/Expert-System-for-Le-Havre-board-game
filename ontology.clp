@@ -242,8 +242,6 @@
     (is-a USER)
     (slot nombre_ronda (type SYMBOL))
     (slot nombre_carta (type STRING))
-    ; (slot tipo_barco (type SYMBOL))
-    ; (slot valor_proporciona (type INTEGER))
 )
 
 (defclass RONDA_ASIGNA_EDIFICIO
