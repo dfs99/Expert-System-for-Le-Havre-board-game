@@ -6,7 +6,7 @@
     (is-a USER)
     (role concrete)
     (slot nombre (type SYMBOL)
-        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
+        (allowed-values FRANCO, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
             PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
         (access initialize-only) (create-accessor read))
 )
@@ -23,7 +23,7 @@
 ; Otra alternativa sería emplear un deftemplate para representar la oferta y eliminar la partida.
 (deftemplate OFERTA_RECURSO
     (slot recurso (type SYMBOL)
-        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO)
+        (allowed-values FRANCO, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO)
         (access initialize-only) (create-accessor read))
     (slot cantidad (type INTEGER) (access read-write) (create-accessor read-write))
 )
