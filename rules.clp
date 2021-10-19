@@ -4,14 +4,13 @@
 ; =======================================================================================
 
 ; Primero hay que generar una regla que produzca un hecho 
-; El hecho tiene que ser "jugador puede tomar recurso de oferta" o similar
+; El hecho tiene que ser "jugador puede tomar recurso de oferta" o similar.
 ; La regla se instanciaría cuando un recurso de la oferta tiene >=3 unidades
 
-; (prioridad_recursos MADERA, )
+; Establecer la prioridad estratégica de recursos: (prioridad_recursos MADERA, )
 
 (defrule generar_alternativas_tomar_recurso_oferta
-    ?partida <- (object (is-a PARTIDA) (id ?id))
-    ?oferta <- (object (is-a PARTIDA_TIENE_RECURSO_OFERTA) (id_partida ?id) (recurso ?recurso) (cantidad ?c))
+    ?oferta <- (OFERTA_RECURSO (recurso ?recurso) (cantidad ?c))
     (test (>= ?c 3))
     =>
     (assert (oferta_suficiente_mas_igual_tres ?recurso))
@@ -20,7 +19,7 @@
 (defrule tomar_recurso_oferta
     ; TODO: No implementado!
     ; El jugador debe de tener el turno.
-    ; Decidir cual tomar en base a alguna estrategia? !!!!!!!!!!!!!
+    ; Decidir cual tomar en base a alguna estrategia? !!!!!!!!!!!!!!!
     ; ========================================================
     ; El jugador pertenece a la partida. 
     ; Se accede a la cantidad de recursos del jugador.
@@ -28,12 +27,10 @@
     ; Tendrá que haberse activado el hecho semáforo de oferta suficiente +3
     ?jugador <- (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ?recursos_jugador <- (object (is-a JUGADOR_TIENE_RECURSOS) (nombre ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_jugador))
-    (object (is-a PARTIDA_TIENE_JUGADOR) (id_partida ?id) (nombre_jugador ?nombre_jugador))
-    ?partida <- (object (is-a PARTIDA)  (id ?id))
-    ?oferta <- (object (is-a PARTIDA_TIENE_RECURSO_OFERTA) (id_partida ?id) (recurso ?recurso) (cantidad ?c))
+    ?recurso_oferta <- (OFERTA_RECURSO (recurso ?recurso) (cantidad ?c))
     (oferta_suficiente_mas_igual_tres ?recurso)
     =>
-    (modify-instance ?oferta (cantidad 0))
+    (modify ?recurso_oferta (cantidad 0))
     (modify-instance ?recursos_jugador (cantidad =(+ ?cantidad_jugador ?c)))
     (retract (oferta_suficiente_mas_igual_tres ?recurso))
     ; añadir q has finalizado turno.
@@ -90,15 +87,14 @@
 
 (defrule añadir_recursos_casilla
     ; preguntar si es redundante el concepto partida!
-    (object (is-a PARTIDA) (id ?id))
     ?casilla <- (object (is-a CASILLA_RECURSO) (posicion ?pos) (visibilidad ?visible))
     (object (is-a JUGADOR_ESTA_EN_CASILLA_RECURSO) (posicion ?pos))
-    ?oferta <- (object (is-a PARTIDA_TIENE_RECURSO_OFERTA) (id_partida ?id) (recurso ?recurso) (cantidad ?cantidad_oferta))
+    ?oferta_recurso <- (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
     (test (eq ?visible TRUE))
     (forall (object (is-a CASILLA_RECURSO_TIENE_RECURSO) (posicion ?pos) (recurso ?recurso) (cantidad ?c)))
     => 
     ; añadir a la oferta.
-    (modify-instance ?oferta (cantidad =(+ cantidad_oferta c)))
+    (modify ?oferta_recurso (cantidad =(+ cantidad_oferta c)))
 )
 
 (defrule pasar_turno
@@ -132,7 +128,61 @@
     (siguiente_ronda ?nombre_ronda_actual ?nombre_ronda_siguiente)
     =>
     (retract ronda_actual ?nombre_ronda_actual)
-    (assert ronda_actual ?nombre_ronda_actual)
+    (assert ronda_actual ?nombre_ronda_siguiente)
+)
+
+(defrule asignar_edificio_ayuntamiento
+    ; SE TIENE Q EJECUTAR NADA MÁS ACTUALIZAR LA RONDA!!!!!!!!!!!!!!!!! 
+    (object (is-a RONDA (nombre_ronda ?nombre_ronda)))
+    ?mazo <- (object (is-a MAZO) (id_mazo ?id))
+    ; REVISAR LA CONCEPTUALIZACIÓN EDIFICIO, ES PSEUDOCÓDIGO!
+    ?edificio <- (object (is-a EDIFICIO) (nombre ?nombre_edificio))
+    ?pertenece <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_edificio))
+    ?asignacion_edificio <- (object (is-a RONDA_ASIGNA_EDIFICIO) (nombre_ronda ?nombre_ronda) (id_mazo ?id) (nombre_edificio ?nombre_edificio))
+    (ronda_actual ?nombre_ronda)
+    =>
+    (assert EDIFICIO_AYUNTAMIENTO(nombre_edificio ?nombre_edificio))
+    (unmake-instance ?asignacion_edificio)
+    (unmake-instance ?pertenece)
+    ; Introducir un hecho semáforo adicional para disparar la actualización de posición
+    ; en las cartas del mazo. Otra alternativa, jugar prioridad reglas. De momento lo dejamos 
+    ; como hecho semáforo.
+    (assert actualizar_mazo_edificios ?id)
+)
+
+(defrule actualizar_disponibilidad_barcos
+    ; SE TIENE Q EJECUTAR NADA MÁS ACTUALIZAR LA RONDA!!!!!!!!!!!!!!!!! 
+    (object (is-a RONDA (nombre_ronda ?nombre_ronda)))
+    (ronda_actual ?nombre_ronda)
+    ?mazo <- (object (is-a MAZO) (id_mazo ?id))
+    ?barco <- (object (is-a BARCO) (nombre ?nombre_barco))
+    ?pertenece <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_barco))
+    ?introduce_barco <- (object (is-a RONDA_INTRODUCE_BARCO) (nombre_ronda ?nombre_ronda) (nombre_carta ?nombre_barco))
+    =>
+    ; TODO: NO SABEMOS EN Q ORDEN QUEDARÍAN LOS BARCOS DISPONIBLES. problema.!!!!!!!!!!!!!!!!!
+    (BARCO_DISPONIBLE (nombre_barco ?nombre_barco))
+    (unmake-instance ?introduce_barco)
+)
+
+(defrule jugador_adquiere_barco
+    ; TODO: !AÑADIR ESTRATEGIA de COMPRA DE BARCO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    ?mazo <- (object (is-a MAZO) (id_mazo ?id))
+    ?barco <- (object (is-a BARCO) (nombre ?nombre_barco))
+    ?pertenece <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_barco))
+    ?disponibilidad <- (BARCO_DISPONIBLE (nombre_barco ?nombre_barco))
+    =>
+    (retract ?disponibilidad)
+)
+
+; Sería útil poder ejecutar la postcondición de cambiar de posición las cartas dentro del 
+; mazo a través de un bucle en las postcondiciones de la regla "asignar_edificio_ayuntamiento".
+; NO SABEMOS SI PODEMOS USAR UN BUCLE EN LAS POSTCONDICIONES
+(defrule actualizar_posicion_cartas_mazo
+    ?carta_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion ?pos))
+    (assert actualizar_mazo_edificios ?id)
+    (forall (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion ?pos)))
+    =>
+    (modify-instance ?carta_mazo(posicion (- ?pos 1))
 )
 
 (defrule mover_jugador
@@ -142,7 +192,3 @@
     =>
     (modify-instance ?posicion_actual (posicion =(mod =(+ ?pos 2) 7)))
 )
-
-
-
-

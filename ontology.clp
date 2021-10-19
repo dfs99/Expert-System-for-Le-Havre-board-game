@@ -2,7 +2,6 @@
 
 
 ; CONCEPTOS
-
 (defclass RECURSO
     (is-a USER)
     (role concrete)
@@ -12,32 +11,52 @@
         (access initialize-only) (create-accessor read))
 )
 
-; Validada sintácticamente en CLIPS.
-(defclass PARTIDA
+; Necesitamos un concepto para representar la oferta y la posesión de las cartas desplegadas en
+; el tablero. Para ello, hemos pensado en usar este concepto 'Dummy' con id para representar las
+; relaciones.
+;        (defclass PARTIDA
+;            (is-a USER)
+;            (role concrete)
+;            (slot id (type INTEGER) (access initialize-only) (create-accessor read))
+;        )
+;
+; Otra alternativa sería emplear un deftemplate para representar la oferta y eliminar la partida.
+(deftemplate OFERTA_RECURSO
+    (slot recurso (type SYMBOL)
+        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO)
+        (access initialize-only) (create-accessor read))
+    (slot cantidad (type INTEGER) (access read-write) (create-accessor read-write))
+)
+
+; Representar la información de que en la partida el edificio con nombre X (el nombre será 
+; único) corresponde al edificio. Creemos que es mejor alternativa a emplear conceptos.
+(deftemplate EDIFICIO_AYUNTAMIENTO
+    (slot nombre_edificio (type STRING) (access initialize-only) (create-accessor read))
+)
+
+; representar la información de q el barco ahora queda disponible y se podrá adquirir.
+; La disposición de los barcos en el mazo queda predeterminada inicialmente en los hechos
+; iniciales por la relacion de mazo_tiene_carta. Cuando se active este deftemplate se podrá
+; adquirir el barco.
+(deftemplate BARCO_DISPONIBLE
+    (slot nombre_barco (type STRING) (access initialize-only) (create-accessor read))    
+)
+
+
+(defclass MAZO 
     (is-a USER)
     (role concrete)
-    (slot id (type INTEGER) (access initialize-only) (create-accessor read))
+    (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
 )
-    ;(slot oferta_francos (type INTEGER) (access read-write) (create-accessor read-write) (default 3))
-    ;(slot oferta_pescado (type INTEGER) (access read-write) (create-accessor read-write) (default 3))  
-    ;(slot oferta_madera (type INTEGER) (access read-write) (create-accessor read-write) (default 3))
-    ;(slot oferta_arcilla (type INTEGER) (access read-write) (create-accessor read-write) (default 2))
-    ;(slot oferta_hierro (type INTEGER) (access read-write) (create-accessor read-write) (default 1))
-    ;(slot oferta_grano (type INTEGER) (access read-write) (create-accessor read-write) (default 1))
-    ;(slot oferta_ganado (type INTEGER) (access read-write) (create-accessor read-write) (default 1))
 
 
 ; Validada sintácticamente en CLIPS.
 (defclass RONDA
     (is-a USER)
     (role concrete)
-    
     (slot nombre_ronda (type SYMBOL) 
         (allowed-values RONDA_1, RONDA_2, RONDA_3, RONDA_4, RONDA_5, RONDA_6, RONDA_7, RONDA_8, RONDA_EXTRA_FINAL)
-        (access initialize-only)
-        (create-accessor read))
-    
-    ;(slot numero_fase (type INTEGER) (access read-write) (create-accessor read-write))
+        (access initialize-only) (create-accessor read))
     (slot coste_comida (type INTEGER) (access initialize-only) (create-accessor read))
     (slot hay_cosecha (type SYMBOL) (allowed-values TRUE, FALSE) (access initialize-only) (create-accessor read))
 )
@@ -47,26 +66,6 @@
     (is-a USER)
     (role concrete)
     (slot nombre (type STRING) (access initialize-only) (create-accessor read))
-    ;(slot numero_creditos (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot numero_bonus_martillo (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot numero_bonus_pescador(type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot unidades_francos (type INTEGER) (access read-write) (create-accessor read-write) (default 5))
-    ;(slot unidades_pescado (type INTEGER) (access read-write) (create-accessor read-write) (default 2))
-    ;(slot unidades_madera (type INTEGER) (access read-write) (create-accessor read-write) (default 2))
-    ;(slot unidades_arcilla (type INTEGER) (access read-write) (create-accessor read-write) (default 2))
-    ;(slot unidades_hierro (type INTEGER) (access read-write) (create-accessor read-write) (default 2))
-    ;(slot unidades_grano (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot unidades_ganado (type INTEGER) (access read-write) (create-accessor read-write) (default 1))
-    ;(slot unidades_carbon (type INTEGER) (access read-write) (create-accessor read-write) (default 2))
-    ;(slot unidades_piel (type INTEGER) (access read-write) (create-accessor read-write) (default 2))
-    ;(slot unidades_pescado_ahumado (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot unidades_carbon_vegetal (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot unidades_ladrillos (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot unidades_acero (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot unidades_pan (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot unidades_carne (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot unidades_coque (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
-    ;(slot unidades_cuero (type INTEGER) (access read-write) (create-accessor read-write) (default 0))
 )
 
 ; Validada sintácticamente en CLIPS.
@@ -212,47 +211,7 @@
 )
 
 
-; RELACIONES
-
-(defclass PARTIDA_TIENE_JUGADOR
-    (is-a USER)
-    (slot id_partida (type INTEGER))
-    (slot nombre_jugador (type STRING))
-)
-
-(defclass PARTIDA_TIENE_RECURSO_OFERTA
-    (is-a USER)
-    (slot id_partida (type INTEGER))
-    (slot recurso (type SYMBOL)
-        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO)
-        (access initialize-only) (create-accessor read))
-    (slot cantidad (type INTEGER) (access read-write) (create-accessor read-write))
-)
-
-(defclass PARTIDA_TIENE_CARTA
-    (is-a USER)
-    (slot id_partida (type INTEGER))
-    (slot nombre_carta (type STRING))
-)
-
-; Mostrar la relación de todas las instancias de ronda o directamente
-; hacer una relación que muestre la ronda actual del juego? Partidario
-; de hacer la segunda opción.
-(defclass PARTIDA_TIENE_RONDA
-    ; las relaciones no pueden heredar de las clases de sus conceptos para obtener sus 
-    ; atributos directamente?
-    (is-a USER)
-    (slot id_partida (type INTEGER))
-    (slot nombre_ronda (type SYMBOL))
-    ; (slot numero_fase (type INTEGER))
-)
-
-(defclass JUGADOR_GANA_PARTIDA
-    (is-a USER)
-    (slot id_partida (type INTEGER))
-    (slot nombre_jugador (type STRING))
-)
-
+; DUDA!
 ; Se puede realizar herencia en una relación? Por ejemplo de esta relación 
 ; generar subclases del tipo jugador_tiene_barco, jugador_tiene_edificio_generador, etc, etc
 (defclass JUGADOR_TIENE_CARTA
@@ -261,7 +220,7 @@
     (slot nombre_carta (type STRING))
 )
 
-(defclass JUGADOR_TIENE_RECURSOS
+(defclass JUGADOR_TIENE_RECURSO
     (is-a USER)
     (slot nombre_jugador (type STRING))
     (slot recurso (type SYMBOL)
@@ -279,7 +238,6 @@
     (slot num_recursos (type INTEGER))
 )
 
-
 (defclass RONDA_INTRODUCE_BARCO
     (is-a USER)
     (slot nombre_ronda (type SYMBOL))
@@ -288,13 +246,11 @@
     ; (slot valor_proporciona (type INTEGER))
 )
 
-; puede generar una regla de caso específico!
-(defclass RONDA_ASIGNA_EDIFICIO_PARTIDA
+(defclass RONDA_ASIGNA_EDIFICIO
     (is-a USER)
     (slot nombre_ronda (type SYMBOL))
-    (slot nombre_carta (type STRING))
-    (slot valor_proporciona (type INTEGER))
-    (slot tipo (type SYMBOL))
+    (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
+    (slot nombre_edificio (type STRING))
 )
 
 (defclass JUGADOR_DENTRO_EDIFICIO
@@ -319,4 +275,13 @@
     (is-a USER)
     (slot posicion (type INTEGER))
     (slot nombre_jugador (type STRING))
+)
+
+(defclass CARTA_PERTENECE_A_MAZO
+    (is-a USER)
+    (role concrete)
+    (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
+    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+    (slot posicion (type INTEGER)(access read-write) (create-accessor read-write))
+
 )
