@@ -1,4 +1,5 @@
-
+; faltan las cartas, por problemas imprevistos de tiempo nos ha sido imposible
+; reconceptualizar las cartas y no las hemos instanciado.
 (deffacts situacion_inicial
 
     (ronda_actual RONDA_1)
@@ -30,18 +31,6 @@
 
 ; INSTANCIAS CARTAS EDIFICIO
 (definstances situacion_inicial
-    ;([nombre] of EDIFICIO_GENERADOR
-    ;    (tipo OTRO)
-    ;    (nombre FISHERY)
-    ;    (coste_compra 6)
-    ;    (valor_proporciona 6)
-    ;    (tarifa_entrada_en_francos 0)
-    ;    (tarifa_entrada_uds_recurso 0)
-    ;    (tarifa_entrada_recurso)
-    ;    (recurso_genera)
-    ;    (num_recursos_genera)
-    ;    (plus_por_bonus)
-    ;)
     ; ====== JUGADORES ========
     ( of JUGADOR (nombre DIEGO))
     ( of JUGADOR (nombre RICARDO))

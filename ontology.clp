@@ -11,16 +11,7 @@
         (access initialize-only) (create-accessor read))
 )
 
-; Necesitamos un concepto para representar la oferta y la posesión de las cartas desplegadas en
-; el tablero. Para ello, hemos pensado en usar este concepto 'Dummy' con id para representar las
-; relaciones.
-;        (defclass PARTIDA
-;            (is-a USER)
-;            (role concrete)
-;            (slot id (type INTEGER) (access initialize-only) (create-accessor read))
-;        )
-;
-; Otra alternativa sería emplear un deftemplate para representar la oferta y eliminar la partida.
+
 (deftemplate OFERTA_RECURSO
     (slot recurso (type SYMBOL)
         (allowed-values FRANCO, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO)
@@ -68,7 +59,15 @@
     (slot nombre (type STRING) (access initialize-only) (create-accessor read))
 )
 
-; Validada sintácticamente en CLIPS.
+
+; ======================================================================================================
+; ======================================================================================================
+; ======================================================================================================
+; NOTA!: TENEMOS QUE DARLE OTRA VUELTA A LA CONCEPTUALIZACIÓN DE CARTAS. Por problemas de 
+; última hora nos ha sido imposible reconceptualizarlas. 
+; ======================================================================================================
+; ======================================================================================================
+; ======================================================================================================
 (defclass CARTA
     (is-a USER)
     (role abstract)
@@ -126,11 +125,6 @@
     (slot num_energia_necesaria (source composite))
     (slot unidades_acero (type INTEGER) (access initialize-only) (create-accessor read))
 )
-
-; Dudas con edificio
-; El mazo podría ser representado con un atributo.
-; La posición en el mazo como otro atributo. ¿tiene sentido? Puede ser muy costoso
-; tener q recorrer todos los edificios para actualizar su posición en el mazo, ¿no?
 
 ; Validada sintácticamente en CLIPS.
 (defclass EDIFICIO_GENERADOR
@@ -191,6 +185,11 @@
         (allowed-values BANCO, MERCADO, COMPAÑIA_NAVIERA)
         (access initialize-only) (create-accessor read))
 )
+
+; ======================================================================================================
+; ======================================================================================================
+; ======================================================================================================
+; A partir de aquí lo estamos usando en las reglas.
 ; Validada sintácticamente en CLIPS.
 (defclass CASILLA_RECURSO
     (is-a USER)
@@ -210,10 +209,6 @@
         (access initialize-only) (create-accessor read))
 )
 
-
-; DUDA!
-; Se puede realizar herencia en una relación? Por ejemplo de esta relación 
-; generar subclases del tipo jugador_tiene_barco, jugador_tiene_edificio_generador, etc, etc
 (defclass JUGADOR_TIENE_CARTA
     (is-a USER)
     (slot nombre_jugador (type STRING))

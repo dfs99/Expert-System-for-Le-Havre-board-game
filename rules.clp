@@ -37,42 +37,6 @@
     (assert (turno_finalizado ?nombre_jugador))
 )
 
-
-; =======================================================================================
-;       INFERENCIA 2 - ENTRAR EN EDIFICIO
-; =======================================================================================
-(defrule voluntad_construir_edificio
-    (lñasdkjfañlskjaslkjfñ)
-
-    (necesito madera 2)
-    (necesito ladrillo 1)    
-)
-
-
-(defrule voluntad_entrar_edificio
-    ; (necesidad ?material)
-    ; (edificio generador (genera ?material) ó (ronda extra final entrar shipping line)
-
-
-)
-
-(defrule entrar_edificio_ronda_normal
-
-
-)
-
-(defrule entrar_edificio_construccion_ronda_extra_final
-
-
-)
-
-(defrule entrar_edificio_ronda_extra_final
-
-
-)
-
-; ===================
-
 (defrule destapar_casilla_recurso 
     ; obtener casilla
     ?casilla <- (object (is-a CASILLA_RECURSO) (posicion ?pos) (visibilidad ?visible))
