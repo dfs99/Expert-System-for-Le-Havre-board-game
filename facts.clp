@@ -3,6 +3,9 @@
 (deffacts situacion_inicial
 
     (ronda_actual RONDA_1)
+    ; hechos semáforo para cambiar de jugador
+    (siguiente_jugador DIEGO, RICARDO)
+    (siguiente_jugador RICARDO, DIEGO)
     ; hechos semaforo para cambiar de rondas.
     (siguiente_ronda RONDA_1, RONDA_2)
     (siguiente_ronda RONDA_2, RONDA_3)
@@ -29,7 +32,7 @@
     
     
 
-; INSTANCIAS CARTAS EDIFICIO
+; INSTANCIAS
 (definstances situacion_inicial
     ; ====== JUGADORES ========
     ( of JUGADOR (nombre DIEGO))
@@ -123,4 +126,68 @@
     (of JUGADOR_TIENE_RECURSO (nombre_jugador RICARDO) (recurso CARNE) (cantidad 0))
     (of JUGADOR_TIENE_RECURSO (nombre_jugador RICARDO) (recurso COQUE) (cantidad 0))
     (of JUGADOR_TIENE_RECURSO (nombre_jugador RICARDO) (recurso CUERO) (cantidad 0))
+    ; ======= BONUS ========
+    (of BONUS (nombre PESCADOR))
+    (of BONUS (nombre MARTILLO))
+    ; ======= JUGADOR TIENE BONUS =======
+    (of JUGADOR_TIENE_BONUS (nombre_jugador DIEGO)(tipo PESCADOR)(cantidad 0))
+    (of JUGADOR_TIENE_BONUS (nombre_jugador DIEGO)(tipo MARTILLO)(cantidad 0))
+    (of JUGADOR_TIENE_BONUS (nombre_jugador RICARDO)(tipo PESCADOR)(cantidad 0))
+    (of JUGADOR_TIENE_BONUS (nombre_jugador RICARDO)(tipo MARTILLO)(cantidad 0))
+
+    // 3 MADERA, 2 HIERRO, 1 
+    ; CARTAS AYUNTO
+    (of CARTA (nombre "CONSTRUCTORA1") (coste_francos 4) (valor_proporciona 4))
+    (of CARTA (nombre "CONSTRUCTORA2") (coste_francos 6) (valor_proporciona 6))
+    (of CARTA (nombre "CONSTRUCTORA3") (coste_francos 8) (valor_proporciona 8))
+    (of CARTA (nombre "MERCADO") (coste_francos 6) (valor_proporciona 6))
+    
+
+    ; MAZO 1
+    (of CARTA (nombre "HORNO DE CARBON VEGETAL") (coste_francos 8) (valor_proporciona 8))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "HORNO DE CARBON VEGETAL") (posicion 1))
+
+    (of CARTA (nombre "MUELLE") (coste_francos 14) (valor_proporciona 14))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "MUELLE") (posicion 2))
+
+    (of CARTA (nombre "FABRICA DE LADRILLOS") (coste_francos 14) (valor_proporciona 14))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "FABRICA DE LADRILLOS") (posicion 3))
+
+    (of CARTA (nombre "COQUERIA") (coste_francos 18) (valor_proporciona 18))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "COQUERIA") (posicion 4))
+
+    (of CARTA (nombre "BANCO") (coste_francos 40) (valor_proporciona 16))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "BANCO") (posicion 5))
+
+    ; MAZO 2
+    (of CARTA (nombre "PISCIFACTORIA") (coste_francos 10) (valor_proporciona 10))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "PISCIFACTORIA") (posicion 1))
+
+    (of CARTA (nombre "PANADERIA") (coste_francos 8) (valor_proporciona 8))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "PANADERIA") (posicion 2))
+
+    (of CARTA (nombre "MONTICULO DE ARCILLA") (coste_francos 2) (valor_proporciona 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "MONTICULO DE ARCILLA") (posicion 3))
+
+    (of CARTA (nombre "MINA DE CARBON") (coste_francos 10) (valor_proporciona 10))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "MINA DE CARBON") (posicion 4))
+
+    (of CARTA (nombre "SIDERURGIA") (coste_francos 22) (valor_proporciona 22))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "SIDERURGIA") (posicion 5))
+    ; MAZO 3
+    (of CARTA (nombre "AHUMADOR") (coste_francos 6) (valor_proporciona 6))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "AHUMADOR") (posicion 1))
+
+    (of CARTA (nombre "MATADERO") (coste_francos 8) (valor_proporciona 8))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "MATADERO") (posicion 2))
+
+    (of CARTA (nombre "COMPAÑIA NAVIERA") (coste_francos 10) (valor_proporciona 10))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "COMPAÑIA NAVIERA") (posicion 3))
+
+    (of CARTA (nombre "PELETERIA") (coste_francos 12) (valor_proporciona 12))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion 4))
+
+    (of CARTA (nombre "HERRERIA") (coste_francos 12) (valor_proporciona 12))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "HERRERIA") (posicion 5))
+    
 )

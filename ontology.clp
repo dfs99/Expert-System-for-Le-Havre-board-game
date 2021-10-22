@@ -11,6 +11,13 @@
         (access initialize-only) (create-accessor read))
 )
 
+(defclass BONUS
+    (is-a USER)
+    (role concrete)
+    (slot nombre (type SYMBOL)
+        (allowed-values PESCADOR, MARTILLO) (access initialize-only) (create-accessor read)    )
+)
+
 
 (deftemplate OFERTA_RECURSO
     (slot recurso (type SYMBOL)
@@ -63,12 +70,8 @@
 (defclass CARTA
     (is-a USER)
     (role abstract)
-    (slot tipo (type SYMBOL)
-        (allowed-values ECONOMICO, CONSTRUCCION, INDUSTRIAL, BARCO, OTRO)
-        (access initialize-only)
-        (create-accessor read))
     (slot nombre (type STRING) (access initialize-only) (create-accessor read))
-    (slot coste_compra (type INTEGER) (access initialize-only) (create-accessor read))
+    (slot coste_francos (type INTEGER) (access initialize-only) (create-accessor read))
     (slot valor_proporciona (type INTEGER) (access initialize-only) (create-accessor read))
 )
 
@@ -76,12 +79,11 @@
 (defclass BARCO
     (is-a CARTA)
     (role abstract)
-    (slot tipo (source composite))
     ; en el nombre indicar q es el barco de acero.
     (slot nombre (source composite))
-    (slot coste_compra (source composite))
+    (slot coste_francos (source composite))
     (slot valor_proporciona (source composite))
-    (slot comida_genera (type INTEGER) (access initialize-only) (create-accessor read))
+    (slot uds_comida_genera (type INTEGER) (access initialize-only) (create-accessor read))
     (slot num_energia_necesaria (type INTEGER) (access initialize-only) (create-accessor read))
 )
 
@@ -89,9 +91,9 @@
     (is-a BARCO)
     (slot tipo (source composite))
     (slot nombre (source composite))
-    (slot coste_compra (source composite))
+    (slot coste_francos (source composite))
     (slot valor_proporciona (source composite))
-    (slot comida_genera (source composite))
+    (slot uds_comida_genera (source composite))
     (slot num_energia_necesaria (source composite))
     (slot unidades_madera (type INTEGER) (access initialize-only) (create-accessor read))
 )
@@ -100,7 +102,7 @@
     (is-a BARCO)
     (slot tipo (source composite))
     (slot nombre (source composite))
-    (slot coste_compra (source composite))
+    (slot coste_francos (source composite))
     (slot valor_proporciona (source composite))
     (slot comida_genera (source composite))
     (slot num_energia_necesaria (source composite))
@@ -111,71 +113,11 @@
     (is-a BARCO)
     (slot tipo (source composite))
     (slot nombre (source composite))
-    (slot coste_compra (source composite))
+    (slot coste_francos (source composite))
     (slot valor_proporciona (source composite))
     (slot comida_genera (source composite))
     (slot num_energia_necesaria (source composite))
     (slot unidades_acero (type INTEGER) (access initialize-only) (create-accessor read))
-)
-
-; Validada sintácticamente en CLIPS.
-(defclass EDIFICIO_GENERADOR
-    (is-a CARTA)
-    (role concrete)
-    (slot tipo (source composite))
-    (slot nombre (source composite))
-    (slot coste_compra (source composite))
-    (slot valor_proporciona (source composite))
-    (slot tarifa_entrada_en_francos (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot tarifa_entrada_uds_recurso (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot tarifa_entrada_recurso (type SYMBOL) (access initialize-only) (create-accessor read))
-    (slot recurso_genera (type SYMBOL) (access initialize-only) (create-accessor read))
-    (slot num_recursos_genera (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot plus_por_bonus (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot bonus (type SYMBOL) 
-        (allowed-values MARTILLO, PESCADOR, NONE)
-        (access initialize-only) (create-accessor read))
-)
-; Validada sintácticamente en CLIPS.
-(defclass EDIFICIO_TRANSFORMADOR
-    (is-a CARTA)
-    (role concrete)
-    (slot tipo (source composite))
-    (slot nombre (source composite))
-    (slot coste_compra (source composite))
-    (slot valor_proporciona (source composite))
-    ; revisar multislots!
-    (slot tarifa_entrada_en_francos (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot tarifa_entrada_uds_recurso (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot tarifa_entrada_recurso (type SYMBOL) (access initialize-only) (create-accessor read))
-    ; podríamos simplificar y relajar esta restricción.
-    (slot max_uds_recurso_input (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot  recurso_input (type SYMBOL) (access initialize-only) (create-accessor read))
-    (slot ud_energia_necesaria_por_recurso (type INTEGER) (access initialize-only) (create-accessor read))
-    ; la cantidad que se produce dependerá de las unidades 
-    ; introducidas. Deberíamos sacarlo de la definición de 
-    ; la clase.
-    (slot recurso_output (type SYMBOL) (access initialize-only) (create-accessor read))
-    (slot num_recursos_output (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot plus_por_bonus (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot bonus (type SYMBOL) 
-        (allowed-values MARTILLO, PESCADOR, NONE)
-        (access initialize-only) (create-accessor read))
-)
-; Validada sintácticamente en CLIPS.
-(defclass EDIFICIO_CONSTRUCTOR
-    (is-a CARTA)
-    (role concrete)
-    (slot tipo (source composite))
-    (slot nombre (source composite))
-    (slot coste_compra (source composite))
-    (slot valor_proporciona (source composite))
-    (slot tarifa_entrada_en_francos (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot tarifa_entrada_uds_recurso (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot tarifa_entrada_recurso (type SYMBOL) (access initialize-only) (create-accessor read))
-    (slot tipo_constructor (type SYMBOL)
-        (allowed-values BANCO, MERCADO, COMPAÑIA_NAVIERA)
-        (access initialize-only) (create-accessor read))
 )
 
 
@@ -198,12 +140,6 @@
         (access initialize-only) (create-accessor read))
 )
 
-(defclass JUGADOR_TIENE_CARTA
-    (is-a USER)
-    (slot nombre_jugador (type STRING))
-    (slot nombre_carta (type STRING))
-)
-
 (defclass JUGADOR_TIENE_RECURSO
     (is-a USER)
     (slot nombre_jugador (type STRING))
@@ -214,36 +150,19 @@
     (slot cantidad (type INTEGER) (access read-write) (create-accessor read-write))
 )
 
+(defclass JUGADOR_TIENE_BONUS
+    (is-a USER)
+    (slot nombre_jugador (type STRING))
+    (slot bonus (type SYMBOL) (allowed-values PESCADOR MARTILLO) (access initialize-only) (create-accessor read))
+    (slot cantidad (type INTEGER) (access read-write) (create-accessor read-write))
+)
+
 (defclass JUGADOR_TOMA_RECURSOS_OFERTA
     (is-a USER)
     (slot id_partida (type INTEGER))
     (slot nombre_jugador (type STRING))
     (slot recurso (type SYMBOL))
     (slot num_recursos (type INTEGER))
-)
-
-(defclass RONDA_INTRODUCE_BARCO
-    (is-a USER)
-    (slot nombre_ronda (type SYMBOL))
-    (slot nombre_carta (type STRING))
-)
-
-(defclass RONDA_ASIGNA_EDIFICIO
-    (is-a USER)
-    (slot nombre_ronda (type SYMBOL))
-    (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
-    (slot nombre_edificio (type STRING))
-)
-
-(defclass JUGADOR_DENTRO_EDIFICIO
-    (is-a USER)
-    (slot nombre_jugador (type STRING))
-    (slot nombre_edificio (type STRING))
-)
-
-(defclass EDIFICIO_CUESTA_RECURSO
-    (is-a USER)
-    (slot nombre_edificio (type STRING))
 )
 
 (defclass CASILLA_RECURSO_TIENE_RECURSO
@@ -259,6 +178,18 @@
     (slot nombre_jugador (type STRING))
 )
 
+;===================== CARTAS =================
+(defclass CARTA_TIENE_BONUS
+    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+    (slot bonus (type SYMBOL) (allowed-values PESCADOR MARTILLO) (access initialize-only) (create-accessor read))
+)
+
+(defclass JUGADOR_TIENE_CARTA
+    (is-a USER)
+    (slot nombre_jugador (type STRING))
+    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+)
+
 (defclass CARTA_PERTENECE_A_MAZO
     (is-a USER)
     (role concrete)
@@ -266,4 +197,58 @@
     (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
     (slot posicion (type INTEGER)(access read-write) (create-accessor read-write))
 
+)
+
+(defclass RONDA_INTRODUCE_BARCO
+    (is-a USER)
+    (slot nombre_ronda (type SYMBOL))
+    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+)
+
+(defclass RONDA_ASIGNA_EDIFICIO
+    (is-a USER)
+    (slot nombre_ronda (type SYMBOL))
+    (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
+    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+)
+
+; HACER UN HECHO, PORQ SOLO SE INSTANCIA UNA VEZ!!!!!!!!!!!!!!!!!!!!!!
+(defclass JUGADOR_DENTRO_EDIFICIO
+    (is-a USER)
+    (slot nombre_jugador (type STRING))
+    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+)
+
+(defclass COSTE_ENTRADA_CARTA
+    (is-a USER)
+    (slot nombre_carta (type STRING))
+    (slot recurso (type SYMBOL)
+        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
+            PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
+        (access initialize-only) (create-accessor read))
+    (slot cantidad (type INTEGER) (access initialize-only) (create-accessor read))
+)
+
+(defclass EDIFICIO_INPUT
+    (is-a USER)
+    (slot nombre_carta (type STRING))
+    (slot recurso (type SYMBOL)
+        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
+            PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
+        (access initialize-only) (create-accessor read))
+)
+
+(defclass EDIFICIO_OUTPUT
+    (is-a USER)
+    (slot nombre_carta (type STRING))
+    (slot recurso (type SYMBOL)
+        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
+            PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
+        (access initialize-only) (create-accessor read))
+
+)
+(defclass COSTE_ENERGIA
+    (is-a USER)
+    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+    (slot cantidad (type INTEGER) (access initialize-only) (create-accessor read))
 )
