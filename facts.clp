@@ -190,4 +190,55 @@
     (of CARTA (nombre "HERRERIA") (coste_francos 12) (valor_proporciona 12))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "HERRERIA") (posicion 5))
     
+    ; BARCOS ?? lo de valor proporciona lo cambiamos al final o cómo???
+    (of BARCO_MADERA (tipo MADERA)(nombre "BARCO_MADERA1")(coste_francos 6)(valor_proporciona 6))
+
+    ; ======= RELACIONES CARTAS =======
+    ; Carta tiene bonus
+    (of CARTA_TIENE_BONUS (nombre_carta "PISCIFACTORIA")(bonus PESCADOR))
+    (of CARTA_TIENE_BONUS (nombre_carta "MINA DE CARBON")(bonus MARTILLO))
+    (of CARTA_TIENE_BONUS (nombre_carta "MONTICULO DE ARCILLA")(bonus MARTILLO))
+    ; Ronda introduce barco ??? rellenar números de ronda
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda )(nombre_carta "BARCO_MADERA"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda )(nombre_carta "BARCO_HIERRO"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda )(nombre_carta "BARCO_ACERO"))
+
+    ; Coste entrada cartas
+    ; ---> Matedero
+    (of COSTE_ENTRADA_CARTA (nombre_carta "MATADERO")(recurso FRANCOS)(cantidad 2))
+    ; ---> Herrería (3 de comida o 1 franco, la comida represento todas las posibilidades?)
+    (of COSTE_ENTRADA_CARTA (nombre_carta "HERRERIA")(recurso FRANCOS)(cantidad 1))
+    (of COSTE_ENTRADA_CARTA (nombre_carta "HERRERIA")(recurso PESCADO)(cantidad 3))
+
+    ; ---> Siderurgia (2 francos)
+    (of COSTE_ENTRADA_CARTA (nombre_carta "SIDERURGIA")(recurso FRANCOS)(cantidad 2))
+    ; ---> Ahumador (2 de comida o 1 franco)
+    (of COSTE_ENTRADA_CARTA (nombre_carta "AHUMADOR")(recurso FRANCOS)(cantidad 1))
+    
+    ; ---> Montículo de arcilla (1 de comida)
+
+    ; ---> Fábrica de ladrillos (1 de comida)
+
+    ; ---> Coquería (1 franco)
+    (of COSTE_ENTRADA_CARTA (nombre_carta "COQUERIA")(recurso FRANCOS)(cantidad 1))
+    ; ---> Panadería (1 de comida)
+
+    ; ---> Muelle (2 de comida)
+
+    ; ---> Mina de carbón (2 de comida)
+
+    ; ---> Compañía naviera (2 de comida)
+
+    ; ---> Constructora 2 (1 de comida)
+
+    ; ---> Constructora 3 (2 de comida)
+
+    ; ---> Mercado (2 de comida o 1 franco)
+    (of COSTE_ENTRADA_CARTA (nombre_carta "MERCADO")(recurso FRANCOS)(cantidad 1))
+
+
+
+
+
+
 )
