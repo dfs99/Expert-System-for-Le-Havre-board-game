@@ -1,7 +1,35 @@
+;    ▄█          ▄████████         ▄█    █▄       ▄████████  ▄█    █▄     ▄████████    ▄████████ 
+;   ███         ███    ███        ███    ███     ███    ███ ███    ███   ███    ███   ███    ███ 
+;   ███         ███    █▀         ███    ███     ███    ███ ███    ███   ███    ███   ███    █▀  
+;   ███        ▄███▄▄▄           ▄███▄▄▄▄███▄▄   ███    ███ ███    ███  ▄███▄▄▄▄██▀  ▄███▄▄▄     
+;   ███       ▀▀███▀▀▀          ▀▀███▀▀▀▀███▀  ▀███████████ ███    ███ ▀▀███▀▀▀▀▀   ▀▀███▀▀▀     
+;   ███         ███    █▄         ███    ███     ███    ███ ███    ███ ▀███████████   ███    █▄  
+;   ███▌    ▄   ███    ███        ███    ███     ███    ███ ███    ███   ███    ███   ███    ███ 
+;   █████▄▄██   ██████████        ███    █▀      ███    █▀   ▀██████▀    ███    ███   ██████████ 
+;   ▀                                                                    ███    ███              
+;
+;                                     ╔═╗╔╗╔╔╦╗╔═╗╦  ╔═╗╔═╗╦╔═╗
+;                                     ║ ║║║║ ║ ║ ║║  ║ ║║ ╦║╠═╣
+;                                     ╚═╝╝╚╝ ╩ ╚═╝╩═╝╚═╝╚═╝╩╩ ╩
+;             +-----------------------------+--------------+-------------------------+
+;             |           Authors           |     NIAS     |          Githubs        |
+;             +-----------------------------+--------------+-------------------------+
+;             | Ricardo Grande Cros         |  100386336   |      ricardograndecros  |
+;             | Diego Fernandez Sebastian   |  100387203   |      dfs99              |
+;             +-----------------------------+--------------+-------------------------+
+;
+;
 
+; 
+; +==============================================================================================+
+; |                                                                                              |
+; |                                ╔═╗╔═╗╔╗╔╔═╗╔═╗╔═╗╔╦╗╔═╗╔═╗                                   |
+; |                                ║  ║ ║║║║║  ║╣ ╠═╝ ║ ║ ║╚═╗                                   |
+; |                                ╚═╝╚═╝╝╚╝╚═╝╚═╝╩   ╩ ╚═╝╚═╝                                   |
+; |                                                                                              |
+; +==============================================================================================+
+;
 
-
-; CONCEPTOS
 (defclass RECURSO
     (is-a USER)
     (role concrete)
@@ -15,7 +43,7 @@
     (is-a USER)
     (role concrete)
     (slot nombre (type SYMBOL)
-        (allowed-values PESCADOR, MARTILLO) (access initialize-only) (create-accessor read)    )
+        (allowed-values PESCADOR, MARTILLO) (access initialize-only) (create-accessor read))
 )
 
 
@@ -28,6 +56,11 @@
 
 ; Representar la información de que en la partida el edificio con nombre X (el nombre será 
 ; único) corresponde al edificio. Creemos que es mejor alternativa a emplear conceptos.
+
+; Comentario del presente: (06/11)
+; Pensamos que su objetivo inicial era ligar todos aquellos edificios con el ayunto. El ayunto no hace
+; falta que sea representado a través de un concepto pues no tiene atributos significativos, por esa razón
+; se ha pensado en emplear un deftemplate.
 (deftemplate EDIFICIO_AYUNTAMIENTO
     (slot nombre_edificio (type STRING) (access initialize-only) (create-accessor read))
 )
@@ -69,67 +102,32 @@
 ; Validada sintácticamente en CLIPS.
 (defclass CARTA
     (is-a USER)
-    (role abstract)
+    (role concrete)
     (slot nombre (type STRING) (access initialize-only) (create-accessor read))
-    (slot coste_francos (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot valor_proporciona (type INTEGER) (access initialize-only) (create-accessor read))
+    (slot valor (type INTEGER) (access initialize-only) (create-accessor read))
+)
+
+(defclass CARTA_BANCO
+    (is-a CARTA)
+    (role concrete)
+    (slot coste (type INTEGER) (access initialize-only) (create-accessor read))
 )
 
 ; Validada sintácticamente en CLIPS.
 (defclass BARCO
     (is-a CARTA)
-    (role abstract)
-    ; en el nombre indicar q es el barco de acero.
-    (slot nombre (source composite))
-    (slot coste_francos (source composite))
-    (slot valor_proporciona (source composite))
+    (role concrete)
+    (slot tipo_recurso (type SYMBOL) (allowed-values MADERA, HIERRO, ACERO) (access initialize-only) (create-accessor read))
     (slot uds_comida_genera (type INTEGER) (access initialize-only) (create-accessor read))
     (slot num_energia_necesaria (type INTEGER) (access initialize-only) (create-accessor read))
+    (slot unidades_recurso (type INTEGER)(access initialize-only)(create-accessor read))
 )
-
-(defclass BARCO_MADERA
-    (is-a BARCO)
-    (slot tipo (source composite))
-    (slot nombre (source composite))
-    (slot coste_francos (source composite))
-    (slot valor_proporciona (source composite))
-    (slot uds_comida_genera (source composite))
-    (slot num_energia_necesaria (source composite))
-    (slot unidades_madera (type INTEGER) (access initialize-only) (create-accessor read))
-)
-
-(defclass BARCO_HIERRO
-    (is-a BARCO)
-    (slot tipo (source composite))
-    (slot nombre (source composite))
-    (slot coste_francos (source composite))
-    (slot valor_proporciona (source composite))
-    (slot comida_genera (source composite))
-    (slot num_energia_necesaria (source composite))
-    (slot unidades_hierro (type INTEGER) (access initialize-only) (create-accessor read))
-)
-
-(defclass BARCO_ACERO
-    (is-a BARCO)
-    (slot tipo (source composite))
-    (slot nombre (source composite))
-    (slot coste_francos (source composite))
-    (slot valor_proporciona (source composite))
-    (slot comida_genera (source composite))
-    (slot num_energia_necesaria (source composite))
-    (slot unidades_acero (type INTEGER) (access initialize-only) (create-accessor read))
-)
-
 
 ; Validada sintácticamente en CLIPS.
-(defclass CASILLA_RECURSO
+(defclass LOSETA
     (is-a USER)
     (role concrete)
     (slot posicion (type INTEGER) (access initialize-only) (create-accessor read))
-    ;(slot recurso_proporciona1 (type SYMBOL) (access initialize-only) (create-accessor read))
-    ;(slot num_recursos_proporciona1 (type INTEGER) (access initialize-only) (create-accessor read))
-    ;(slot recurso_proporciona2 (type SYMBOL) (access initialize-only) (create-accessor read))
-    ;(slot num_recursos_proporciona2 (type INTEGER) (access initialize-only) (create-accessor read))
     (slot visibilidad (type SYMBOL)
         (allowed-values TRUE, FALSE)
         (default FALSE)
@@ -139,6 +137,16 @@
         (default FALSE)
         (access initialize-only) (create-accessor read))
 )
+
+; +==============================================================================================+
+; |                                                                                              |
+; |                                 ┬─┐┌─┐┬  ┌─┐┌─┐┬┌─┐┌┐┌┌─┐┌─┐                                 |
+; |                                 ├┬┘├┤ │  ├─┤│  ││ ││││├┤ └─┐                                 |
+; |                                 ┴└─└─┘┴─┘┴ ┴└─┘┴└─┘┘└┘└─┘└─┘                                 |
+; |                                                                                              |
+; +==============================================================================================+
+
+
 
 (defclass JUGADOR_TIENE_RECURSO
     (is-a USER)
@@ -157,22 +165,14 @@
     (slot cantidad (type INTEGER) (access read-write) (create-accessor read-write))
 )
 
-(defclass JUGADOR_TOMA_RECURSOS_OFERTA
-    (is-a USER)
-    (slot id_partida (type INTEGER))
-    (slot nombre_jugador (type STRING))
-    (slot recurso (type SYMBOL))
-    (slot num_recursos (type INTEGER))
-)
-
-(defclass CASILLA_RECURSO_TIENE_RECURSO
+(defclass LOSETA_TIENE_RECURSO
     (is-a USER)
     (slot posicion (type INTEGER))
     (slot recurso (type SYMBOL))
     (slot cantidad (type INTEGER))
 )
 
-(defclass JUGADOR_ESTA_EN_CASILLA_RECURSO
+(defclass JUGADOR_ESTA_EN_LOSETA
     (is-a USER)
     (slot posicion (type INTEGER))
     (slot nombre_jugador (type STRING))
@@ -180,6 +180,7 @@
 
 ;===================== CARTAS =================
 (defclass CARTA_TIENE_BONUS
+    (is-a USER)
     (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
     (slot bonus (type SYMBOL) (allowed-values PESCADOR MARTILLO) (access initialize-only) (create-accessor read))
 )
@@ -195,7 +196,7 @@
     (role concrete)
     (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
     (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
-    (slot posicion (type INTEGER)(access read-write) (create-accessor read-write))
+    (slot posicion_en_mazo (type INTEGER)(access read-write) (create-accessor read-write))
 
 )
 
@@ -205,14 +206,21 @@
     (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
 )
 
+; Al final de una ronda, se escoge una carta de un mazo y se le asigna al ayuntamiento. 
+; La carta a entregar no es fija, si un jugador la compra o construye, se otorgará al 
+; ayuntamiento la siguiente carta de ese mazo. Por tanto, con el nombre de la ronda y
+; el id del mazo ya está todo representado. 
 (defclass RONDA_ASIGNA_EDIFICIO
     (is-a USER)
     (slot nombre_ronda (type SYMBOL))
     (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
-    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
 )
 
-; HACER UN HECHO, PORQ SOLO SE INSTANCIA UNA VEZ!!!!!!!!!!!!!!!!!!!!!!
+; 
+; (06/11) Mientras revisamos vimos que teníamos apuntado esto: "HACER UN HECHO, PORQ SOLO SE INSTANCIA UNA VEZ!!!!!!!!!!!!!!!!!!!!!!" 
+; TODO: preguntar a Javier si es mejor tener un hecho compuesto (deftemplate) en lugar
+; de una relación con clase. La duda es que no sabemos si podemos tenerlo en deftemplate
+; porque al final está representando una relación entre Jugador y Carta. 
 (defclass JUGADOR_DENTRO_EDIFICIO
     (is-a USER)
     (slot nombre_jugador (type STRING))
@@ -222,9 +230,8 @@
 (defclass COSTE_ENTRADA_CARTA
     (is-a USER)
     (slot nombre_carta (type STRING))
-    (slot recurso (type SYMBOL)
-        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
-            PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
+    (slot tipo (type SYMBOL)
+        (allowed-values COMIDA, DINERO)
         (access initialize-only) (create-accessor read))
     (slot cantidad (type INTEGER) (access initialize-only) (create-accessor read))
 )
@@ -236,6 +243,8 @@
         (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
             PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
         (access initialize-only) (create-accessor read))
+    (slot cantidad_maxima (type INTEGER)(access initialize-only)(create-accessor read))
+    ; Se podría implementar el máx, pero de momento relajamos esta precondicion. 
 )
 
 (defclass EDIFICIO_OUTPUT
@@ -245,10 +254,17 @@
         (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
             PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
         (access initialize-only) (create-accessor read))
-
+    (slot cantidad_min_generada_por_unidad (type FLOAT) (access initialize-only) (create-accessor read))
 )
+
 (defclass COSTE_ENERGIA
     (is-a USER)
     (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
-    (slot cantidad (type INTEGER) (access initialize-only) (create-accessor read))
+    ; todo: En un futuro, puede q relajemos las precondiciones de costes de energía.
+    ; existen edificios donde el coste de energía es unitario y otros en donde no.
+    ; Definimos coste unitario como aquel coste energético que precisa una unidad de recurso para producir otra.
+    ; Por ejemplo, en el ahumador, independientemente del nº de pescados, siempre te costará 1. No es el caso de 
+    ; la fabrica de ladrillos, donde cada arcilla necesitará 0.5
+    (slot coste_unitario (type SYMBOL) (allowed-values TRUE, FALSE) (access initialize-only) (create-accessor read))
+    (slot cantidad (type FLOAT) (access initialize-only) (create-accessor read))
 )
