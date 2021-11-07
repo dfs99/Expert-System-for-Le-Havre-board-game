@@ -65,10 +65,16 @@
     (slot nombre_edificio (type STRING) (access initialize-only) (create-accessor read))
 )
 
+(deftemplate JUGADOR_ESTA_EDIFICIO
+    (slot nombre_edificio (type STRING) (access initialize-only) (create-accessor read))
+    (slot nombre_jugador (type STRING) (access initialize-only) (create-accessor read))
+)
+
 ; representar la información de q el barco ahora queda disponible y se podrá adquirir.
 ; La disposición de los barcos en el mazo queda predeterminada inicialmente en los hechos
 ; iniciales por la relacion de mazo_tiene_carta. Cuando se active este deftemplate se podrá
 ; adquirir el barco.
+
 (deftemplate BARCO_DISPONIBLE
     (slot nombre_barco (type STRING) (access initialize-only) (create-accessor read))    
 )
@@ -114,13 +120,15 @@
 )
 
 ; Validada sintácticamente en CLIPS.
+; IMPORTANTE: el barco lujoso, al no reducir la comida necesaria al final de ronda 
+; ni poderse comprar con francos (coste), es sencillamente una instancia de la 
+; clase carta. 
 (defclass BARCO
     (is-a CARTA)
     (role concrete)
-    (slot tipo_recurso (type SYMBOL) (allowed-values MADERA, HIERRO, ACERO) (access initialize-only) (create-accessor read))
+    (slot coste (type INTEGER) (access initialize-only) (create-accessor read))
     (slot uds_comida_genera (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot num_energia_necesaria (type INTEGER) (access initialize-only) (create-accessor read))
-    (slot unidades_recurso (type INTEGER)(access initialize-only)(create-accessor read))
+    (slot capacidad_envio (type INTEGER) (access initialize-only) (create-accessor read))
 )
 
 ; Validada sintácticamente en CLIPS.

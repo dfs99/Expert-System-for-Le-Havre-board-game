@@ -29,6 +29,8 @@
     ; hechos semáforo para cambiar de jugador
     (siguiente_jugador DIEGO, RICARDO)
     (siguiente_jugador RICARDO, DIEGO)
+    ; turno
+    (turno DIEGO)
     ; hechos semaforo para cambiar de rondas.
     (siguiente_ronda RONDA_1, RONDA_2)
     (siguiente_ronda RONDA_2, RONDA_3)
@@ -50,14 +52,7 @@
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "CONSTRUCTORA1"))
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "CONSTRUCTORA2"))
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "CONSTRUCTORA3"))
-    (EDIFICIO_AYUNTAMIENTO (nombre_edificio "MERCADO"))
-
-
-    (siguiente_barco_disponible BARCO_MADERA1 BARCO_MADERA2)
-    (siguiente_barco_disponible BARCO_MADERA2 BARCO_MADERA3)
-    )
-
-    
+    (EDIFICIO_AYUNTAMIENTO (nombre_edificio "MERCADO"))    
     
 
 ; INSTANCIAS
@@ -87,6 +82,9 @@
     ([mazo1] of MAZO (id_mazo 1))
     ([mazo2] of MAZO (id_mazo 2))
     ([mazo3] of MAZO (id_mazo 3))
+    ([mazo_barcos_madera] of MAZO (id_mazo_4))
+    ([mazo_barcos_hierro] of MAZO (id_mazo_5))
+    ([mazo_barcos_acero] of MAZO (id_mazo_6))
     ; ====== RONDA ======
     ([ronda1] of RONDA (nombre_ronda RONDA_1)(coste_comida 4)(hay_cosecha TRUE))
     ([ronda2] of RONDA (nombre_ronda RONDA_2)(coste_comida 7)(hay_cosecha TRUE))
@@ -208,7 +206,7 @@
     (of COSTE_ENTRADA_CARTA (nombre_carta "COQUERIA")(tipo DINERO)(cantidad 1))
     (of EDIFICIO_INPUT (nombre_carta "COQUERIA") (recurso CARBON) (cantidad_maxima -1))
     (of EDIFICIO_OUTPUT (nombre_carta "COQUERIA") (recurso COQUE) (cantidad_min_generada_por_unidad 1))
-(of EDIFICIO_OUTPUT (nombre_carta "COQUERIA") (recurso FRANCO) (cantidad_min_generada_por_unidad 1))
+    (of EDIFICIO_OUTPUT (nombre_carta "COQUERIA") (recurso FRANCO) (cantidad_min_generada_por_unidad 1))
 
     (of CARTA_BANCO (nombre "BANCO") (coste 40) (valor 16))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "BANCO") (posicion 5))
@@ -253,7 +251,7 @@
     ; ---> Ahumador (2 de comida o 1 franco)
     (of COSTE_ENTRADA_CARTA (nombre_carta "AHUMADOR")(tipo DINERO)(cantidad 1))
     (of COSTE_ENTRADA_CARTA (nombre_carta "AHUMADOR")(tipo COMIDA)(cantidad 2))
-     (of EDIFICIO_INPUT (nombre_carta "AHUMADOR") (recurso PESCADO) (cantidad_maxima 6))
+    (of EDIFICIO_INPUT (nombre_carta "AHUMADOR") (recurso PESCADO) (cantidad_maxima 6))
     (of EDIFICIO_OUTPUT (nombre_carta "AHUMADOR") (recurso PESCADO_AHUMADO) (cantidad_min_generada_por_unidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "AHUMADOR") (recurso FRANCO) (cantidad_min_generada_por_unidad 0.5))
     (of COSTE_ENERGIA (nombre_carta "AHUMADOR") (coste_unitario FALSE) (cantidad 0.5))
@@ -262,7 +260,7 @@
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "MATADERO") (posicion 2))
      ; ---> Matedero
     (of COSTE_ENTRADA_CARTA (nombre_carta "MATADERO")(tipo DINERO)(cantidad 2))
-     (of EDIFICIO_INPUT (nombre_carta "MATADERO") (recurso GANADO) (cantidad_maxima -1))
+    (of EDIFICIO_INPUT (nombre_carta "MATADERO") (recurso GANADO) (cantidad_maxima -1))
     (of EDIFICIO_OUTPUT (nombre_carta "MATADERO") (recurso CARNE) (cantidad_min_generada_por_unidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "MATADERO") (recurso PIEL) (cantidad_min_generada_por_unidad 0.5))
 
@@ -275,7 +273,7 @@
 
     (of CARTA (nombre "PELETERIA") (valor 12))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion 4))
-     (of EDIFICIO_INPUT (nombre_carta "PELETERIA") (recurso PIEL) (cantidad_maxima 4))
+    (of EDIFICIO_INPUT (nombre_carta "PELETERIA") (recurso PIEL) (cantidad_maxima 4))
     (of EDIFICIO_OUTPUT (nombre_carta "PELETERIA") (recurso CUERO) (cantidad_min_generada_por_unidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "PELETERIA") (recurso FRANCO) (cantidad_min_generada_por_unidad 1))
 
@@ -288,21 +286,64 @@
     
 
     ;=================================================================
-    ; BARCOS ?? lo de valor proporciona lo cambiamos al final o cómo???
-    (of BARCO_MADERA (tipo MADERA) (nombre "BARCO_MADERA1") (valor 6))
+    ; BARCOS 
+    (of BARCO (nombre "BARCO_MADERA1") (valor 4) (coste 14) (uds_comida_genera 4) (capacidad_envio 2))
+    (of BARCO (nombre "BARCO_MADERA2") (valor 6) (coste 14) (uds_comida_genera 4) (capacidad_envio 2))
+    (of BARCO (nombre "BARCO_MADERA3") (valor 2) (coste 14) (uds_comida_genera 4) (capacidad_envio 2))
+    (of BARCO (nombre "BARCO_HIERRO1") (valor 6) (coste 20) (uds_comida_genera 5) (capacidad_envio 3))
+    (of BARCO (nombre "BARCO_HIERRO2") (valor 8) (coste 20) (uds_comida_genera 5) (capacidad_envio 3))
+    (of BARCO (nombre "BARCO_ACERO1") (valor 16) (coste 30) (uds_comida_genera 7) (capacidad_envio 4))
+    (of BARCO (nombre "BARCO_ACERO2") (valor 20) (coste 30) (uds_comida_genera 7) (capacidad_envio 4))
+    ; IMPORTANTE: el barco lujoso, al no reducir la comida necesaria al final de ronda 
+    ; ni poderse comprar con francos (coste), es sencillamente una instancia de la 
+    ; clase carta. 
+    (of CARTA (nombre "BARCO_LUJOSO") (valor 30))
+
+    ; BARCO_MADERA1 cuesta 14 vale 4 construir: 5 madera 3 energía produce 4 de comida (puede vender 2 bienes en la compañía naviera)
+    ; BARCO_MADERA2 cuesta 14 vale 6 construir: 5 madera 3 energía produce 4 de comida (puede vender 2 bienes en la compañía naviera)
+    ; BARCO_MADERA3 cuesta 14 vale 2 construir: 5 madera 3 energía produce 4 comida (puede vender 2 bienes en la compañía naviera)
+    ; BARCO_HIERRO1 cuesta 20 vale 6 construir: 4 hierro 3 energía produce 5 comida (puede vender 3 bienes en la compañía naviera)
+    ; BARCO_HIERRO2 cuesta 20 vale 8 construir: 4 hierro 3 energía produce 5 comida (puede vender 3 bienes en la compañía naviera)
+    ; BARCO_ACERO cuesta 30 vale 16 construir: 2 acero 3 energía produce 7 comida (puede vender 4 bienes en la shipping line)
+    ; BARCO_ACERO cuesta 30 vale 20 construir: 2 acero 3 energía produce 7 comida (puede vender 4 bienes en la shipping line)
+    ; BARCO_LUJOSO cuesta NO SE PUEDE COMPRAR vale 30 construir: 3 acero 3 energía produce 0 comida (puede vender 0 bienes en la shipping line)
 
     ; ======= RELACIONES CARTAS =======
-    ; Carta tiene bonus
+    ; Carta tiene bonus (la carta le otorga un bonus a quien la posee)
     (of CARTA_TIENE_BONUS (nombre_carta "PISCIFACTORIA")(bonus PESCADOR))
+    (of CARTA_TIENE_BONUS (nombre_carta "AHUMADOR")(bonus PESCADOR))
+    (of CARTA_TIENE_BONUS (nombre_carta "COMPAÑIA NAVIERA")(bonus PESCADOR))
     (of CARTA_TIENE_BONUS (nombre_carta "MINA DE CARBON")(bonus MARTILLO))
     (of CARTA_TIENE_BONUS (nombre_carta "MONTICULO DE ARCILLA")(bonus MARTILLO))
-    ; Ronda introduce barco ??? rellenar números de ronda
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda )(nombre_carta "BARCO_MADERA"))
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda )(nombre_carta "BARCO_HIERRO"))
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda )(nombre_carta "BARCO_ACERO"))
+    (of CARTA_TIENE_BONUS (nombre_carta "HERRERIA")(bonus MARTILLO))
+    (of CARTA_TIENE_BONUS (nombre_carta "CONSTRUCTORA1")(bonus MARTILLO))
+    (of CARTA_TIENE_BONUS (nombre_carta "CONSTRUCTORA2")(bonus MARTILLO))
+    (of CARTA_TIENE_BONUS (nombre_carta "CONSTRUCTORA3")(bonus MARTILLO))
+    ; Carta suma bonus ???
+    ; hay que pensar cómo hacemos para crear una relación que añada los bonus
+    ; al output de las cartas. 
 
+    ; Ronda introduce barco al final de la ronda.
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_1) (nombre_carta "BARCO_MADERA1"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_2) (nombre_carta "BARCO_MADERA2"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_3) (nombre_carta "BARCO_MADERA3"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_4) (nombre_carta "BARCO_HIERRO1"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_5) (nombre_carta "BARCO_HIERRO2"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_6) (nombre_carta "BARCO_ACERO1"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_7) (nombre_carta "BARCO_ACERO2"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_8) (nombre_carta "BARCO_LUJOSO"))
 
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 4) (nombre_carta "BARCO_MADERA1") (posicion 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 4) (nombre_carta "BARCO_MADERA2") (posicion 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 4) (nombre_carta "BARCO_MADERA3") (posicion 3))
+
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 5) (nombre_carta "BARCO_HIERRO1") (posicion 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 5) (nombre_carta "BARCO_HIERRO2") (posicion 2))
+
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 6) (nombre_carta "BARCO_ACERO1") (posicion 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 6) (nombre_carta "BARCO_ACERO2") (posicion 2))
     
+
 
     
 
