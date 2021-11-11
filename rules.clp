@@ -401,7 +401,45 @@
 
 )
 ;   6-. Final ronda (cambiar)
+(defrule cambio_ronda
+    ; para cambiar de ronda se tiene que dar la siguiente situación
+    ; | | | | | |2|1| y turno de 2
+    ?jugador1 <- (object (is-a JUGADOR) (nombre ?nombre_jugador1))
+    ?posicion_jugador1 <- (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos_jugador1) (nombre_jugador ?nombre_jugador1))
+    ?jugador2 <- (object (is-a JUGADOR) (nombre ?nombre_jugador2))
+    ?posicion_jugador2 <- (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos_jugador2) (nombre_jugador ?nombre_jugador2))
+    (test (eq ?pos_jugador1 7))
+    (test (eq ?pos_jugador2 6))
+    (test (neq ?jugador ?jugador2))
+    (turno ?nombre_jugador2)
+    ; selección de siguiente ronda
+    (ronda_actual ?nombre_ronda_actual)
+    ?ronda_siguiente <- (object (is-a RONDA (nombre_ronda ?nombre_ronda_siguiente)))
+    (siguiente_ronda ?nombre_ronda_actual ?nombre_ronda_siguiente)
+    =>
+    (retract ronda_actual ?nombre_ronda_actual)
+    (assert ronda_actual ?nombre_ronda_siguiente)
+)
 ;   7-. Cambiar turno jugadores
+(defrule pasar_turno
+    ; pensar si debería haber alguna precondición o si simplemente por estar 
+    ; en la posición que está la regla ya se asegura que sólo se instancia
+    ; cuando el jugador no puede hacer nada más
+    ?jugador1 <- (object (is-a JUGADOR) (nombre ?nombre_jugador1))
+    ?jugador2 <- (object (is-a JUGADOR) (nombre ?nombre_jugador2))
+    (test (neq ?jugador1 ?jugador2))
+    ; IMPORTANTE!  ¿DÓNDE SE GENERA ESTE HECHO SEMÁFORO?????
+    (turno_finalizado ?nombre_jugador1)
+
+    ; Generalización: mueve al otro jugador
+    ?posicion_actual_jugador2 <- (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos) (nombre_jugador ?nombre_jugador2))
+    =>
+    (retract (turno_finalizado ?nombre_jugador1))
+    (assert (turno ?nombre_jugador2))
+    ; modifica la posición del jugador 2
+    (modify-instance ?posicion_actual_jugador2 (posicion =(mod =(+ ?pos 2) 7)))
+)
+
 ;   8-. Actualizar cartas mazos
 ; Modifica la posición de todas las cartas de un mazo restándoles 1. 
 ; PREGUNTAR SI ESTO SE PUEDE HACER ASÍ => deberá tener máxima prioridad!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -444,11 +482,36 @@
     (modify ?oferta_recurso (cantidad =(+ cantidad_oferta c)))
 )
 
+; SIN ACABAR !!! HAY QUE MODELAR LAS DEUDAS!!!!
+; hay que tener en cuenta que el jugador puede tener suficiente dinero
+; puede tener sólo parte del dinero o puede no tener nada. 
+; Si tiene suficiente, se paga y listo. Si no tiene suficiente pero tiene
+; algo, se paga parte y se endeuda el resto. Si no tiene nada se endeuda
+; con todo. 
 ; 11-. Hacer pagar intereses
-    
+(defrule PAGAR_INTERESES
+    ; obtiene los recursos del jugador
+    ?jugador_recursos <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre)(recurso FRANCOS)(cantidad ?cantidad_francos))
+    ; obtiene la posición del jugador
+    ?jugador_loseta <- (object (is-a JUGADOR_ESTA_EN_LOSETA)(posicion ?pos)(nombre_jugador ?nombre))
+    ; la loseta tiene pago de intereses
+    ?loseta <- (object (is-a LOSETA)(posicion ?pos)(visibilidad TRUE)(intereses TRUE))
+    ; el jugador tiene deudas 
+
+    ; es necesario modelar las deudas para que contengan la cantiadd que 
+    ; hay que pagar 
+
+    ; el jugador tiene dinero para pagarlo
+    (test (> ?cantidad_francos ?pago))
+    =>
+    ; restar dinero al jugador
+    (modify-instance ?jugador_recursos (cantidad (- ?cantidad ?pago)))
+)
 
 ; 12-. Pagar comida final ronda (se pueden endeudar)
-
+; 12A-. El jugador tiene suficientes recursos para pagar la comida
+; 12B-. El jugador se tiene que endeudar (para pagar parte)
+; 12C-. El jugador se tiene que endeudar (para pagar todo)
 
 
 
@@ -478,39 +541,9 @@
     (assert (oferta_suficiente_mas_igual_tres ?recurso))
 )
 
-(defrule pasar_turno
-    ; pensar si debería haber alguna precondición o si simplemente por estar 
-    ; en la posición que está la regla ya se asegura que sólo se instancia
-    ; cuando el jugador no puede hacer nada más
-    ?jugador1 <- (object (is-a JUGADOR) (nombre ?nombre_jugador1))
-    ?jugador2 <- (object (is-a JUGADOR) (nombre ?nombre_jugador2))
-    (test (neq ?jugador1 ?jugador2))
-    ; IMPORTANTE!  ¿DÓNDE SE GENERA ESTE HECHO SEMÁFORO?????
-    (turno_finalizado ?nombre_jugador1)
-    =>
-    (retract (turno_finalizado ?nombre_jugador1))
-    (assert (turno ?nombre_jugador2))
-)
 
-(defrule cambio_ronda
-    ; para cambiar de ronda se tiene que dar la siguiente situación
-    ; | | | | | |2|1| y turno de 2
-    ?jugador1 <- (object (is-a JUGADOR) (nombre ?nombre_jugador1))
-    ?posicion_jugador1 <- (object (is-a JUGADOR_ESTA_EN_CASILLA_RECURSO) (posicion ?pos_jugador1) (nombre_jugador ?nombre_jugador1))
-    ?jugador2 <- (object (is-a JUGADOR) (nombre ?nombre_jugador2))
-    ?posicion_jugador2 <- (object (is-a JUGADOR_ESTA_EN_CASILLA_RECURSO) (posicion ?pos_jugador2) (nombre_jugador ?nombre_jugador2))
-    (test (eq ?pos_jugador1 7))
-    (test (eq ?pos_jugador2 6))
-    (test (neq ?jugador ?jugador2))
-    (turno ?nombre_jugador2)
-    ; selección de siguiente ronda
-    (ronda_actual ?nombre_ronda_actual)
-    ?ronda_siguiente <- (object (is-a RONDA (nombre_ronda ?nombre_ronda_siguiente)))
-    (siguiente_ronda ?nombre_ronda_actual ?nombre_ronda_siguiente)
-    =>
-    (retract ronda_actual ?nombre_ronda_actual)
-    (assert ronda_actual ?nombre_ronda_siguiente)
-)
+
+
 
 (defrule asignar_edificio_ayuntamiento
     ; SE TIENE Q EJECUTAR NADA MÁS ACTUALIZAR LA RONDA!!!!!!!!!!!!!!!!! 
@@ -545,10 +578,4 @@
     (unmake-instance ?introduce_barco)
 )
 
-(defrule mover_jugador
-    ?jugador <- (object (is-a JUGADOR) (nombre ?nombre))
-    (turno ?nombre)
-    ?posicion_actual <- (object (is-a JUGADOR_ESTA_EN_CASILLA_RECURSO) (posicion ?pos) (nombre_jugador ?nombre))
-    =>
-    (modify-instance ?posicion_actual (posicion =(mod =(+ ?pos 2) 7)))
-)
+

@@ -105,6 +105,8 @@
     (slot nombre (type STRING) (access initialize-only) (create-accessor read))
 )
 
+
+
 ; Validada sintácticamente en CLIPS.
 (defclass CARTA
     (is-a USER)
