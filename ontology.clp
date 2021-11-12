@@ -46,7 +46,6 @@
         (allowed-values PESCADOR, MARTILLO) (access initialize-only) (create-accessor read))
 )
 
-
 (deftemplate OFERTA_RECURSO
     (slot recurso (type SYMBOL)
         (allowed-values FRANCO, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO)
@@ -79,14 +78,6 @@
     (slot nombre_barco (type STRING) (access initialize-only) (create-accessor read))    
 )
 
-
-(defclass MAZO 
-    (is-a USER)
-    (role concrete)
-    (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
-)
-
-
 ; Validada sintácticamente en CLIPS.
 (defclass RONDA
     (is-a USER)
@@ -103,6 +94,7 @@
     (is-a USER)
     (role concrete)
     (slot nombre (type STRING) (access initialize-only) (create-accessor read))
+    (slot deudas (type INTEGER)(default 0)(access initialize-only) (create-accessor read))
 )
 
 

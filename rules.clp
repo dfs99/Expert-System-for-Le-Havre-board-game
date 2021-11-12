@@ -37,8 +37,6 @@
 
     ; Obtener el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; Obtiene los datos del recurso del jugador
     ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_recurso))
     ; Obtiene el recurso de la oferta que se va a tomar
@@ -46,9 +44,9 @@
     ; Comprueba que el recurso de la oferta se pueda obtener
     (test (> ?cantidad_oferta 0))
     ; Hecho estratégico que implique coger recurso de la oferta
-    (deseo_coger_recurso ?recurso)
+    (deseo_coger_recurso ?nombre_jugador ?recurso)
     =>
-    ; Actualiza rla cantidad de la oferta
+    ; Actualizar la cantidad de la oferta
     (modify ?recurso_oferta (cantidad 0))
     ; Actualizar los recursos del jugador
     (modify-instance ?recurso_jugador (cantidad =(+ ?cantidad_recurso ?cantidad_oferta)))
@@ -65,10 +63,8 @@
     (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
     ; Obtener el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; Obtener el edificio del deseo
-    ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
+    ?deseo <- (deseo_comprar_edificio ?nombre_jugador ?nombre_edificio)
     ; El edificio es del ayuntamiento
     ?ayunto <- (EDIFICIO_AYUNTAMIENTO (nombre_edificio ?nombre_edificio))
     ; Obtiene el coste de comprar el edificio
@@ -94,8 +90,6 @@
     (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
     ; Obtener el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; Obtener el edificio del deseo
     ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
     ; El edificio es del mazo
@@ -125,8 +119,6 @@
     (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
     ; Obtener el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; Obtener el edificio del deseo
     ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
     ; El edificio es del ayuntamiento
@@ -154,8 +146,6 @@
     (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
     ; Obtener el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; Obtener el edificio del deseo
     ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
     ; El edificio es del mazo
@@ -186,8 +176,6 @@
     ?deseo <- (deseo_vender_edificio ?nombre_edificio)
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; El jugador tiene la carta. 
     ?edificio_jugador <- (object (is-a JUGADOR_TIENE_CARTA) (nombre_jugador ?nombre_jugador)(nombre_carta ?nombre_carta))
     ; referencia de la carta para obtener su valor. [DUDA!!!!!: ESTO FUNCIONARÁ CON BARCOS!!!]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -216,8 +204,6 @@
     ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; obtener nombre de la carta. 
     (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; no exista un jugador en ese edificio.
@@ -244,8 +230,6 @@
     ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; obtener nombre de la carta. 
     (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; no exista un jugador en ese edificio.
@@ -267,8 +251,6 @@
     ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; obtener nombre de la carta. 
     (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; Tiene coste de entrada.
@@ -287,14 +269,11 @@
 
 (defrule ENTRAR_EDIFICIO_SIN_COSTE_ENTRADA_RONDA_FINAL
     ; Se puede entrar de uno en uno en el resto de las rondas.
-    (ronda_actual ?nombre_ronda)
-    (test (eq ?nombre_ronda RONDA_EXTRA_FINAL))
+    (ronda_actual RONDA_EXTRA_FINAL)
     ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
     ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; obtener nombre de la carta. 
     (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; NO tiene coste de entrada.
@@ -322,8 +301,6 @@
     ;TODO: FALTA MODELAR EL COSTE DE CONSTRUCCIÓN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
-    ; Obtener al jugador [se podría eliminar!?]
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     ; Obtener la referencia de la carta.
     (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; El jugador debe estar en el edificio.
@@ -440,19 +417,26 @@
     (modify-instance ?posicion_actual_jugador2 (posicion =(mod =(+ ?pos 2) 7)))
 )
 
+; TODO: COMPLETAR!
+(defrule FINALIZAR_TURNO
+
+
+)
+
 ;   8-. Actualizar cartas mazos
 ; Modifica la posición de todas las cartas de un mazo restándoles 1. 
 ; PREGUNTAR SI ESTO SE PUEDE HACER ASÍ => deberá tener máxima prioridad!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 (defrule ACTUALIZAR_POSICION_CARTAS_MAZO
     ?carta_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion ?pos))
-    (actualizar_mazo ?id)
+    ?actualizacion <- (actualizar_mazo ?id)
     (forall (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion ?pos)))
     =>
     (modify-instance ?carta_mazo(posicion (- ?pos 1))
+    (retract ?actualizacion)
 )
 
 ;   9-. Dar vuelta losetas
-(defrule destapar_loseta 
+(defrule DESTAPAR_LOSETA
     ; obtener casilla
     ?casilla <- (object (is-a LOSETA) (posicion ?pos) (visibilidad ?visible))
     ; comprobar que hay un jugador en la casilla
@@ -489,7 +473,9 @@
 ; algo, se paga parte y se endeuda el resto. Si no tiene nada se endeuda
 ; con todo. 
 ; 11-. Hacer pagar intereses
-(defrule PAGAR_INTERESES
+(defrule PAGAR_INTERESES_FRANCOS
+    ; obtiene el jugador
+    ?jugador <- (object(is-a JUGADOR)(nombre_jugador ?nombre)(deudas ?deudas))
     ; obtiene los recursos del jugador
     ?jugador_recursos <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre)(recurso FRANCOS)(cantidad ?cantidad_francos))
     ; obtiene la posición del jugador
@@ -497,21 +483,74 @@
     ; la loseta tiene pago de intereses
     ?loseta <- (object (is-a LOSETA)(posicion ?pos)(visibilidad TRUE)(intereses TRUE))
     ; el jugador tiene deudas 
-
-    ; es necesario modelar las deudas para que contengan la cantiadd que 
-    ; hay que pagar 
-
+    (test (> ?deudas 0))
     ; el jugador tiene dinero para pagarlo
-    (test (> ?cantidad_francos ?pago))
+    (test (> ?cantidad_francos 0))
     =>
     ; restar dinero al jugador
-    (modify-instance ?jugador_recursos (cantidad (- ?cantidad ?pago)))
+    (modify-instance ?jugador_recursos (cantidad =(- ?cantidad_francos 1)))
 )
-
+(defrule PAGAR_INTERESES_ENDEUDANDOSE
+    ; obtiene el jugador
+    ?jugador <- (object(is-a JUGADOR)(nombre_jugador ?nombre)(deudas ?deudas))
+    ; obtiene los recursos del jugador
+    ?jugador_recursos <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre)(recurso FRANCOS)(cantidad ?cantidad_francos))
+    ; obtiene la posición del jugador
+    ?jugador_loseta <- (object (is-a JUGADOR_ESTA_EN_LOSETA)(posicion ?pos)(nombre_jugador ?nombre))
+    ; la loseta tiene pago de intereses
+    ?loseta <- (object (is-a LOSETA)(posicion ?pos)(visibilidad TRUE)(intereses TRUE))
+    ; el jugador tiene al menos una deuda.
+    (test (> ?deudas 0))
+    ; el jugador NO tiene dinero para pagarlo
+    (test (< ?cantidad_francos 1))
+    =>
+    ; aumentar deuda del jugador en 1
+    (modify-instance ?jugador (deudas =(+ ?deudas 1)))
+    ; una deuda otorga 4 francos, pero al necesitarla para pagar 
+    (modify-instance ?jugador_recursos (cantidad =(+ ?cantidad_francos 3)))
+    
+)
+(defrule PAGAR_DEUDA
+    ; obtiene las deudas del jugador
+    ?jugador <- (object (is-a JUGADOR)(nombre_jugador ?nombre)(deudas ?deudas))
+    ; deseo de pagar deudas
+    ; todo: el jugador en una regla estratégica deberá comprobar cuanta deuda quiere pagar.
+    ?deseo <- (DESEO_PAGAR_DEUDA (nombre_jugador ?nombre)  (cantidad_deudas ?cantidad_deuda)
+    ; Obtener los francos del jugador
+    ?jugador_dinero <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre)(recurso FRANCOS) (cantidad ?cantidad_francos))
+    =>
+    (modify-instance ?jugador_dinero (cantidad =(?cantidad_francos ?cantidad_deuda)))
+)
 ; 12-. Pagar comida final ronda (se pueden endeudar)
 ; 12A-. El jugador tiene suficientes recursos para pagar la comida
+(defrule PAGAR_COMIDA_CON_RECURSOS
+    ; hecho semáforo para pagar comida
+    (PAGAR_COMIDA (nombre_jugador ?nombre)(ronda ?ronda))
+     ([ronda1] of RONDA (nombre_ronda RONDA_1)(coste_comida 4)(hay_cosecha TRUE))
+    ?ronda <- (object (is-a RONDA) (nombre_ronda ?ronda) (coste_comida ?coste_ronda) (hay_cosecha ?))
+    ?jugador_pescado <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso PESCADO) (cantidad ?cantidad_pescado))
+    ?jugador_pescado <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso PESCADO_AHUMADO) (cantidad ?cantidad_pescado_ahumado))
+    ?jugador_pescado <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso PAN) (cantidad ?cantidad_pan))
+    ?jugador_pescado <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso CARNE) (cantidad ?cantidad_carne))
+    ?jugador_pescado <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso FRANCOS) (cantidad ?cantidad_francos))
+    ; se puede hacer un sumatorio de una serie de productos? canditad_recurso*uds_proporciona
+    test(> =(+ ?cantidad_pescado ) ?coste_ronda)
+ =>
+ 
+ 
+ )
+
+ (defrule PAGAR_COMIDA_CON_RECURSOS
+    ; hecho semáforo para pagar comida
+    (PAGAR_COMIDA (nombre_jugador ?nombre))
+    ; recursos de comida
+    ?jugador_recurso <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre)(recurso ?recurso)(cantidad ?cantidad))
+    ; probar que sea comida o dinero
+    (test (eq ?recurso PESCADO) or (eq ?recurso PESCADO_AHUMADO) or (eq ?recurso PAN) or (eq ?recurso CARNE) or (eq ?recurso FRANCOS))
+ )
 ; 12B-. El jugador se tiene que endeudar (para pagar parte)
 ; 12C-. El jugador se tiene que endeudar (para pagar todo)
+
 
 
 
@@ -579,3 +618,6 @@
 )
 
 
+
+Creditos:
+prestan 4, devolver 5, si lo devuelves al final de la partida 7 ptos. 

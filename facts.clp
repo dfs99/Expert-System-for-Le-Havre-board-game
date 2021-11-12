@@ -79,12 +79,12 @@
     ([coque] of RECURSO (nombre COQUE))
     ([cuero] of RECURSO (nombre CUERO))
     ; ====== MAZOS ======
-    ([mazo1] of MAZO (id_mazo 1))
-    ([mazo2] of MAZO (id_mazo 2))
-    ([mazo3] of MAZO (id_mazo 3))
-    ([mazo_barcos_madera] of MAZO (id_mazo_4))
-    ([mazo_barcos_hierro] of MAZO (id_mazo_5))
-    ([mazo_barcos_acero] of MAZO (id_mazo_6))
+    ;   ([mazo1] of MAZO (id_mazo 1))
+    ;   ([mazo2] of MAZO (id_mazo 2))
+    ;   ([mazo3] of MAZO (id_mazo 3))
+    ;   ([mazo_barcos_madera] of MAZO (id_mazo_4))
+    ;   ([mazo_barcos_hierro] of MAZO (id_mazo_5))
+    ;   ([mazo_barcos_acero] of MAZO (id_mazo_6))
     ; ====== RONDA ======
     ([ronda1] of RONDA (nombre_ronda RONDA_1)(coste_comida 4)(hay_cosecha TRUE))
     ([ronda2] of RONDA (nombre_ronda RONDA_2)(coste_comida 7)(hay_cosecha TRUE))
