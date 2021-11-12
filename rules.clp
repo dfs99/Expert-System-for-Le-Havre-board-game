@@ -27,7 +27,8 @@
 ;
 ;   1-. Tomar elemento de la oferta (solo eso).
 
-    
+
+; OK
 (defrule TOMAR_RECURSO_OFERTA
     ; ========================================================
     ; Se accede a la cantidad de recursos del jugador.
@@ -38,7 +39,7 @@
     ; Obtener el turno del jugador
     ?turno <- (turno ?nombre_jugador)
     ; Obtiene los datos del recurso del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_recurso))
     ; Obtiene el recurso de la oferta que se va a tomar
     ?recurso_oferta <- (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
     ; Comprueba que el recurso de la oferta se pueda obtener
@@ -52,6 +53,7 @@
     (modify-instance ?recurso_jugador (cantidad =(+ ?cantidad_recurso ?cantidad_oferta)))
 )
 
+; las de comprar edificio OK
 ;   2-. Comprar edificio
 ;   Lo único que cambia de estas dos reglas es la pertenencia de la carta. 
 ; NO SE HA IMPLEMENTADO EL INCREMENTO DE BONUS AUN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -70,7 +72,7 @@
     ; Obtiene el coste de comprar el edificio
     (object (is-a CARTA) (nombre ?nombre_edificio) (valor ?valor_edificio))
     ; Obtiene el dinero del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
     ; El jugador tiene suficiente dinero
     (test (>= ?cantidad_recurso ?valor_edificio))
     =>
@@ -79,7 +81,7 @@
     ; Quitar el edificio al ayuntamiento
     (retract ?ayunto)
     ; Asignar el edificio al jugador
-    (make-instance (JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio)))
+    (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio))
     ; Eliminar el deseo de comprar el edificio
     (retract ?deseo)
 )
@@ -93,11 +95,11 @@
     ; Obtener el edificio del deseo
     ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
     ; El edificio es del mazo
-    ?carta_en_mazo <- (of CARTA_PERTENECE_A_MAZO (id_mazo ?) (nombre_carta ?nombre_edificio) (posicion 1))
+    ?carta_en_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_edificio) (posicion_en_mazo 1))
     ; Obtiene el coste de comprar el edificio
     (object (is-a CARTA) (nombre ?nombre_edificio) (valor ?valor_edificio))
     ; Obtiene el dinero del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
     ; El jugador tiene suficiente dinero
     (test (>= ?cantidad_recurso ?valor_edificio))
     =>
@@ -106,11 +108,11 @@
     ; Quitar la carta del mazo y mover todas las cartas 1 posición
     (unmake-instance ?carta_en_mazo)
     ; Asignar el edificio al jugador
-    (make-instance (JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio)))
+    (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio))
     ; Eliminar el deseo de comprar el edificio
     (retract ?deseo)
     ; Generar hecho semáforo para actualizar el orden de las cartas del mazo
-    (actualizar_mazo ?id_mazo)
+    (assert (actualizar_mazo ?id_mazo))
 )
 
 (defrule COMPRAR_EDIFICIO_BANCO_DEL_AYUNTO
@@ -126,7 +128,7 @@
     ; Obtiene el coste de comprar el banco.
     (object (is-a CARTA_BANCO) (nombre ?nombre_edificio) (coste ?valor_edificio) (valor ?))
     ; Obtiene el dinero del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
     ; El jugador tiene suficiente dinero
     (test (>= ?cantidad_recurso ?valor_edificio))
     =>
@@ -135,7 +137,7 @@
     ; Quitar el edificio al ayuntamiento
     (retract ?ayunto)
     ; Asignar el edificio al jugador
-    (make-instance (JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio)))
+    (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio))
     ; Eliminar el deseo de comprar el edificio
     (retract ?deseo)
 )
@@ -149,11 +151,11 @@
     ; Obtener el edificio del deseo
     ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
     ; El edificio es del mazo
-    ?carta_en_mazo <- (of CARTA_PERTENECE_A_MAZO (id_mazo ?) (nombre_carta ?nombre_edificio) (posicion 1))
+    ?carta_en_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_edificio) (posicion_en_mazo 1))
     ; Obtiene el coste de comprar el edificio
     (object (is-a CARTA_BANCO) (nombre ?nombre_edificio) (coste ?valor_edificio) (valor ?))
     ; Obtiene el dinero del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
     ; El jugador tiene suficiente dinero
     (test (>= ?cantidad_recurso ?valor_edificio))
     =>
@@ -162,13 +164,14 @@
     ; Quitar la carta del mazo y mover todas las cartas 1 posición
     (unmake-instance ?carta_en_mazo)
     ; Asignar el edificio al jugador
-    (make-instance (JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio)))
+    (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio))
     ; Eliminar el deseo de comprar el edificio
     (retract ?deseo)
     ; Generar hecho semáforo para actualizar el orden de las cartas del mazo
-    (actualizar_mazo ?id_mazo)
+    (assert (actualizar_mazo ?id_mazo))
 )
 
+; OK
 ;   3-. Vender Carta (otorga mitad de valor) [tanto edificio como barco, todos igual.]
 (defrule VENDER_CARTA
     ; No existe precondición de ronda! 
@@ -178,13 +181,15 @@
     ?turno <- (turno ?nombre_jugador)
     ; El jugador tiene la carta. 
     ?edificio_jugador <- (object (is-a JUGADOR_TIENE_CARTA) (nombre_jugador ?nombre_jugador)(nombre_carta ?nombre_carta))
-    ; referencia de la carta para obtener su valor. [DUDA!!!!!: ESTO FUNCIONARÁ CON BARCOS!!!]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    ; referencia de la carta para obtener su valor. 
     ?carta <- (object (is-a CARTA) (nombre ?nombre_carta) (valor ?valor_carta))
     ; referencia del recurso del jugador.
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+    ; obtener el beneficio de la venta de la carta.
+    (bind ?beneficio_venta =(/ ?valor_carta 2))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(+ =(/ ?valor_carta 2) ?cantidad_recurso) )
+    (modify-instance ?recurso_jugador (cantidad =(+ ?cantidad_recurso ?beneficio_venta)))
     ; Asignar edificio al ayuntamiento
     (assert (EDIFICIO_AYUNTAMIENTO (nombre_edificio ?nombre_edificio)))
     ; Quitarle el edificio al jugador
@@ -193,6 +198,7 @@
     (retract ?deseo)
 )
 
+; OK
 ;   3-. Entrar Edificio
 ; que pasa si no tiene coste de entrada? => otra regla?
 
@@ -211,11 +217,11 @@
     ; Tiene coste de entrada.
     (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?tipo_recurso) (cantidad ?coste_entrada))
     ; comprobar que tenga recursos suficientes para entrar.
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso ?nombre_recurso) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?nombre_recurso) (cantidad ?cantidad_recurso))
     (test (>= ?cantidad_recurso ?coste_entrada))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?coste_entrada) )
+    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?coste_entrada) ))
     ; indicar que el jugador está en el edificio.
     (assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
     ; quitar el deseo.
@@ -256,11 +262,11 @@
     ; Tiene coste de entrada.
     (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?tipo_recurso) (cantidad ?coste_entrada))
     ; comprobar que tenga recursos suficientes para entrar.
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso ?nombre_recurso) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?nombre_recurso) (cantidad ?cantidad_recurso))
     (test (>= ?cantidad_recurso ?coste_entrada))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?coste_entrada) )
+    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?coste_entrada)))
     ; indicar que el jugador está en el edificio.
     (assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
     ; quitar el deseo.
@@ -285,6 +291,8 @@
     (retract ?deseo)
 )
 
+
+
 ;   3bis-. Utilizar Edificio 
 ;   => contruir
 ;      => Edificio desde un edificio constructora.
@@ -297,6 +305,15 @@
 ;
 ;
 
+; NO COMPILADO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+;              |  |
+;           ___|  |___
+;           \        /
+;            \      /
+;             \    /    
+;              \  /
+;               \/
+;
 (defrule UTILIZAR_EDIFICIO_CONSTRUCTOR
     ;TODO: FALTA MODELAR EL COSTE DE CONSTRUCCIÓN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     ; Es el turno del jugador
@@ -366,7 +383,7 @@
     ; Obtiene el valor del barco
     ?barco <- (object (is-a BARCO)(coste ?coste_barco)(valor ?valor_barco)(uds_comida_genera ?)(capacidad_envio ?))
     ; Obtiene el dinero del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
 
     =>
     ; Elimina el barco del jugador
@@ -494,7 +511,7 @@
     ; obtiene el jugador
     ?jugador <- (object(is-a JUGADOR)(nombre_jugador ?nombre)(deudas ?deudas))
     ; obtiene los recursos del jugador
-    ?jugador_recursos <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre)(recurso FRANCOS)(cantidad ?cantidad_francos))
+    ?jugador_recursos <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre) (recurso FRANCOS)(cantidad ?cantidad_francos))
     ; obtiene la posición del jugador
     ?jugador_loseta <- (object (is-a JUGADOR_ESTA_EN_LOSETA)(posicion ?pos)(nombre_jugador ?nombre))
     ; la loseta tiene pago de intereses

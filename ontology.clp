@@ -19,7 +19,7 @@
 ;             +-----------------------------+--------------+-------------------------+
 ;
 ;
-
+;   COMPILANDO!
 ; 
 ; +==============================================================================================+
 ; |                                                                                              |
@@ -34,8 +34,8 @@
     (is-a USER)
     (role concrete)
     (slot nombre (type SYMBOL)
-        (allowed-values FRANCO, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
-            PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
+        (allowed-values FRANCO MADERA PESCADO ARCILLA HIERRO GRANO GANADO CARBON PIEL
+            PESCADO_AHUMADO CARBON_VEGETAL LADRILLOS ACERO PAN CARNE COQUE CUERO)
         (access initialize-only) (create-accessor read))
 )
 
@@ -43,14 +43,15 @@
     (is-a USER)
     (role concrete)
     (slot nombre (type SYMBOL)
-        (allowed-values PESCADOR, MARTILLO) (access initialize-only) (create-accessor read))
+        (allowed-values PESCADOR MARTILLO) (access initialize-only) (create-accessor read))
 )
 
+; OK, cuidado, los access y create-accesor solo en clases!
+; default none implica que hay q rellenar el campo obligatoriamente. 
 (deftemplate OFERTA_RECURSO
     (slot recurso (type SYMBOL)
-        (allowed-values FRANCO, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO)
-        (access initialize-only) (create-accessor read))
-    (slot cantidad (type INTEGER) (access read-write) (create-accessor read-write))
+        (allowed-values FRANCO MADERA PESCADO ARCILLA HIERRO GRANO GANADO) (default ?NONE))
+    (slot cantidad (type INTEGER))
 )
 
 ; Representar la información de que en la partida el edificio con nombre X (el nombre será 
@@ -61,12 +62,12 @@
 ; falta que sea representado a través de un concepto pues no tiene atributos significativos, por esa razón
 ; se ha pensado en emplear un deftemplate.
 (deftemplate EDIFICIO_AYUNTAMIENTO
-    (slot nombre_edificio (type STRING) (access initialize-only) (create-accessor read))
+    (slot nombre_edificio (type STRING) (default ?NONE))
 )
 
 (deftemplate JUGADOR_ESTA_EDIFICIO
-    (slot nombre_edificio (type STRING) (access initialize-only) (create-accessor read))
-    (slot nombre_jugador (type STRING) (access initialize-only) (create-accessor read))
+    (slot nombre_edificio (type STRING) (default ?NONE))
+    (slot nombre_jugador (type STRING) (default ?NONE))
 )
 
 ; representar la información de q el barco ahora queda disponible y se podrá adquirir.
@@ -75,7 +76,7 @@
 ; adquirir el barco.
 
 (deftemplate BARCO_DISPONIBLE
-    (slot nombre_barco (type STRING) (access initialize-only) (create-accessor read))    
+    (slot nombre_barco (type STRING) (default ?NONE))    
 )
 
 ; Validada sintácticamente en CLIPS.
@@ -83,7 +84,7 @@
     (is-a USER)
     (role concrete)
     (slot nombre_ronda (type SYMBOL) 
-        (allowed-values RONDA_1, RONDA_2, RONDA_3, RONDA_4, RONDA_5, RONDA_6, RONDA_7, RONDA_8, RONDA_EXTRA_FINAL)
+        (allowed-values RONDA_1 RONDA_2 RONDA_3 RONDA_4 RONDA_5 RONDA_6 RONDA_7 RONDA_8 RONDA_EXTRA_FINAL)
         (access initialize-only) (create-accessor read))
     (slot coste_comida (type INTEGER) (access initialize-only) (create-accessor read))
     (slot hay_cosecha (type SYMBOL) (allowed-values TRUE, FALSE) (access initialize-only) (create-accessor read))
@@ -131,11 +132,11 @@
     (role concrete)
     (slot posicion (type INTEGER) (access initialize-only) (create-accessor read))
     (slot visibilidad (type SYMBOL)
-        (allowed-values TRUE, FALSE)
+        (allowed-values TRUE FALSE)
         (default FALSE)
         (access read-write) (create-accessor read-write))
     (slot intereses (type SYMBOL)
-        (allowed-values TRUE, FALSE)
+        (allowed-values TRUE FALSE)
         (default FALSE)
         (access initialize-only) (create-accessor read))
 )
@@ -154,8 +155,8 @@
     (is-a USER)
     (slot nombre_jugador (type STRING))
     (slot recurso (type SYMBOL)
-        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
-            PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
+        (allowed-values FRANCOS MADERA PESCADO ARCILLA HIERRO GRANO GANADO CARBON PIEL
+            PESCADO_AHUMADO CARBON_VEGETAL LADRILLOS ACERO PAN CARNE COQUE CUERO)
         (access initialize-only) (create-accessor read))
     (slot cantidad (type INTEGER) (access read-write) (create-accessor read-write))
 )
@@ -196,7 +197,7 @@
 (defclass CARTA_PERTENECE_A_MAZO
     (is-a USER)
     (role concrete)
-    (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
+    (slot id_mazo (type INTEGER) (access initialize-only) (create-accessor read))
     (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
     (slot posicion_en_mazo (type INTEGER)(access read-write) (create-accessor read-write))
 
@@ -215,7 +216,7 @@
 (defclass RONDA_ASIGNA_EDIFICIO
     (is-a USER)
     (slot nombre_ronda (type SYMBOL))
-    (slot id_mazo (type INTEGER) (access initialize-read) (create-accessor read))
+    (slot id_mazo (type INTEGER) (access initialize-only) (create-accessor read))
 )
 
 ; 
@@ -233,7 +234,7 @@
     (is-a USER)
     (slot nombre_carta (type STRING))
     (slot tipo (type SYMBOL)
-        (allowed-values COMIDA, DINERO)
+        (allowed-values COMIDA DINERO)
         (access initialize-only) (create-accessor read))
     (slot cantidad (type INTEGER) (access initialize-only) (create-accessor read))
 )
@@ -242,8 +243,8 @@
     (is-a USER)
     (slot nombre_carta (type STRING))
     (slot recurso (type SYMBOL)
-        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
-            PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
+        (allowed-values FRANCOS MADERA PESCADO ARCILLA HIERRO GRANO GANADO CARBON PIEL
+            PESCADO_AHUMADO CARBON_VEGETAL LADRILLOS ACERO PAN CARNE COQUE CUERO)
         (access initialize-only) (create-accessor read))
     (slot cantidad_maxima (type INTEGER)(access initialize-only)(create-accessor read))
     ; Se podría implementar el máx, pero de momento relajamos esta precondicion. 
@@ -253,8 +254,8 @@
     (is-a USER)
     (slot nombre_carta (type STRING))
     (slot recurso (type SYMBOL)
-        (allowed-values FRANCOS, MADERA, PESCADO, ARCILLA, HIERRO, GRANO, GANADO, CARBON, PIEL,
-            PESCADO_AHUMADO, CARBON_VEGETAL, LADRILLOS, ACERO, PAN, CARNE, COQUE, CUERO)
+        (allowed-values FRANCOS MADERA PESCADO ARCILLA HIERRO GRANO GANADO CARBON PIEL
+            PESCADO_AHUMADO CARBON_VEGETAL LADRILLOS ACERO PAN CARNE COQUE CUERO)
         (access initialize-only) (create-accessor read))
     (slot cantidad_min_generada_por_unidad (type FLOAT) (access initialize-only) (create-accessor read))
 )
@@ -267,6 +268,6 @@
     ; Definimos coste unitario como aquel coste energético que precisa una unidad de recurso para producir otra.
     ; Por ejemplo, en el ahumador, independientemente del nº de pescados, siempre te costará 1. No es el caso de 
     ; la fabrica de ladrillos, donde cada arcilla necesitará 0.5
-    (slot coste_unitario (type SYMBOL) (allowed-values TRUE, FALSE) (access initialize-only) (create-accessor read))
+    (slot coste_unitario (type SYMBOL) (allowed-values TRUE FALSE) (access initialize-only) (create-accessor read))
     (slot cantidad (type FLOAT) (access initialize-only) (create-accessor read))
 )

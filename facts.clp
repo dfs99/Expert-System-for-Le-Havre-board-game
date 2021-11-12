@@ -19,7 +19,7 @@
 ;             +-----------------------------+--------------+-------------------------+
 ;
 
-
+; compila OK
 
 ; faltan las cartas, por problemas imprevistos de tiempo nos ha sido imposible
 ; reconceptualizar las cartas y no las hemos instanciado.
@@ -27,19 +27,19 @@
 
     (ronda_actual RONDA_1)
     ; hechos semáforo para cambiar de jugador
-    (siguiente_jugador DIEGO, RICARDO)
-    (siguiente_jugador RICARDO, DIEGO)
+    (siguiente_jugador DIEGO RICARDO)
+    (siguiente_jugador RICARDO DIEGO)
     ; turno
     (turno DIEGO)
     ; hechos semaforo para cambiar de rondas.
-    (siguiente_ronda RONDA_1, RONDA_2)
-    (siguiente_ronda RONDA_2, RONDA_3)
-    (siguiente_ronda RONDA_3, RONDA_4)
-    (siguiente_ronda RONDA_4, RONDA_5)
-    (siguiente_ronda RONDA_5, RONDA_6)
-    (siguiente_ronda RONDA_6, RONDA_7)
-    (siguiente_ronda RONDA_7, RONDA_8)
-    (siguiente_ronda RONDA_8, RONDA_EXTRA_FINAL)
+    (siguiente_ronda RONDA_1 RONDA_2)
+    (siguiente_ronda RONDA_2 RONDA_3)
+    (siguiente_ronda RONDA_3 RONDA_4)
+    (siguiente_ronda RONDA_4 RONDA_5)
+    (siguiente_ronda RONDA_5 RONDA_6)
+    (siguiente_ronda RONDA_6 RONDA_7)
+    (siguiente_ronda RONDA_7 RONDA_8)
+    (siguiente_ronda RONDA_8 RONDA_EXTRA_FINAL)
     ; oferta recursos inicial partida corta 2 jugadores
     (OFERTA_RECURSO (recurso FRANCO) (cantidad 3))
     (OFERTA_RECURSO (recurso PESCADO) (cantidad 3))
@@ -53,7 +53,8 @@
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "CONSTRUCTORA2"))
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "CONSTRUCTORA3"))
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "MERCADO"))    
-    
+
+)
 
 ; INSTANCIAS
 (definstances situacion_inicial
