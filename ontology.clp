@@ -95,7 +95,10 @@
     (is-a USER)
     (role concrete)
     (slot nombre (type STRING) (access initialize-only) (create-accessor read))
-    (slot deudas (type INTEGER)(default 0)(access initialize-only) (create-accessor read))
+    (slot deudas (type INTEGER)(default 0)(access read-write) (create-accessor read-write))
+    (slot num_barcos (type INTEGER) (default 0) (access read-write) (create-accessor read-write))
+    (slot capacidad_envio (type INTEGER) (default 0) (access read-write) (create-accessor read-write))
+    (slot demanda_comida_cubierta (type INTEGER) (default 0) (access read-write) (create-accessor read-write))
 )
 
 
@@ -105,12 +108,14 @@
     (is-a USER)
     (role concrete)
     (slot nombre (type STRING) (access initialize-only) (create-accessor read))
+    (slot tipo (type SYMBOL)(allowed-values BASICO INDUSTRIAL COMERCIAL BARCO NINGUNO))
     (slot valor (type INTEGER) (access initialize-only) (create-accessor read))
 )
 
 (defclass CARTA_BANCO
     (is-a CARTA)
     (role concrete)
+    (slot tipo (default COMERCIAL))
     (slot coste (type INTEGER) (access initialize-only) (create-accessor read))
 )
 
@@ -121,6 +126,7 @@
 (defclass BARCO
     (is-a CARTA)
     (role concrete)
+    (slot tipo (default BARCO))
     (slot coste (type INTEGER) (access initialize-only) (create-accessor read))
     (slot uds_comida_genera (type INTEGER) (access initialize-only) (create-accessor read))
     (slot capacidad_envio (type INTEGER) (access initialize-only) (create-accessor read))
@@ -183,10 +189,20 @@
 
 ;===================== CARTAS =================
 (defclass CARTA_TIENE_BONUS
+;otorga bonus al jugador cuando la posee
     (is-a USER)
     (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
     (slot bonus (type SYMBOL) (allowed-values PESCADOR MARTILLO) (access initialize-only) (create-accessor read))
 )
+
+(defclass CARTA_OUTPUT_BONUS
+;otorga una unidad extra en el output
+    (is-a USER)
+    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+    (slot bonus (type SYMBOL) (allowed-values PESCADOR MARTILLO) (access initialize-only) (create-accessor read))
+    (slot cantidad_maxima_permitida (type INTEGER) (access initialize-only) (create-accessor read))
+)
+
 
 (defclass JUGADOR_TIENE_CARTA
     (is-a USER)
@@ -224,11 +240,11 @@
 ; TODO: preguntar a Javier si es mejor tener un hecho compuesto (deftemplate) en lugar
 ; de una relación con clase. La duda es que no sabemos si podemos tenerlo en deftemplate
 ; porque al final está representando una relación entre Jugador y Carta. 
-(defclass JUGADOR_DENTRO_EDIFICIO
-    (is-a USER)
-    (slot nombre_jugador (type STRING))
-    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
-)
+;(defclass JUGADOR_DENTRO_EDIFICIO
+;    (is-a USER)
+;    (slot nombre_jugador (type STRING))
+;    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+;)
 
 (defclass COSTE_ENTRADA_CARTA
     (is-a USER)
@@ -270,4 +286,15 @@
     ; la fabrica de ladrillos, donde cada arcilla necesitará 0.5
     (slot coste_unitario (type SYMBOL) (allowed-values TRUE FALSE) (access initialize-only) (create-accessor read))
     (slot cantidad (type FLOAT) (access initialize-only) (create-accessor read))
+)
+
+; Preguntar Profesor !!!!!!!!!!!!!! si tenemos q hacerlo asi o no por consistencia con otro planteamiento.
+(defclass COSTE_CONSTRUCCION_CARTA
+    (is-a USER)
+    (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read))
+    (slot cantidad_madera (type INTEGER) (access initialize-only) (create-accessor read) (default 0))
+    (slot cantidad_arcilla (type INTEGER) (access initialize-only) (create-accessor read) (default 0))
+    (slot cantidad_ladrillo (type INTEGER) (access initialize-only) (create-accessor read) (default 0))
+    (slot cantidad_hierro (type INTEGER) (access initialize-only) (create-accessor read) (default 0))
+    (slot cantidad_acero (type INTEGER) (access initialize-only) (create-accessor read) (default 0))   
 )
