@@ -54,6 +54,8 @@
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "CONSTRUCTORA3"))
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "MERCADO"))    
 
+    (edificio_usado "" DIEGO)
+    (edificio_usado "" RICARDO)
 )
 
 ; INSTANCIAS
@@ -61,6 +63,7 @@
     ; ====== JUGADORES ========
     ([Diego] of JUGADOR (nombre DIEGO))
     ([Ricardo] of JUGADOR (nombre RICARDO))
+    ; ([Ayuntamiento] of JUGADOR (nombre TABLERO))
     ; ====== RECURSOS =========
     ([franco] of RECURSO (nombre FRANCO))
     ([madera] of RECURSO (nombre MADERA))
@@ -207,6 +210,9 @@
     (of COSTE_ENERGIA (nombre_carta "FABRICA DE LADRILLOS") (coste_unitario TRUE) (cantidad 0.5))
     ; cuesta fabricarlo 2 madera 1 arcilla 1 hierro
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "FABRICA DE LADRILLOS") (cantidad_madera 2)(cantidad_arcilla 1)(cantidad_hierro 1))
+    ; coste energia 0.5 energia por arcilla transformado.
+    (of COSTE_ENERGIA (nombre_carta "FABRICA DE LADRILLOS") (coste_unitario TRUE) (cantidad 0.5))
+
 
     (of CARTA (nombre "COQUERIA") (valor 18) (tipo INDUSTRIAL))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "COQUERIA") (posicion 4))
@@ -242,6 +248,8 @@
     (of COSTE_ENERGIA (nombre_carta "PANADERIA") (coste_unitario TRUE) (cantidad 0.5))
     ; cuesta fabricarlo 2 arcilla
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "PANADERIA")(cantidad_arcilla 2))
+    ; coste energia 0.5 energia por grano transformado.
+    (of COSTE_ENERGIA (nombre_carta "PANADERIA") (coste_unitario TRUE) (cantidad 0.5))
 
     (of CARTA (nombre "MONTICULO DE ARCILLA") (valor 2) (tipo NINGUNO))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "MONTICULO DE ARCILLA") (posicion 3))
@@ -267,6 +275,8 @@
     (of COSTE_ENERGIA (nombre_carta "SIDERURGIA") (coste_unitario FALSE) (cantidad 5))
     ; cuesta fabricarlo: 4 LADRILLOS Y 2 HIERRO
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "SIDERURGIA")(cantidad_ladrillos 4)(cantidad_hierro 2))
+    ; coste energía 5 uds por acero generado.
+    (of COSTE_ENERGIA (nombre_carta "SIDERURGIA") (coste_unitario TRUE) (cantidad 5))
 
     ; MAZO 3
     (of CARTA (nombre "AHUMADOR") (valor 6) (tipo BASICO))
@@ -280,6 +290,8 @@
     (of COSTE_ENERGIA (nombre_carta "AHUMADOR") (coste_unitario FALSE) (cantidad 0.5))
     ; cuesta fabricarlo: 2 madera y 1 arcilla
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "AHUMADOR")(cantidad_madera 2)(cantidad_arcilla 1))
+    ; coste energia, 1 ud por 1 - 6 pescados
+    (of COSTE_ENERGIA (nombre_carta "AHUMADOR") (coste_unitario FALSE) (cantidad 1))
 
     (of CARTA (nombre "MATADERO") (valor 8) (tipo BASICO))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "MATADERO") (posicion 2))
@@ -298,6 +310,9 @@
     (of COSTE_ENERGIA (nombre_carta "COMPAÑIA NAVIERA") (coste_unitario TRUE) (cantidad 3))
     ; cuesta fabricarlo: 2 madera y 3 ladrillos
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "COMPAÑIA NAVIERA")(cantidad_madera 2)(cantidad_ladrillos 3))
+    ; coste energia: 3 uds por barco
+    (of COSTE_ENERGIA (nombre_carta "COMPAÑIA NAVIERA") (coste_unitario TRUE) (cantidad 3))
+
 
     (of CARTA (nombre "PELETERIA") (valor 12) (tipo BASICO))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion 4))
@@ -384,7 +399,7 @@
     
 
 
-    
+    ; 
 
     
 

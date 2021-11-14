@@ -287,6 +287,18 @@
     (slot coste_unitario (type SYMBOL) (allowed-values TRUE FALSE) (access initialize-only) (create-accessor read))
     (slot cantidad (type FLOAT) (access initialize-only) (create-accessor read))
 )
+; Panaderia => 0.5 energia por grano                x
+; Ahumador => 1 energia en total  => por 6 peces    x
+; compañia naviera => 3 por barco  
+; siderurgia => 5 energia por acero (1, 1) : otro caso  x
+; fabrica ladrillos => 0.5 energía por arcilla      x
+
+; Energia proporcionada por cada recurso
+; madera => 1
+; carbon vegetal => 3
+; carbon => 3
+; coque => 10
+
 
 ; Preguntar Profesor !!!!!!!!!!!!!! si tenemos q hacerlo asi o no por consistencia con otro planteamiento.
 (defclass COSTE_CONSTRUCCION_CARTA

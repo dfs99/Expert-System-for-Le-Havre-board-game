@@ -226,6 +226,81 @@
 ;   3-. Entrar Edificio
 ; que pasa si no tiene coste de entrada? => otra regla?
 
+
+(defrule ENTRAR_EDIFICIO_GRATIS_RONDAS
+
+    ; Se puede entrar de uno en uno en el resto de las rondas.
+    (ronda_actual ?nombre_ronda)
+    (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
+    ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
+    ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
+    ; Es el turno del jugador
+    ?turno <- (turno ?nombre_jugador)
+    ; obtener nombre de la carta. 
+    (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
+    ; no exista un jugador en ese edificio.
+
+    ?pos_jugador <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?otro_jugador))
+    (test (neq ?nombre_jugador ?otro_jugador))
+    (test (neq ?edificio_actual ?nombre_edificio))
+
+    ; No tiene coste de entrada y pertence a otro jugador o pertenece al jugador y entra gratis. 
+    (
+        (   
+            (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?) (cantidad ?))) 
+                and 
+            (object (is-a JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador2) (nombre_carta ?nombre_carta)))
+        ) 
+        or 
+        (object (is-a JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_carta)))
+    )
+    
+    =>
+    ; indicar que el jugador está en el edificio.
+    (modify ?pos_jugador (nombre_edificio ?nombre_carta))
+    ; quitar el deseo.
+    (retract ?deseo)
+    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> sin coste de entrada o porque le pertenece." crlf)
+)
+
+(defrule ENTRAR_EDIFICIO_GRATIS_RONDA_FINAL
+; Se puede entrar de uno en uno en el resto de las rondas.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
+    ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
+    ; Es el turno del jugador
+    ?turno <- (turno ?nombre_jugador)
+
+    ; comprobar que el jugador no se encuentre ya en el edificio. 
+    ?pos_jugador <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+    (test (neq ?edificio_actual ?nombre_carta))
+
+    ; obtener nombre de la carta. 
+    (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
+    
+    ; No tiene coste de entrada y pertence a otro jugador o pertenece al jugador y entra gratis. 
+    (
+        (   
+            (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?) (cantidad ?))) 
+                and 
+            (object (is-a JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador2) (nombre_carta ?nombre_carta)))
+        ) 
+        or 
+        (object (is-a JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_carta)))
+    )
+    
+    =>
+    ; indicar que el jugador está en el edificio.
+    (modify ?pos_jugador (nombre_edificio ?nombre_carta))
+
+    ; quitar el deseo.
+    (retract ?deseo)
+    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> sin coste de entrada en la ronda final." crlf)
+
+
+)
+
 (defrule ENTRAR_EDIFICIO_CON_COSTE_ENTRADA_RONDAS
     ; Se puede entrar de uno en uno en el resto de las rondas.
     (ronda_actual ?nombre_ronda)
@@ -237,7 +312,15 @@
     ; obtener nombre de la carta. 
     (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; no exista un jugador en ese edificio.
-    (not (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?)))
+    
+    ;(not (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?)))
+    
+    ?pos_jugador <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?otro_jugador))
+    (test (neq ?nombre_jugador ?otro_jugador))
+    (test (neq ?edificio_actual ?nombre_edificio))
+    
+    
     ; Tiene coste de entrada.
     (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?tipo_recurso) (cantidad ?coste_entrada))
     ; comprobar que tenga recursos suficientes para entrar.
@@ -247,42 +330,59 @@
     ; Modificar el dinero del jugador
     (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?coste_entrada) ))
     ; indicar que el jugador está en el edificio.
-    (assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
+    ;(assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
+
+    (modify ?pos_jugador (nombre_edificio ?nombre_carta))
+    
     ; quitar el deseo.
     (retract ?deseo)
     ; Print final
     (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> por <" ?coste_entrada "> " ?tipo_recurso "." crlf)
 )
 
-(defrule ENTRAR_EDIFICIO_SIN_COSTE_ENTRADA_RONDAS
+;(defrule ENTRAR_EDIFICIO_SIN_COSTE_ENTRADA_RONDAS
     ; Se puede entrar de uno en uno en el resto de las rondas.
-    (ronda_actual ?nombre_ronda)
-    (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
+;    (ronda_actual ?nombre_ronda)
+;    (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
     ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
-    ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
+;    ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
     ; Es el turno del jugador
-    ?turno <- (turno ?nombre_jugador)
+;    ?turno <- (turno ?nombre_jugador)
     ; obtener nombre de la carta. 
-    (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
+;    (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; no exista un jugador en ese edificio.
-    (not (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?)))
+    ;(not (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?)))
+
+;    ?pos_jugador <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+;    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?otro_jugador))
+;    (test (neq ?nombre_jugador ?otro_jugador))
+;    (test (neq ?edificio_actual ?nombre_edificio))
+
+
     ; No tiene coste de entrada.
-    (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?) (cantidad ?)))
-    =>
+;    (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?) (cantidad ?)))
+;    =>
     ; indicar que el jugador está en el edificio.
-    (assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
+    ; (assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
+    
+;    (modify ?pos_jugador (nombre_edificio ?nombre_carta))
+
     ; quitar el deseo.
-    (retract ?deseo)
-    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> sin coste de entrada." crlf)
-)
+;    (retract ?deseo)
+;    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> sin coste de entrada." crlf)
+;)
 
 (defrule ENTRAR_EDIFICIO_CON_COSTE_ENTRADA_RONDA_FINAL
     ; Se puede entrar de uno en uno en el resto de las rondas.
     (ronda_actual RONDA_EXTRA_FINAL)
     ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
-    ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
+    ?deseo <- (deseo_entrar_edificio ?nombre_carta ?tipo_recurso ?nombre_recurso)
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
+    ; comprobar que el jugador no se encuentre ya en el edificio. 
+    ?pos_jugador <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+    (test (neq ?edificio_actual ?nombre_carta))
+
     ; obtener nombre de la carta. 
     (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; Tiene coste de entrada.
@@ -294,30 +394,41 @@
     ; Modificar el dinero del jugador
     (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?coste_entrada)))
     ; indicar que el jugador está en el edificio.
-    (assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
+    ; (assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
+
+    (modify ?pos_jugador (nombre_edificio ?nombre_carta))
+
     ; quitar el deseo.
     (retract ?deseo)
     (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> por <" ?coste_entrada "> " ?tipo_recurso "." crlf)
 )
 
-(defrule ENTRAR_EDIFICIO_SIN_COSTE_ENTRADA_RONDA_FINAL
+;(defrule ENTRAR_EDIFICIO_SIN_COSTE_ENTRADA_RONDA_FINAL
     ; Se puede entrar de uno en uno en el resto de las rondas.
-    (ronda_actual RONDA_EXTRA_FINAL)
+;    (ronda_actual RONDA_EXTRA_FINAL)
     ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
-    ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
+;    ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
     ; Es el turno del jugador
-    ?turno <- (turno ?nombre_jugador)
+;    ?turno <- (turno ?nombre_jugador)
+
+    ; comprobar que el jugador no se encuentre ya en el edificio. 
+;    ?pos_jugador <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+;    (test (neq ?edificio_actual ?nombre_carta))
+
     ; obtener nombre de la carta. 
-    (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
+;    (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; NO tiene coste de entrada.
-    (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?) (cantidad ?)))
-    =>
+;    (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?) (cantidad ?)))
+;    =>
     ; indicar que el jugador está en el edificio.
-    (assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
+    ;(assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
+
+;    (modify ?pos_jugador (nombre_edificio ?nombre_carta))
+
     ; quitar el deseo.
-    (retract ?deseo)
-    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> sin coste de entrada en la ronda final." crlf)
-)
+;    (retract ?deseo)
+;    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> sin coste de entrada en la ronda final." crlf)
+;)
 
 
 
@@ -357,7 +468,15 @@
 (defrule EDIFICIO_GENERA_RECURSO_CASO1
     ;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
     ;      0               1              1        0        (pescaderia, arcilla, colliery [* máximo 1 ud con bonuses])
-    ?jugador_en_edificio <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+    ; el jugador no ha usado anteriormente el edificio
+    ;(not (edificio_usado ?nombre_edificio ?nombre_jugador))
+    ;(edificio_usado "" diego)
+    
+    ; el jugador no ha usado anteriormente el edificio
+    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+    (test (neq ?nombre_edificio ?ed))
+    
     (turno ?nombre_jugador)
     (not (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?) (cantidad_maxima ?)))
     (EDIFICIO_OUTPUT (nombre_carta ?nombre_edificio)(recurso ?recurso)(cantidad_min_generada_por_unidad ?cantidad_output))
@@ -374,6 +493,9 @@
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
     (printout t"El jugador: <" ?nombre_jugador "> ha generado en el edificio: <" ?nombre_edificio "> un total de <" =( + ?cantidad_output ?cantidad_proporciona_bonus) "> recursos de <" ?recurso ">. Los cuales <" ?cantidad_output "> son por entrar y <" ?cantidad_proporciona_bonus "> por los bonus que tiene." crlf)
+    ; flag para no permitir usar el mismo edificio dos veces.
+    (retract ?ha_usado_edificio)
+    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
 )
 
 
@@ -382,6 +504,11 @@
 ;      1               1              0        0        (Carbon vegetal, ironworks)
     ; el jugador está dentro del edificio
     (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio) (nombre_jugador ?nombre_jugador))
+
+    ; el jugador no ha usado anteriormente el edificio
+    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+    (test (neq ?nombre_edificio ?ed))
+
     ; turno del jugador
     (turno ?nombre_jugador)
     ; el edificio tiene 1 input como recurso.
@@ -404,56 +531,80 @@
     (modify-instance ?recurso_jugador_salida (cantidad =(+ ?cantidad_recurso_salida ?cantidad_transformada)))
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
+    ; flag para no permitir usar el mismo edificio dos veces.
+    (retract ?ha_usado_edificio)
+    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
     (printout t"El jugador: <" ?nombre_jugador "> ha transformado en el edificio: <" ?nombre_edificio "> <" ?cantidad_a_transformar "> recursos de <" ?recurso_entrada "> en <" ?cantidad_transformada "> recursos de <" ?recurso_salida ">." crlf)
 )
 
 (defrule EDIFICIO_GENERA_RECURSO_CASO3
 ;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
 ;      1               1              0        1        (steel meel 5 energia por cada output.)
+; ENERGIA VARIABLE...
+
     ; el jugador está dentro del edificio
-    ()
+    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio) (nombre_jugador ?nombre_jugador))
+    ; el jugador no ha usado anteriormente el edificio
+    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+    (test (neq ?nombre_edificio ?ed))
     ; es el turno del jugador
-
+    (turno ?nombre_jugador)
     ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
-    
+    ?deseo_generar <- (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
+    ?deseo_pago_energia <- (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ? ?cantidad_madera ? ?cantidad_carbon_vegetal ? ?cantidad_carbon ? ?cantidad_coque)
     ; obtiene el input del edificio 
-    
+    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?) (cantidad_maxima ?))
     ;obtiene el output del edificio
-
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida) (cantidad_min_generada_por_unidad ?cantidad_unitaria))
     ; obtiene el coste energético del edificio
-
+    (object (is-a COSTE_ENERGIA) (coste_unitario TRUE) (cantidad ?coste_energia))
     ; el edificio no tiene bonus
-
+    (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
     ; obtiene los recursos del jugador del mismo tipo que el input
-
+    ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
     ; obtiene los recursos del jugador del mismo tipo que el output
-
+    ?recurso_jugador_salida <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_salida) (cantidad ?cantidad_recurso_salida_jugador))
     ; comprueba que el jugador tiene suficiente input
-
-    ; calcula la cantidad a transformar
-
+    (test (> ?recurso_jugador_entrada ?recurso_entrada))
+    ; calcula la cantidad generada
+    (bind ?cantidad_transformada =(* ?cantidad_unitaria ?cantidad_a_transformar))
     ; calcula la cantidad de energía empleada
-
-    ; obtiene el deseo de con qué recursos  
-    
+    (bind ?cantidad_energia_empleada =(* ?cantidad_a_transformar ?coste_energia))
+    ; obtener los recursos de energia del jugador.
+    ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
+    ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
+    ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
+    ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
     ;comprueba que el jugador tiene suficiente energía
-
+    (test (> =(+ =(* ?cantidad_madera 1) =(* ?cantidad_carbon_vegetal 3) =(* ?cantidad_carbon 3) =(* ?cantidad_coque 10)) ?cantidad_energia_empleada))
     =>
     ; modifica los inputs del jugador
-
+    (modify-instance ?recurso_jugador_entrada (cantidad =(- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
     ; modifica los outputs del jugador
-
-    ; modifica el 
+    (modify-instance ?recurso_jugador_salida (cantidad =(+ ?cantidad_recurso_salida_jugador ?cantidad_transformada)))
+    ; modifica los recursos energéticos del jugador.
+    (modify-instance ?madera_jugador (cantidad =(- ?cantidad_madera_jugador ?cantidad_madera)))
+    (modify-instance ?carbon_vegetal_jugador (cantidad =(- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
+    (modify-instance ?carbon_jugador (cantidad =(- ?cantidad_cabon_jugador ?cantidad_carbon)))
+    (modify-instance ?coque_jugador (cantidad =(- ?cantidad_coque_jugador ?cantidad_coque)))
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
-    
+    ; eliminar deseos
+    (retract ?deseo_generar)
+    (retract ?deseo_pago_energia)
+    ; flag para no permitir usar el mismo edificio dos veces.
+    (retract ?ha_usado_edificio)
+    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
 )
 
 (defrule EDIFICIO_GENERA_RECURSO_CASO4
 ;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
 ;      1               2              0        0        (matadero, peleteria y coqueria)
     ; el jugador está dentro del edificio
-    ?jugador_en_edificio <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+    ; el jugador no ha usado anteriormente el edificio
+    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+    (test (neq ?nombre_edificio ?ed))
     ; es el turno del jugador
     (turno ?nombre_jugador)
     ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
@@ -467,7 +618,7 @@
     ; el edificio no tiene bonus
     (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
     ; el edificio no tiene coste energético
-    (not (object ))
+    (not (object (is-a COSTE_ENERGIA) (nombre_carta ?nombre_edificio) (coste_unitario ?) (cantidad ?) ))
     ; obtiene los recursos del jugador del mismo tipo que el input y output
     ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
     ?recurso_jugador_salida1 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida1) (cantidad ?cantidad_recurso_salida1_jugador))
@@ -486,22 +637,147 @@
     (modify-instance ?recurso_jugador_salida2 (cantidad =(+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
+    ; flag para no permitir usar el mismo edificio dos veces.
+    (retract ?ha_usado_edificio)
+    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
 )
 
-; edificio genera recurso con input 1 output
-;       el jugador está en el edificio
-;       obtener recursos del jugador
-;       obtener edificio input
-;       comprobar que el jugador tenga input
-;       obtener el deseo de input del jugador
-;       comprobar que la cantidad del deseo es menor que la cantidad máxima del edificio
-;       =>
-;       restar recursos de input al jugador
-;       
-;
-;
-;
-;
+(defrule EDIFICIO_GENERA_RECURSO_CASO5
+    ;   INPUTS          OUTPUT          BONUS   ENERGIA     edificios
+    ;      1               2              0        1        (ahumador (1 total), ladrillos (por ud), panaderia (por ud))
+    ; el jugador está dentro del edificio
+    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+    ; el jugador no ha usado anteriormente el edificio
+    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+    (test (neq ?nombre_edificio ?ed))
+    ; es el turno del jugador
+    (turno ?nombre_jugador)
+    ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
+    (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
+    
+    ?deseo_pago_energia <- (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ? ?cantidad_madera ? ?cantidad_carbon_vegetal ? ?cantidad_carbon ? ?cantidad_coque)
+    
+    ; obtiene el input del edificio 
+    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
+    ; obtiene el primer output del edificio
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida1) (cantidad_min_generada_por_unidad ?cantidad_unitaria1))
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida2) (cantidad_min_generada_por_unidad ?cantidad_unitaria2))
+    
+    ; obtiene el coste energético del edificio
+    (object (is-a COSTE_ENERGIA) (coste_unitario TRUE) (cantidad ?coste_energia))
+
+    ; el edificio no tiene bonus
+    (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
+    ; obtiene los recursos del jugador del mismo tipo que el input y output
+    ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
+    ?recurso_jugador_salida1 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida1) (cantidad ?cantidad_recurso_salida1_jugador))
+    ?recurso_jugador_salida2 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida2) (cantidad ?cantidad_recurso_salida2_jugador))
+    ; comprueba que el jugador tiene suficiente input
+    (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
+    ; calcula la cantidad a transformar
+    (bind ?cantidad_transformada_recurso_salida1 =(min =(* ?cantidad_maxima ?cantidad_unitaria1) =(* ?cantidad_a_transformar ?cantidad_unitaria1)))
+    (bind ?cantidad_transformada_recurso_salida2 =(min =(* ?cantidad_maxima ?cantidad_unitaria2) =(* ?cantidad_a_transformar ?cantidad_unitaria2)))
+
+    ; calcula la cantidad de energía empleada
+    (bind ?cantidad_energia_empleada =(* ?cantidad_a_transformar ?coste_energia))
+    ; obtener los recursos de energia del jugador.
+    ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
+    ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
+    ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
+    ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
+    ;comprueba que el jugador tiene suficiente energía
+    (test (> =(+ =(* ?cantidad_madera 1) =(* ?cantidad_carbon_vegetal 3) =(* ?cantidad_carbon 3) =(* ?cantidad_coque 10)) ?cantidad_energia_empleada))
+
+    =>
+    ; modifica el recurso input del jugador
+    (modify-instance ?recurso_jugador_entrada (cantidad =(- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+    ; modifica el primer output del jugador
+    (modify-instance ?recurso_jugador_salida1 (cantidad =(+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
+    ; modifica el segundo output del jugador
+    (modify-instance ?recurso_jugador_salida2 (cantidad =(+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
+
+    ; modifica los recursos energéticos del jugador.
+    (modify-instance ?madera_jugador (cantidad =(- ?cantidad_madera_jugador ?cantidad_madera)))
+    (modify-instance ?carbon_vegetal_jugador (cantidad =(- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
+    (modify-instance ?carbon_jugador (cantidad =(- ?cantidad_cabon_jugador ?cantidad_carbon)))
+    (modify-instance ?coque_jugador (cantidad =(- ?cantidad_coque_jugador ?cantidad_coque)))
+    ; Ha finalizado su actividad principal dentro de su turno.
+    (assert (fin_actividad_principal ?nombre_jugador))
+    ; eliminar deseos
+    (retract ?deseo_generar)
+    (retract ?deseo_pago_energia)
+    ; flag para no permitir usar el mismo edificio dos veces.
+    (retract ?ha_usado_edificio)
+    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+
+)
+(defrule EDIFICIO_GENERA_RECURSO_CASO5_BIS
+    ;   INPUTS          OUTPUT          BONUS   ENERGIA     edificios
+    ;      1               2              0        1        (ahumador (1 total), ladrillos (por ud), panaderia (por ud))
+    ; el jugador está dentro del edificio
+    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+    ; el jugador no ha usado anteriormente el edificio
+    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+    (test (neq ?nombre_edificio ?ed))
+    ; es el turno del jugador
+    (turno ?nombre_jugador)
+    ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
+    (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
+    
+    ?deseo_pago_energia <- (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ? ?cantidad_madera ? ?cantidad_carbon_vegetal ? ?cantidad_carbon ? ?cantidad_coque)
+    
+    ; obtiene el input del edificio 
+    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
+    ; obtiene el primer output del edificio
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida1) (cantidad_min_generada_por_unidad ?cantidad_unitaria1))
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida2) (cantidad_min_generada_por_unidad ?cantidad_unitaria2))
+    
+    ; obtiene el coste energético del edificio
+    (object (is-a COSTE_ENERGIA) (coste_unitario FALSE) (cantidad ?coste_energia))
+
+    ; el edificio no tiene bonus
+    (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
+    ; obtiene los recursos del jugador del mismo tipo que el input y output
+    ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
+    ?recurso_jugador_salida1 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida1) (cantidad ?cantidad_recurso_salida1_jugador))
+    ?recurso_jugador_salida2 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida2) (cantidad ?cantidad_recurso_salida2_jugador))
+    ; comprueba que el jugador tiene suficiente input
+    (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
+    ; calcula la cantidad a transformar
+    (bind ?cantidad_transformada_recurso_salida1 =(min =(* ?cantidad_maxima ?cantidad_unitaria1) =(* ?cantidad_a_transformar ?cantidad_unitaria1)))
+    (bind ?cantidad_transformada_recurso_salida2 =(min =(* ?cantidad_maxima ?cantidad_unitaria2) =(* ?cantidad_a_transformar ?cantidad_unitaria2)))
+
+    ; obtener los recursos de energia del jugador.
+    ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
+    ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
+    ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
+    ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
+    ;comprueba que el jugador tiene suficiente energía
+    (test (> =(+ =(* ?cantidad_madera 1) =(* ?cantidad_carbon_vegetal 3) =(* ?cantidad_carbon 3) =(* ?cantidad_coque 10)) ?coste_energia))
+
+    =>
+    ; modifica el recurso input del jugador
+    (modify-instance ?recurso_jugador_entrada (cantidad =(- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+    ; modifica el primer output del jugador
+    (modify-instance ?recurso_jugador_salida1 (cantidad =(+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
+    ; modifica el segundo output del jugador
+    (modify-instance ?recurso_jugador_salida2 (cantidad =(+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
+
+    ; modifica los recursos energéticos del jugador.
+    (modify-instance ?madera_jugador (cantidad =(- ?cantidad_madera_jugador ?cantidad_madera)))
+    (modify-instance ?carbon_vegetal_jugador (cantidad =(- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
+    (modify-instance ?carbon_jugador (cantidad =(- ?cantidad_cabon_jugador ?cantidad_carbon)))
+    (modify-instance ?coque_jugador (cantidad =(- ?cantidad_coque_jugador ?cantidad_coque)))
+    ; Ha finalizado su actividad principal dentro de su turno.
+    (assert (fin_actividad_principal ?nombre_jugador))
+    ; eliminar deseos
+    (retract ?deseo_generar)
+    (retract ?deseo_pago_energia)
+    ; flag para no permitir usar el mismo edificio dos veces.
+    (retract ?ha_usado_edificio)
+    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+
+)
 
 ; TODO: FALTA MODELADO DE ENERGIA.
 (defrule UTILIZAR_EDIFICIO_CONSTRUCTOR
@@ -511,6 +787,10 @@
     (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
     ; El jugador debe estar en el edificio.
     (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador))
+    ; el jugador no ha usado anteriormente el edificio
+    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+    (test (neq ?nombre_edificio ?ed))
+
     ; el edificio puede construir. 
     (test (eq ?nombre_carta "CONSTRUCTORA1") or (eq ?nombre_carta "CONSTRUCTORA2") or (eq ?nombre_carta "CONSTRUCTORA3"))
     ; existe un deseo de construir una carta.
@@ -548,6 +828,9 @@
     (assert (actualizar_mazo ?id_mazo))
     ; semaforo final actividad principal.
     (assert(fin_actividad_principal ?nombre_jugador)) 
+    ; flag para no permitir usar el mismo edificio dos veces.
+    (retract ?ha_usado_edificio)
+    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
 )
 
 
@@ -569,6 +852,9 @@
 (defrule COMERCIAR_EN_COMPAÑIA_NAVIERA
     ; jugador dentro del edificio
     (JUGADOR_ESTA_EDIFICIO (nombre_edificio "COMPAÑIA NAVIERA") (nombre_jugador ?nombre_jugador))
+    ; el jugador no ha usado anteriormente el edificio
+    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+    (test (neq ?nombre_edificio ?ed))
     ; existe el deseo de usar la compañía naviera (contiene qué objetos vender)
     ?deseo <- (deseo_usar_compañia_naviera ?nombre_jugador ?pescado ?madera ?arcilla ?hierro ?grano ?ganado ?carbon ?piel ?pescado_ahumado ?carbon_vegetal ?ladrillos ?acero ?pan ?carne ?coque ?cuero)
     (bind ?unidades_comerciar =(+ ?pescado ?madera ?arcilla ?hierro ?grano ?ganado ?carbon ?piel ?pescado_ahumado ?carbon_vegetal ?ladrillos ?acero ?pan ?carne ?coque ?cuero)
@@ -625,6 +911,9 @@
     (retract ?deseo)
     ; semaforo final actividad principal.
     (assert (fin_actividad_principal ?nombre_jugador))
+    ; flag para no permitir usar el mismo edificio dos veces.
+    (retract ?ha_usado_edificio)
+    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
     ; log
     (printout t"El jugador <" ?nombre_jugador "> ha obtenido <" ?ingresos_comercio"> francos comerciando con sus barcos." crlf)
 )
@@ -632,12 +921,19 @@
 (defrule COMERCIAR_MERCADO
     ; El jugador está en el mercado
 
+    ; el jugador no ha usado anteriormente el edificio
+    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+    (test (neq ?nombre_edificio ?ed))
     ; SOLO PUEDE TOMAR UNA UNIDAD DE CADA RECURSO QUE HAY EN EL MERCADO (POR CADA VEZ).
     ; UN MINIMO DE 2 VECES Y UN MÁXIMO DE 8
     ; rECURSOS: 1 de pescado, madera, arcilla, hierro, grano, ganado, carbon, piel
 
     ; PROBLEMA ECONTRADO: COMO RECORRER LOS EDIFICIOS DEL JUGADOR PARA OBTENER EL Nº DE EDIFICOS BASICOS.
+    =>
 
+    ; flag para no permitir usar el mismo edificio dos veces.
+    (retract ?ha_usado_edificio)
+    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
 )
 
 
@@ -728,7 +1024,8 @@
     ; selección de siguiente ronda
     ?ronda_actual <- (ronda_actual ?nombre_ronda_actual)
     ?ronda_siguiente <- (object (is-a RONDA) (nombre_ronda ?nombre_ronda_siguiente))
-    (siguiente_ronda ?nombre_ronda_actual ?nombre_ronda_siguiente)
+    (siguiente_ronda ?nombre_ro
+    nda_actual ?nombre_ronda_siguiente)
     =>
     (retract ?ronda_actual)
     (assert (ronda_actual ?nombre_ronda_siguiente))
@@ -762,15 +1059,6 @@
     (modify-instance ?posicion_actual_jugador2 (posicion =(mod ?nueva_posicion 7)))
 )
 
-; NO COMPILADO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-;          ____|  |____
-;          \___|  |___/
-;           \        /
-;            \      /
-;             \    /    
-;              \  /
-;               \/
-;
 
 ;   8-. Actualizar cartas mazos
 ; Modifica la posición de todas las cartas de un mazo restándoles 1. 
@@ -957,7 +1245,61 @@
     ?pago_comida <- (PAGAR_COMIDA (nombre_jugador ?nombre)(cantidad 0))
     =>
     (unmake-instance ?pago_comida)
- )
+)
+; ===========================================================================================================
+
+(defrule ASIGNAR_EDIFICIO_AYUNTO
+    ?edificio <- (object (is-a CARTA) (nombre ?nombre_edificio))
+    ?pertenece <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_edificio) (posicion_en_mazo 1))
+    ?asignacion_edificio <- (object (is-a RONDA_ASIGNA_EDIFICIO) (nombre_ronda ?nombre_ronda) (id_mazo ?id_mazo) (nombre_edificio ?nombre_edificio))
+    (ronda_actual ?nombre_ronda)
+    =>
+    (assert EDIFICIO_AYUNTAMIENTO (nombre_edificio ?nombre_edificio))
+    (unmake-instance ?asignacion_edificio)
+    (unmake-instance ?pertenece)
+    ; Introducir un hecho semáforo adicional para disparar la actualización de posición
+    ; en las cartas del mazo. Otra alternativa, jugar prioridad reglas. De momento lo dejamos 
+    ; como hecho semáforo.
+    (assert actualizar_mazo_edificios ?id_mazo)
+)
+
+(defrule ACTUALIZAR_DISPONIBILIDAD_BARCOS
+    (ronda_actual ?nombre_ronda)
+    ?barco <- (object (is-a BARCO) (nombre ?nombre_barco)(coste ?)(uds_comida_genera ?)(capacidad_envio ?))
+    ?pertenece <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_barco))
+    ?introduce_barco <- (object (is-a RONDA_INTRODUCE_BARCO) (nombre_ronda ?nombre_ronda) (nombre_carta ?nombre_barco))
+    =>
+    ; TODO: NO SABEMOS EN Q ORDEN QUEDARÍAN LOS BARCOS DISPONIBLES. problema.!!!!!!!!!!!!!!!!!
+    (BARCO_DISPONIBLE (nombre_barco ?nombre_barco))
+    (unmake-instance ?introduce_barco)
+)
+
+(defrule FINALIZAR_PARTIDA
+    (ronda_actual RONDA_EXTRA_FINAL)
+     =>
+    ; imprimir puntuaciones
+    ; recorrer todas las cartas y sumar su valor
+    ; restar deudas
+    ; sumar francos de los recursos
+    (halt)
+)
+
+
+prioridad de edificios => 
+
+
+
+
+
+
+
+
+
+
+
+
+;Creditos:
+; prestan 4, devolver 5, si lo devuelves al final de la partida 7 ptos. 
 
 ;
 ;   Reglas Estratégicas
@@ -984,45 +1326,3 @@
     =>
     (assert (oferta_suficiente_mas_igual_tres ?recurso))
 )
-
-
-
-
-
-(defrule asignar_edificio_ayuntamiento
-    ; SE TIENE Q EJECUTAR NADA MÁS ACTUALIZAR LA RONDA!!!!!!!!!!!!!!!!! 
-    (object (is-a RONDA (nombre_ronda ?nombre_ronda)))
-    ?mazo <- (object (is-a MAZO) (id_mazo ?id))
-    ; REVISAR LA CONCEPTUALIZACIÓN EDIFICIO, ES PSEUDOCÓDIGO!
-    ?edificio <- (object (is-a EDIFICIO) (nombre ?nombre_edificio))
-    ?pertenece <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_edificio))
-    ?asignacion_edificio <- (object (is-a RONDA_ASIGNA_EDIFICIO) (nombre_ronda ?nombre_ronda) (id_mazo ?id) (nombre_edificio ?nombre_edificio))
-    (ronda_actual ?nombre_ronda)
-    =>
-    (assert EDIFICIO_AYUNTAMIENTO(nombre_edificio ?nombre_edificio))
-    (unmake-instance ?asignacion_edificio)
-    (unmake-instance ?pertenece)
-    ; Introducir un hecho semáforo adicional para disparar la actualización de posición
-    ; en las cartas del mazo. Otra alternativa, jugar prioridad reglas. De momento lo dejamos 
-    ; como hecho semáforo.
-    (assert actualizar_mazo_edificios ?id)
-)
-
-(defrule actualizar_disponibilidad_barcos
-    ; SE TIENE Q EJECUTAR NADA MÁS ACTUALIZAR LA RONDA!!!!!!!!!!!!!!!!! 
-    (object (is-a RONDA (nombre_ronda ?nombre_ronda)))
-    (ronda_actual ?nombre_ronda)
-    ?mazo <- (object (is-a MAZO) (id_mazo ?id))
-    ?barco <- (object (is-a BARCO) (nombre ?nombre_barco))
-    ?pertenece <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_barco))
-    ?introduce_barco <- (object (is-a RONDA_INTRODUCE_BARCO) (nombre_ronda ?nombre_ronda) (nombre_carta ?nombre_barco))
-    =>
-    ; TODO: NO SABEMOS EN Q ORDEN QUEDARÍAN LOS BARCOS DISPONIBLES. problema.!!!!!!!!!!!!!!!!!
-    (BARCO_DISPONIBLE (nombre_barco ?nombre_barco))
-    (unmake-instance ?introduce_barco)
-)
-
-
-
-;Creditos:
-; prestan 4, devolver 5, si lo devuelves al final de la partida 7 ptos. 
