@@ -30,30 +30,30 @@
 
 ; OK
 (defrule TOMAR_RECURSO_OFERTA
-    ; ========================================================
-    ; Se accede a la cantidad de recursos del jugador.
-    ; Se accede a la oferta de recursos de la partida.
-    ; Si la cantidad es mayor que cierto umbral (estrategia) en este caso ahora
-    ; únicamente si es mayor q 0. 
-
-    ; Obtener el turno del jugador
-    ?turno <- (turno ?nombre_jugador)
+    ; si loseta oculta no se puede tomar recurso de la oferta.
+    (object (is-a LOSETA) (posicion ?pos_jugador) (visibilidad TRUE))
+    (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos_jugador) (nombre_jugador ?nombre_jugador))
+    ; El jugador q esté en la loseta tiene que tener su turno.
+    (turno ?nombre_jugador)
     ; Obtiene los datos del recurso del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_deseado) (cantidad ?cantidad_recurso))
     ; Obtiene el recurso de la oferta que se va a tomar
-    ?recurso_oferta <- (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
+    ?recurso_oferta <- (OFERTA_RECURSO (recurso ?recurso_deseado) (cantidad ?cantidad_oferta))
     ; Comprueba que el recurso de la oferta se pueda obtener
     (test (> ?cantidad_oferta 0))
     ; Hecho estratégico que implique coger recurso de la oferta
-    (deseo_coger_recurso ?nombre_jugador ?recurso)
+    ?deseo <- (deseo_coger_recurso ?nombre_jugador ?recurso_deseado)
     =>
+    ; eliminar deseo
+    (retract ?deseo)
     ; Actualizar la cantidad de la oferta
     (modify ?recurso_oferta (cantidad 0))
     ; Actualizar los recursos del jugador
-    (modify-instance ?recurso_jugador (cantidad =(+ ?cantidad_recurso ?cantidad_oferta)))
+    (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso ?cantidad_oferta)))
     ; fin actividad principal
-    (fin_actividad_principal ?nombre_jugador)
-    (printout t"El jugador: <" ?nombre_jugador "> ha tomado de la oferta: <" ?cantidad_oferta "> de <" ?recurso ">. " crlf)
+    (assert (fin_actividad_principal ?nombre_jugador))
+    (printout t"=====================================================================================================" crlf)
+    (printout t"El jugador: <" ?nombre_jugador "> ha tomado de la oferta: <" ?cantidad_oferta "> de <" ?recurso_deseado ">. " crlf)
 )
 
 ; las de comprar edificio OK
@@ -77,12 +77,12 @@
     ; Obtiene el coste de comprar el edificio
     (object (is-a CARTA) (nombre ?nombre_edificio) (valor ?valor_edificio))
     ; Obtiene el dinero del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_recurso))
     ; El jugador tiene suficiente dinero
     (test (>= ?cantidad_recurso ?valor_edificio))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?valor_edificio)))
+    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?valor_edificio)))
     ; Quitar el edificio al ayuntamiento
     (retract ?ayunto)
     ; Asignar el edificio al jugador
@@ -92,7 +92,6 @@
     (printout t"El jugador: <" ?nombre_jugador "> ha comprado el edificio: <" ?nombre_edificio "> por <" ?valor_edificio "> francos al ayuntamiento." crlf)
 )
 
-; todo: intentar generalizar con los barcos.
 (defrule COMPRAR_EDIFICIO_AL_MAZO
     ; Se puede comprar en la ronda actual. [en todas las rondas excepto la última.]
     (ronda_actual ?nombre_ronda)
@@ -100,20 +99,20 @@
     ; Obtener el turno del jugador
     ?turno <- (turno ?nombre_jugador)
     ; Obtener el edificio del deseo
-    ?deseo <- (deseo_comprar_edifico ?nombre_edificio)
+    ?deseo <- (deseo_comprar_edificio ?nombre_jugador ?nombre_edificio)
     ; Ha finalizado su actividad principal dentro de su turno.
     (fin_actividad_principal ?nombre_jugador)
     ; El edificio es del mazo
     ?carta_en_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_edificio) (posicion_en_mazo 1))
     ; Obtiene el coste de comprar el edificio
-    (object (is-a CARTA) (nombre ?nombre_edificio) (valor ?valor_edificio))
+    (object (is-a CARTA) (nombre ?nombre_edificio) (tipo ?) (valor ?valor_edificio))
     ; Obtiene el dinero del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_recurso))
     ; El jugador tiene suficiente dinero
     (test (>= ?cantidad_recurso ?valor_edificio))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?valor_edificio)))
+    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?valor_edificio)))
     ; Quitar la carta del mazo y mover todas las cartas 1 posición
     (unmake-instance ?carta_en_mazo)
     ; Asignar el edificio al jugador
@@ -146,7 +145,7 @@
     (test (>= ?cantidad_recurso ?valor_edificio))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?valor_edificio)))
+    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?valor_edificio)))
     ; Quitar el edificio al ayuntamiento
     (retract ?ayunto)
     ; Asignar el edificio al jugador
@@ -178,7 +177,7 @@
     (test (>= ?cantidad_recurso ?valor_edificio))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?valor_edificio)))
+    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?valor_edificio)))
     ; Quitar la carta del mazo y mover todas las cartas 1 posición
     (unmake-instance ?carta_en_mazo)
     ; Asignar el edificio al jugador
@@ -210,7 +209,7 @@
     (bind ?ingreso =(/ ?valor_carta 2))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(+ ?cantidad_recurso ?ingreso)))
+    (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso ?ingreso)))
     ; Asignar edificio al ayuntamiento
     (assert (EDIFICIO_AYUNTAMIENTO (nombre_edificio ?nombre_edificio)))
     ; Quitarle el edificio al jugador
@@ -289,7 +288,7 @@
         or 
         (object (is-a JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_carta)))
     )
-    
+
     =>
     ; indicar que el jugador está en el edificio.
     (modify ?pos_jugador (nombre_edificio ?nombre_carta))
@@ -392,7 +391,7 @@
     (test (>= ?cantidad_recurso ?coste_entrada))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?coste_entrada)))
+    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?coste_entrada)))
     ; indicar que el jugador está en el edificio.
     ; (assert (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?nombre_jugador)))
 
@@ -489,7 +488,7 @@
     (bind ?cantidad_proporciona_bonus =(min ?cantidad_bonus ?cantidad_max_permitida))
     =>
     ; añadir recursos al jugador 
-    (modify-instance ?recurso_jugador (cantidad =(+ ?cantidad_recurso =( + ?cantidad_output ?cantidad_proporciona_bonus))))
+    (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso ( + ?cantidad_output ?cantidad_proporciona_bonus))))
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
     (printout t"El jugador: <" ?nombre_jugador "> ha generado en el edificio: <" ?nombre_edificio "> un total de <" =( + ?cantidad_output ?cantidad_proporciona_bonus) "> recursos de <" ?recurso ">. Los cuales <" ?cantidad_output "> son por entrar y <" ?cantidad_proporciona_bonus "> por los bonus que tiene." crlf)
@@ -527,8 +526,8 @@
     ; obtener la cantidad que ha transformado del recurso de salida.
     (bind ?cantidad_transformada =(* ?cantidad_a_transformar ?cantidad_unitaria))
     =>
-    (modify-instance ?recurso_jugador_entrada (cantidad =(- ?cantidad_recurso_entrada ?cantidad_a_transformar)))
-    (modify-instance ?recurso_jugador_salida (cantidad =(+ ?cantidad_recurso_salida ?cantidad_transformada)))
+    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada ?cantidad_a_transformar)))
+    (modify-instance ?recurso_jugador_salida (cantidad (+ ?cantidad_recurso_salida ?cantidad_transformada)))
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
     ; flag para no permitir usar el mismo edificio dos veces.
@@ -579,14 +578,14 @@
     (test (> =(+ =(* ?cantidad_madera 1) =(* ?cantidad_carbon_vegetal 3) =(* ?cantidad_carbon 3) =(* ?cantidad_coque 10)) ?cantidad_energia_empleada))
     =>
     ; modifica los inputs del jugador
-    (modify-instance ?recurso_jugador_entrada (cantidad =(- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
     ; modifica los outputs del jugador
-    (modify-instance ?recurso_jugador_salida (cantidad =(+ ?cantidad_recurso_salida_jugador ?cantidad_transformada)))
+    (modify-instance ?recurso_jugador_salida (cantidad (+ ?cantidad_recurso_salida_jugador ?cantidad_transformada)))
     ; modifica los recursos energéticos del jugador.
-    (modify-instance ?madera_jugador (cantidad =(- ?cantidad_madera_jugador ?cantidad_madera)))
-    (modify-instance ?carbon_vegetal_jugador (cantidad =(- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
-    (modify-instance ?carbon_jugador (cantidad =(- ?cantidad_cabon_jugador ?cantidad_carbon)))
-    (modify-instance ?coque_jugador (cantidad =(- ?cantidad_coque_jugador ?cantidad_coque)))
+    (modify-instance ?madera_jugador (cantidad (- ?cantidad_madera_jugador ?cantidad_madera)))
+    (modify-instance ?carbon_vegetal_jugador (cantidad (- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
+    (modify-instance ?carbon_jugador (cantidad (- ?cantidad_cabon_jugador ?cantidad_carbon)))
+    (modify-instance ?coque_jugador (cantidad (- ?cantidad_coque_jugador ?cantidad_coque)))
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
     ; eliminar deseos
@@ -626,15 +625,15 @@
     ; comprueba que el jugador tiene suficiente input
     (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
     ; calcula la cantidad a transformar
-    (bind ?cantidad_transformada_recurso_salida1 =(min =(* ?cantidad_maxima ?cantidad_unitaria1) =(* ?cantidad_a_transformar ?cantidad_unitaria1)))
-    (bind ?cantidad_transformada_recurso_salida2 =(min =(* ?cantidad_maxima ?cantidad_unitaria2) =(* ?cantidad_a_transformar ?cantidad_unitaria2)))
+    (bind ?cantidad_transformada_recurso_salida1 (min (* ?cantidad_maxima ?cantidad_unitaria1) (* ?cantidad_a_transformar ?cantidad_unitaria1)))
+    (bind ?cantidad_transformada_recurso_salida2 (min (* ?cantidad_maxima ?cantidad_unitaria2) (* ?cantidad_a_transformar ?cantidad_unitaria2)))
     =>
     ; modifica el recurso input del jugador
-    (modify-instance ?recurso_jugador_entrada (cantidad =(- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
     ; modifica el primer output del jugador
-    (modify-instance ?recurso_jugador_salida1 (cantidad =(+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
+    (modify-instance ?recurso_jugador_salida1 (cantidad (+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
     ; modifica el segundo output del jugador
-    (modify-instance ?recurso_jugador_salida2 (cantidad =(+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
+    (modify-instance ?recurso_jugador_salida2 (cantidad (+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
     ; flag para no permitir usar el mismo edificio dos veces.
@@ -675,32 +674,32 @@
     ; comprueba que el jugador tiene suficiente input
     (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
     ; calcula la cantidad a transformar
-    (bind ?cantidad_transformada_recurso_salida1 =(min =(* ?cantidad_maxima ?cantidad_unitaria1) =(* ?cantidad_a_transformar ?cantidad_unitaria1)))
-    (bind ?cantidad_transformada_recurso_salida2 =(min =(* ?cantidad_maxima ?cantidad_unitaria2) =(* ?cantidad_a_transformar ?cantidad_unitaria2)))
+    (bind ?cantidad_transformada_recurso_salida1 (min (* ?cantidad_maxima ?cantidad_unitaria1) (* ?cantidad_a_transformar ?cantidad_unitaria1)))
+    (bind ?cantidad_transformada_recurso_salida2 (min (* ?cantidad_maxima ?cantidad_unitaria2) (* ?cantidad_a_transformar ?cantidad_unitaria2)))
 
     ; calcula la cantidad de energía empleada
-    (bind ?cantidad_energia_empleada =(* ?cantidad_a_transformar ?coste_energia))
+    (bind ?cantidad_energia_empleada (* ?cantidad_a_transformar ?coste_energia))
     ; obtener los recursos de energia del jugador.
     ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
     ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
     ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
     ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
     ;comprueba que el jugador tiene suficiente energía
-    (test (> =(+ =(* ?cantidad_madera 1) =(* ?cantidad_carbon_vegetal 3) =(* ?cantidad_carbon 3) =(* ?cantidad_coque 10)) ?cantidad_energia_empleada))
+    (test (> =(+ =(* ?cantidad_madera 1) (* ?cantidad_carbon_vegetal 3) (* ?cantidad_carbon 3) (* ?cantidad_coque 10)) ?cantidad_energia_empleada))
 
     =>
     ; modifica el recurso input del jugador
-    (modify-instance ?recurso_jugador_entrada (cantidad =(- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
     ; modifica el primer output del jugador
-    (modify-instance ?recurso_jugador_salida1 (cantidad =(+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
+    (modify-instance ?recurso_jugador_salida1 (cantidad (+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
     ; modifica el segundo output del jugador
-    (modify-instance ?recurso_jugador_salida2 (cantidad =(+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
+    (modify-instance ?recurso_jugador_salida2 (cantidad (+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
 
     ; modifica los recursos energéticos del jugador.
-    (modify-instance ?madera_jugador (cantidad =(- ?cantidad_madera_jugador ?cantidad_madera)))
-    (modify-instance ?carbon_vegetal_jugador (cantidad =(- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
-    (modify-instance ?carbon_jugador (cantidad =(- ?cantidad_cabon_jugador ?cantidad_carbon)))
-    (modify-instance ?coque_jugador (cantidad =(- ?cantidad_coque_jugador ?cantidad_coque)))
+    (modify-instance ?madera_jugador (cantidad (- ?cantidad_madera_jugador ?cantidad_madera)))
+    (modify-instance ?carbon_vegetal_jugador (cantidad (- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
+    (modify-instance ?carbon_jugador (cantidad (- ?cantidad_cabon_jugador ?cantidad_carbon)))
+    (modify-instance ?coque_jugador (cantidad (- ?cantidad_coque_jugador ?cantidad_coque)))
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
     ; eliminar deseos
@@ -757,17 +756,17 @@
 
     =>
     ; modifica el recurso input del jugador
-    (modify-instance ?recurso_jugador_entrada (cantidad =(- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
     ; modifica el primer output del jugador
-    (modify-instance ?recurso_jugador_salida1 (cantidad =(+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
+    (modify-instance ?recurso_jugador_salida1 (cantidad (+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
     ; modifica el segundo output del jugador
-    (modify-instance ?recurso_jugador_salida2 (cantidad =(+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
+    (modify-instance ?recurso_jugador_salida2 (cantidad (+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
 
     ; modifica los recursos energéticos del jugador.
-    (modify-instance ?madera_jugador (cantidad =(- ?cantidad_madera_jugador ?cantidad_madera)))
-    (modify-instance ?carbon_vegetal_jugador (cantidad =(- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
-    (modify-instance ?carbon_jugador (cantidad =(- ?cantidad_cabon_jugador ?cantidad_carbon)))
-    (modify-instance ?coque_jugador (cantidad =(- ?cantidad_coque_jugador ?cantidad_coque)))
+    (modify-instance ?madera_jugador (cantidad (- ?cantidad_madera_jugador ?cantidad_madera)))
+    (modify-instance ?carbon_vegetal_jugador (cantidad (- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
+    (modify-instance ?carbon_jugador (cantidad (- ?cantidad_cabon_jugador ?cantidad_carbon)))
+    (modify-instance ?coque_jugador (cantidad (- ?cantidad_coque_jugador ?cantidad_coque)))
     ; Ha finalizado su actividad principal dentro de su turno.
     (assert (fin_actividad_principal ?nombre_jugador))
     ; eliminar deseos
@@ -813,11 +812,11 @@
     (test (>= ?cantidad_acero ?coste_acero))
     =>
     ; modificar cantidad de materiales del jugador
-    (modify-instance ?recurso_jugador_madera (cantidad =(- ?cantidad_madera ?coste_madera)))
-    (modify-instance ?recurso_jugador_arcilla (cantidad =(- ?cantidad_arcilla ?coste_arcilla)))
-    (modify-instance ?recurso_jugador_ladrillos (cantidad =(- ?cantidad_ladrillos ?coste_ladrillos)))
-    (modify-instance ?recurso_jugador_hierro (cantidad =(- ?cantidad_hierro ?coste_hierro)))
-    (modify-instance ?recurso_jugador_acero (cantidad =(- ?cantidad_acero ?coste_acero)))
+    (modify-instance ?recurso_jugador_madera (cantidad (- ?cantidad_madera ?coste_madera)))
+    (modify-instance ?recurso_jugador_arcilla (cantidad (- ?cantidad_arcilla ?coste_arcilla)))
+    (modify-instance ?recurso_jugador_ladrillos (cantidad (- ?cantidad_ladrillos ?coste_ladrillos)))
+    (modify-instance ?recurso_jugador_hierro (cantidad (- ?cantidad_hierro ?coste_hierro)))
+    (modify-instance ?recurso_jugador_acero (cantidad (- ?cantidad_acero ?coste_acero)))
     ; quitar carta del mazo
     (unmake-instance ?pertenencia_mazo)
     ; eliminar deseo
@@ -883,30 +882,30 @@
     ; obtener la referencia de los francos para el jugador.
     ?francos_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_francos))
     ; obtener la cantidad generada por el deseo.
-    (bind ?ingresos_comercio =(+ =(* ?pescado 1) =(* ?madera 1) =(* ?arcilla 1) =(* ?hierro 2) =(* ?grano 1) =(* ?ganado 3) =(* ?carbon 3) =(* ?piel 2)
-                                =(* ?pescado_ahumado 2) =(* ?carbon_vegetal 2) =(* ?ladrillo 2) =(* ?acero 8)
-                                =(* ?pan 3) =(* ?carne 2) =(* ?coque 5) =(* ?cuero 4) ))
+    (bind ?ingresos_comercio (+ (* ?pescado 1) (* ?madera 1) (* ?arcilla 1) (* ?hierro 2) (* ?grano 1) (* ?ganado 3) (* ?carbon 3) (* ?piel 2)
+                                (* ?pescado_ahumado 2) (* ?carbon_vegetal 2) (* ?ladrillo 2) (* ?acero 8)
+                                (* ?pan 3) (* ?carne 2) (* ?coque 5) (* ?cuero 4) ))
     =>
     ; restar cantidades vendidas
-    (modify-instance ?pescado_jugador (cantidad =(- ?cantidad_pescado ?pescado)))
-    (modify-instance ?madera_jugador (cantidad =(- ?madera_jugador ?pescado)))
-    (modify-instance ?arcilla_jugador (cantidad =(- ?arcilla_jugador ?pescado)))
-    (modify-instance ?hierro_jugador (cantidad =(- ?hierro_jugador ?pescado)))
-    (modify-instance ?grano_jugador (cantidad =(- ?grano_jugador ?pescado)))
-    (modify-instance ?ganado_jugador (cantidad =(- ?ganado_jugador ?pescado)))
-    (modify-instance ?carbon_jugador (cantidad =(- ?carbon_jugador ?pescado)))
-    (modify-instance ?piel_jugador (cantidad =(- ?piel_jugador ?pescado)))
-    (modify-instance ?pescado_ahumado_jugador (cantidad =(- ?pescado_ahumado_jugador ?pescado)))
-    (modify-instance ?carbon_vegetal_jugador (cantidad =(- ?carbon_vegetal_jugador ?pescado)))
-    (modify-instance ?ladrillos_jugador (cantidad =(- ?ladrillos_jugador ?pescado)))
-    (modify-instance ?acero_jugador (cantidad =(- ?acero_jugador ?pescado)))
-    (modify-instance ?pan_jugador (cantidad =(- ?pan_jugador ?pescado)))
-    (modify-instance ?carne_jugador (cantidad =(- ?carne_jugador ?pescado)))
-    (modify-instance ?coque_jugador (cantidad =(- ?coque_jugador ?pescado)))
-    (modify-instance ?cuero_jugador (cantidad =(- ?cuero_jugador ?pescado)))
+    (modify-instance ?pescado_jugador (cantidad (- ?cantidad_pescado ?pescado)))
+    (modify-instance ?madera_jugador (cantidad (- ?madera_jugador ?pescado)))
+    (modify-instance ?arcilla_jugador (cantidad (- ?arcilla_jugador ?pescado)))
+    (modify-instance ?hierro_jugador (cantidad (- ?hierro_jugador ?pescado)))
+    (modify-instance ?grano_jugador (cantidad (- ?grano_jugador ?pescado)))
+    (modify-instance ?ganado_jugador (cantidad (- ?ganado_jugador ?pescado)))
+    (modify-instance ?carbon_jugador (cantidad (- ?carbon_jugador ?pescado)))
+    (modify-instance ?piel_jugador (cantidad (- ?piel_jugador ?pescado)))
+    (modify-instance ?pescado_ahumado_jugador (cantidad (- ?pescado_ahumado_jugador ?pescado)))
+    (modify-instance ?carbon_vegetal_jugador (cantidad (- ?carbon_vegetal_jugador ?pescado)))
+    (modify-instance ?ladrillos_jugador (cantidad (- ?ladrillos_jugador ?pescado)))
+    (modify-instance ?acero_jugador (cantidad (- ?acero_jugador ?pescado)))
+    (modify-instance ?pan_jugador (cantidad (- ?pan_jugador ?pescado)))
+    (modify-instance ?carne_jugador (cantidad (- ?carne_jugador ?pescado)))
+    (modify-instance ?coque_jugador (cantidad (- ?coque_jugador ?pescado)))
+    (modify-instance ?cuero_jugador (cantidad (- ?cuero_jugador ?pescado)))
 
     ; añadir francos al jugador
-    (modify-instance ?francos_jugador (cantidad =(+ ?francos_jugador ?ingresos_comercio)))
+    (modify-instance ?francos_jugador (cantidad (+ ?francos_jugador ?ingresos_comercio)))
     ; eliminar deseo
     (retract ?deseo)
     ; semaforo final actividad principal.
@@ -965,13 +964,13 @@
     ?jugagor <- (object (is-a JUGADOR)(nombre ?nombre_jugador)(num_barcos ?num_barcos)(capacidad_envio ?capacidad_envio_jugador)(demanda_comida_cubierta ?demanda_comida_cubierta))
     =>
     ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(- ?cantidad_recurso ?coste_barco)))
+    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?coste_barco)))
     ; Quitar la carta del mazo
     (unmake-instance ?barco_en_mazo)
     ; Asignar el barco al jugador
     (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_barco))
     ; Actualiza los valores relacionados con el barco en el jugador
-    (modify-instance JUGADOR (num_barcos =(+ ?num_barcos 1) (capacidad_envio =(+ ?capacidad_envio_jugador ?capacidad_envio_barco) (demanda_comida_cubierta =(+ ?demanda_comida_cubierta ?uds_comida_genera)))))
+    (modify-instance JUGADOR (num_barcos (+ ?num_barcos 1) (capacidad_envio (+ ?capacidad_envio_jugador ?capacidad_envio_barco) (demanda_comida_cubierta (+ ?demanda_comida_cubierta ?uds_comida_genera)))))
     ; Eliminar el deseo de comprar el barco
     (retract ?deseo)
     ; Quitar el barco de disponibles
@@ -1001,54 +1000,36 @@
     ; Elimina el barco del jugador
     (unmake-instance ?jugador_tiene_barco)
     ; Actualiza los valores relacionados con el barco en el jugador
-    (modify-instance JUGADOR (num_barcos =(- ?num_barcos 1) (capacidad_envio =(- ?capacidad_envio_jugador ?capacidad_envio_barco) (demanda_comida_cubierta =(- ?demanda_comida_cubierta ?uds_comida_genera)))))
+    (modify-instance JUGADOR (num_barcos (- ?num_barcos 1) (capacidad_envio =(- ?capacidad_envio_jugador ?capacidad_envio_barco) (demanda_comida_cubierta (- ?demanda_comida_cubierta ?uds_comida_genera)))))
     ; Actualiza el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad =(+ ?cantidad_recurso =(/ ?valor_barco 2))))
+    (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso =(/ ?valor_barco 2))))
     ; Elimina el deseo
     (retract ?deseo)
 )
 
-; OK
-;   6-. Final ronda (cambiar)
-(defrule cambio_ronda
+(defrule PASAR_TURNO_Y_RONDA
     ; para cambiar de ronda se tiene que dar la siguiente situación
-    ; | | | | | |2|1| y turno de 2
+    ;1| |1| |1|2|1|   y turno de 2
+    ;0|1|2|3|4|5|6|0
     ?jugador1 <- (object (is-a JUGADOR) (nombre ?nombre_jugador1))
     ?posicion_jugador1 <- (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos_jugador1) (nombre_jugador ?nombre_jugador1))
     ?jugador2 <- (object (is-a JUGADOR) (nombre ?nombre_jugador2))
     ?posicion_jugador2 <- (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos_jugador2) (nombre_jugador ?nombre_jugador2))
-    (test (eq ?pos_jugador1 7))
-    (test (eq ?pos_jugador2 6))
+    (test (eq ?pos_jugador1 6))
+    (test (eq ?pos_jugador2 5))
     (test (neq ?jugador1 ?jugador2))
-    (turno ?nombre_jugador2)
-    ; selección de siguiente ronda
-    ?ronda_actual <- (ronda_actual ?nombre_ronda_actual)
-    ?ronda_siguiente <- (object (is-a RONDA) (nombre_ronda ?nombre_ronda_siguiente))
-    (siguiente_ronda ?nombre_ro
-    nda_actual ?nombre_ronda_siguiente)
-    =>
-    (retract ?ronda_actual)
-    (assert (ronda_actual ?nombre_ronda_siguiente))
-)
-;   7-. Cambiar turno jugadores
-(defrule pasar_turno
-    ; pensar si debería haber alguna precondición o si simplemente por estar 
-    ; en la posición que está la regla ya se asegura que sólo se instancia
-    ; cuando el jugador no puede hacer nada más
-    ?jugador1 <- (object (is-a JUGADOR) (nombre ?nombre_jugador1))
-    ?jugador2 <- (object (is-a JUGADOR) (nombre ?nombre_jugador2))
-    (test (neq ?jugador1 ?jugador2))
-    ; IMPORTANTE!  ¿DÓNDE SE GENERA ESTE HECHO SEMÁFORO?????
+    
     ; Ha finalizado su actividad principal dentro de su turno.
     ?turno_finalizado <- (fin_actividad_principal ?nombre_jugador1)
     ?turno_j1 <- (turno ?nombre_jugador1)
-    ;?turno_finalizado_j1 <- (turno_finalizado ?nombre_jugador1)
-
-    ; Generalización: mueve al otro jugador
-    ?posicion_actual_jugador2 <- (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos) (nombre_jugador ?nombre_jugador2))
-    (bind ?nueva_posicion =(+ ?pos 2))
-    
+    ; selección de siguiente ronda
+    ?ronda_actual <- (ronda_actual ?nombre_ronda_actual)
+    ?ronda_siguiente <- (object (is-a RONDA) (nombre_ronda ?nombre_ronda_siguiente))
+    (siguiente_ronda ?nombre_ronda_actual ?nombre_ronda_siguiente)
+    ; eliminar el semaforo de la restriccion de añadir recurso a la oferta.
+    ?semaforo <- (recursos_añadidos_loseta ?)
     =>
+    (bind ?nueva_posicion (+ ?pos_jugador2 2))
     ; deshace el hecho semaforo del turno.
     (retract ?turno_finalizado)
     ; eliminar turno jugador 1
@@ -1056,7 +1037,54 @@
     ; generar hecho turno j2.
     (assert (turno ?nombre_jugador2))
     ; modifica la posición del jugador 2
-    (modify-instance ?posicion_actual_jugador2 (posicion =(mod ?nueva_posicion 7)))
+    (modify-instance ?posicion_jugador2 (posicion (mod ?nueva_posicion 7)))
+    ; eliminar semaforo
+    (retract ?semaforo)
+    (retract ?ronda_actual)
+    (assert (ronda_actual ?nombre_ronda_siguiente))
+    
+    (retract ?semaforo)
+    (printout t"=====================================================================================================" crlf)
+    (printout t"El jugador: <" ?nombre_jugador1 "> ha finalizado su turno. " crlf)
+    (printout t"El jugador: <" ?nombre_jugador2 "> ha empezado su turno en la posicion <" (mod ?nueva_posicion 7) ">. " crlf)
+
+    (printout t"Cambio de ronda: <"?nombre_ronda_actual "> ==> <"?nombre_ronda_siguiente">." crlf)
+)
+
+(defrule PASAR_TURNO
+    ; pensar si debería haber alguna precondición o si simplemente por estar 
+    ; en la posición que está la regla ya se asegura que sólo se instancia
+    ; cuando el jugador no puede hacer nada más
+    ?jugador1 <- (object (is-a JUGADOR) (nombre ?nombre_jugador1))
+    ?jugador2 <- (object (is-a JUGADOR) (nombre ?nombre_jugador2))
+    ?posicion_jugador1 <- (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos_jugador1) (nombre_jugador ?nombre_jugador1))
+    ?posicion_jugador2 <- (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos_jugador2) (nombre_jugador ?nombre_jugador2))
+    (test (neq ?jugador1 ?jugador2))
+    (test (neq ?pos_jugador1 6))
+    ; Ha finalizado su actividad principal dentro de su turno.
+    ?turno_finalizado <- (fin_actividad_principal ?nombre_jugador1)
+    ?turno_j1 <- (turno ?nombre_jugador1)
+    ; Generalización: mueve al otro jugador
+    ?posicion_actual_jugador2 <- (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos_jugador2) (nombre_jugador ?nombre_jugador2))
+    ; eliminar el semaforo de la restriccion de añadir recurso a la oferta.
+    ?semaforo <- (recursos_añadidos_loseta ?)
+    =>
+    (bind ?nueva_posicion (+ ?pos_jugador2 2))
+    ; deshace el hecho semaforo del turno.
+    (retract ?turno_finalizado)
+    ; eliminar turno jugador 1
+    (retract ?turno_j1)
+    ; generar hecho turno j2.
+    (assert (turno ?nombre_jugador2))
+    ; modifica la posición del jugador 2
+    (modify-instance ?posicion_actual_jugador2 (posicion (mod ?nueva_posicion 7)))
+    ; eliminar semaforo
+    (retract ?semaforo)osicion_en_mazo
+    (printout t"=====================================================================================================" crlf)
+    (printout t"El jugador: <" ?nombre_jugador1 "> ha finalizado su turno. " crlf)
+    (printout t"El jugador: <" ?nombre_jugador2 "> ha empezado su turno en la posicion <" (mod ?nueva_posicion 7) ">. " crlf)
+
+
 )
 
 
@@ -1088,19 +1116,30 @@
 ;   10-. Añadir recursos de las losetas a la oferta.
 
 (defrule AÑADIR_RECURSOS_OFERTA
-    ; obtiene la loseta
-    ?loseta <- (object (is-a LOSETA) (posicion ?pos) (visibilidad ?visible))
+    ; no añadir dos veces 
+    (not (recursos_añadidos_loseta ?pos))
+    ; obtiene la loseta con visibilidad TRUE
+    ?loseta <- (object (is-a LOSETA) (posicion ?pos) (visibilidad TRUE))
     ; el jugador está en la loseta
-    (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos))
+    (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos) (nombre_jugador ?nombre_jugador))
+    ; y turno jugador
+    (turno ?nombre_jugador)
     ; Obtiene la oferta
-    ?oferta_recurso <- (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
-    ; comprueba que la oferta esté visible
-    (test (eq ?visible TRUE))
+    ?oferta_recurso1 <- (OFERTA_RECURSO (recurso ?recurso1) (cantidad ?cantidad_oferta1))
+    ?oferta_recurso2 <- (OFERTA_RECURSO (recurso ?recurso2) (cantidad ?cantidad_oferta2))
     ; Por cada recurso de la loseta...
-    (forall (object (is-a LOSETA_TIENE_RECURSO) (posicion ?pos) (recurso ?recurso) (cantidad ?c)))
+    ?ref_recurso1 <- (object (is-a LOSETA_TIENE_RECURSO) (posicion ?pos) (recurso ?recurso1) (cantidad ?cantidad_recurso1))
+    ?ref_recurso2 <- (object (is-a LOSETA_TIENE_RECURSO) (posicion ?pos) (recurso ?recurso2) (cantidad ?cantidad_recurso2))
+    (test (neq ?ref_recurso1 ?ref_recurso2))
     => 
     ; añadir a la oferta.
-    (modify ?oferta_recurso (cantidad =(+ cantidad_oferta c)))
+    (modify ?oferta_recurso1 (cantidad (+ ?cantidad_oferta1 ?cantidad_recurso1)))
+    (modify ?oferta_recurso2 (cantidad (+ ?cantidad_oferta2 ?cantidad_recurso2)))
+    (assert (recursos_añadidos_loseta ?pos))
+    (printout t"=====================================================================================================" crlf)
+    (printout t"Se han añadido a la OFERTA los recursos de la loseta con posición: <" ?pos ">" crlf)
+    (printout t"  La cantidad <" ?cantidad_recurso1 "> de recurso <" ?recurso1 ">." crlf)
+    (printout t"  La cantidad <" ?cantidad_recurso2 "> de recurso <" ?recurso2 ">." crlf)
 )
 
 ; SIN ACABAR !!! HAY QUE MODELAR LAS DEUDAS!!!!
@@ -1125,7 +1164,7 @@
     (test (> ?cantidad_francos 0))
     =>
     ; restar dinero al jugador
-    (modify-instance ?jugador_recursos (cantidad =(- ?cantidad_francos 1)))
+    (modify-instance ?jugador_recursos (cantidad (- ?cantidad_francos 1)))
 )
 (defrule PAGAR_INTERESES_ENDEUDANDOSE
     ; obtiene el jugador
@@ -1142,9 +1181,9 @@
     (test (< ?cantidad_francos 1))
     =>
     ; aumentar deuda del jugador en 1
-    (modify-instance ?jugador (deudas =(+ ?deudas 1)))
+    (modify-instance ?jugador (deudas (+ ?deudas 1)))
     ; una deuda otorga 4 francos, pero al necesitarla para pagar 
-    (modify-instance ?jugador_recursos (cantidad =(+ ?cantidad_francos 3)))
+    (modify-instance ?jugador_recursos (cantidad (+ ?cantidad_francos 3)))
     
 )
 (defrule PAGAR_DEUDA
@@ -1172,13 +1211,13 @@
     ?jugador_carne <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso CARNE) (cantidad ?cantidad_carne))
     ?jugador_francos <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso FRANCOS) (cantidad ?cantidad_francos))
     ; se puede hacer un sumatorio de una serie de productos? canditad_recurso*uds_proporciona
-    test(>= =(+ =(* ?cantidad_pescado 1) =(* ?cantidad_pescado_ahumado 2) =(* ?cantidad_pan 3) =(* ?cantidad_carne 3) =(* ?cantidad_francos 1)) ?coste_ronda)
+    test(>= =(+ =(* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2) (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1)) ?coste_ronda)
  =>
-    (modify-instance ?jugador_pescado (cantidad =(- ?cantidad_pescado ?deseo_pagar_pescado)))
-    (modify-instance ?jugador_pescado_ahumado (cantidad =(- ?cantidad_pescado ?deseo_pagar_pescado_ahumado)))
-    (modify-instance ?jugador_pan (cantidad =(- ?cantidad_pan ?deseo_pagar_pan)))
-    (modify-instance ?jugador_carne (cantidad =(- ?cantidad_carne ?deseo_pagar_carne)))
-    (modify-instance ?jugador_francos (cantidad =(- ?cantidad_francos ?deseo_pagar_francos)))
+    (modify-instance ?jugador_pescado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado)))
+    (modify-instance ?jugador_pescado_ahumado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado_ahumado)))
+    (modify-instance ?jugador_pan (cantidad (- ?cantidad_pan ?deseo_pagar_pan)))
+    (modify-instance ?jugador_carne (cantidad (- ?cantidad_carne ?deseo_pagar_carne)))
+    (modify-instance ?jugador_francos (cantidad (- ?cantidad_francos ?deseo_pagar_francos)))
  )
 
  (defrule PAGAR_COMIDA_CON_DEUDA
@@ -1195,18 +1234,18 @@
     ?jugador_carne <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso CARNE) (cantidad ?cantidad_carne))
     ?jugador_francos <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso FRANCOS) (cantidad ?cantidad_francos))
     ; se puede hacer un sumatorio de una serie de productos? canditad_recurso*uds_proporciona
-    test(< =(+ =(* ?cantidad_pescado 1) =(* ?cantidad_pescado_ahumado 2) =(* ?cantidad_pan 3) =(* ?cantidad_carne 3) =(* ?cantidad_francos 1)) ?coste_ronda)
-    ?numero_creditos <- =(- ?coste_ronda =(+ =(* ?cantidad_pescado 1) =(* ?cantidad_pescado_ahumado 2) =(* ?cantidad_pan 3) =(* ?cantidad_carne 3) =(* ?cantidad_francos 1)))
-    bind(?numero_creditos =(mod =(- ?coste_ronda =(+ =(* ?cantidad_pescado 1) =(* ?cantidad_pescado_ahumado 2) =(* ?cantidad_pan 3) =(* ?cantidad_carne 3) =(* ?cantidad_francos 1)))
+    test(< (+ (* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2) (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1)) ?coste_ronda)
+    ?numero_creditos <- (- ?coste_ronda (+ =(* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2) (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1)))
+    bind(?numero_creditos =(mod (- ?coste_ronda (+ =(* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2) (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1)))
  4))
     =(mod =() 4)
     
  =>
-    (modify-instance ?jugador_pescado (cantidad =(- ?cantidad_pescado ?deseo_pagar_pescado)))
-    (modify-instance ?jugador_pescado_ahumado (cantidad =(- ?cantidad_pescado ?deseo_pagar_pescado_ahumado)))
-    (modify-instance ?jugador_pan (cantidad =(- ?cantidad_pan ?deseo_pagar_pan)))
-    (modify-instance ?jugador_carne (cantidad =(- ?cantidad_carne ?deseo_pagar_carne)))
-    (modify-instance ?jugador_francos (cantidad =(- ?cantidad_francos ?deseo_pagar_francos)))
+    (modify-instance ?jugador_pescado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado)))
+    (modify-instance ?jugador_pescado_ahumado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado_ahumado)))
+    (modify-instance ?jugador_pan (cantidad (- ?cantidad_pan ?deseo_pagar_pan)))
+    (modify-instance ?jugador_carne (cantidad (- ?cantidad_carne ?deseo_pagar_carne)))
+    (modify-instance ?jugador_francos (cantidad (- ?cantidad_francos ?deseo_pagar_francos)))
     
  )
 
@@ -1217,9 +1256,9 @@
     ?jugador_recurso <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre)(recurso ?recurso)(cantidad ?cantidad_recurso))
     ; probar que sea comida o dinero
     (test (eq ?recurso PESCADO) or (eq ?recurso PESCADO_AHUMADO) or (eq ?recurso PAN) or (eq ?recurso CARNE) or (eq ?recurso FRANCOS))
-    (?cantidad_pagada =(min(?cantidad_recurso ?cantidad)))
+    (?cantidad_pagada (min(?cantidad_recurso ?cantidad)))
     =>
-    (modify-instance ?pago_comida (cantidad =(- ?cantidad ?cantidad_pagada))
+    (modify-instance ?pago_comida (cantidad (- ?cantidad ?cantidad_pagada))
 
  )
  (defrule PAGAR_COMIDA_ENDEUDANDOSE
@@ -1230,12 +1269,12 @@
     ?jugador_francos <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso FRANCOS) (cantidad 0))
     ?pago_comida <- (PAGAR_COMIDA (nombre_jugador ?nombre)(cantidad ?cantidad))
     (test (> ?cantidad 0))
-    (bind (?deudas_a_obtener =(+ =(?cantidad 5) 1)))
+    (bind (?deudas_a_obtener (+ (?cantidad 5) 1)))
     ?jugador <- (object (is-a JUGADOR)(nombre_jugador ?nombre)(deudas ?deudas))
     =>
-    (modify-instance ?jugador (deudas =(+ ?deudas ?deudas_a_obtener)))
-    (modify-instance ?jugador_francos (cantidad =(- =(* ?deudas_a_obtener 5) ?cantidad))
-    (modify-instance ?pago_comida (cantidad =(0)))
+    (modify-instance ?jugador (deudas (+ ?deudas ?deudas_a_obtener)))
+    (modify-instance ?jugador_francos (cantidad (- (* ?deudas_a_obtener 5) ?cantidad))
+    (modify-instance ?pago_comida (cantidad (0)))
     ; ACABAR LOGICA DIVIDIR CANTIDAD A PAGAR ENTRE 5, eso da el número de deudas a coger. 
     ; con ese valor se puede calcular qué cantidad de francos añadir y restar el correspondiente del coste de comida
 
