@@ -1309,7 +1309,7 @@
     ?introduce_barco <- (object (is-a RONDA_INTRODUCE_BARCO) (nombre_ronda ?nombre_ronda) (nombre_carta ?nombre_barco))
     =>
     ; TODO: NO SABEMOS EN Q ORDEN QUEDARÍAN LOS BARCOS DISPONIBLES. problema.!!!!!!!!!!!!!!!!!
-    (BARCO_DISPONIBLE (nombre_barco ?nombre_barco))
+    (assert (BARCO_DISPONIBLE (nombre_barco ?nombre_barco)))
     (unmake-instance ?introduce_barco)
 )
 

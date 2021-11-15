@@ -287,6 +287,48 @@
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "HERRERIA")(cantidad_madera 3)(cantidad_ladrillo 2))
     
 
+    ; BARCOS 
+
+     ; BARCOS 
+    (of BARCO (nombre "BARCO_MADERA1") (valor 4) (coste 14) (uds_comida_genera 4) (capacidad_envio 2))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_MADERA1") (cantidad_madera 5))
+    (of BARCO (nombre "BARCO_MADERA2") (valor 6) (coste 14) (uds_comida_genera 4) (capacidad_envio 2))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_MADERA2") (cantidad_madera 5))
+    (of BARCO (nombre "BARCO_MADERA3") (valor 2) (coste 14) (uds_comida_genera 4) (capacidad_envio 2))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_MADERA3") (cantidad_madera 5))
+    (of BARCO (nombre "BARCO_HIERRO1") (valor 6) (coste 20) (uds_comida_genera 5) (capacidad_envio 3))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_HIERRO1") (cantidad_hierro 4))
+    (of BARCO (nombre "BARCO_HIERRO2") (valor 8) (coste 20) (uds_comida_genera 5) (capacidad_envio 3))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_HIERRO2") (cantidad_hierro 4))
+    (of BARCO (nombre "BARCO_ACERO1") (valor 16) (coste 30) (uds_comida_genera 7) (capacidad_envio 4))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_ACERO1") (cantidad_acero 2))
+    (of BARCO (nombre "BARCO_ACERO2") (valor 20) (coste 30) (uds_comida_genera 7) (capacidad_envio 4))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_ACERO2") (cantidad_acero 2))
+    ; IMPORTANTE: el barco lujoso, al no reducir la comida necesaria al final de ronda 
+    ; ni poderse comprar con francos (coste), es sencillamente una instancia de la 
+    ; clase carta. 
+    (of CARTA (nombre "BARCO_LUJOSO") (valor 30))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_LUJOSO") (cantidad_acero 3))
+        ; Ronda introduce barco al final de la ronda.
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_2) (nombre_carta "BARCO_MADERA1"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_3) (nombre_carta "BARCO_MADERA2"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_4) (nombre_carta "BARCO_MADERA3"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_5) (nombre_carta "BARCO_HIERRO1"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_6) (nombre_carta "BARCO_HIERRO2"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_7) (nombre_carta "BARCO_ACERO1"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_8) (nombre_carta "BARCO_ACERO2"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_EXTRA_FINAL) (nombre_carta "BARCO_LUJOSO"))
+
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 4) (nombre_carta "BARCO_MADERA1") (posicion_en_mazo 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 4) (nombre_carta "BARCO_MADERA2") (posicion_en_mazo 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 4) (nombre_carta "BARCO_MADERA3") (posicion_en_mazo 3))
+
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 5) (nombre_carta "BARCO_HIERRO1") (posicion_en_mazo 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 5) (nombre_carta "BARCO_HIERRO2") (posicion_en_mazo 2))
+
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 6) (nombre_carta "BARCO_ACERO1") (posicion_en_mazo 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 6) (nombre_carta "BARCO_ACERO2") (posicion_en_mazo 2))
+
 )
 
 (deffacts hechos_iniciales
@@ -341,9 +383,16 @@
     ;(deseo_coger_recurso "RICARDO" PESCADO)
     ;(deseo_coger_recurso "RICARDO" GANADO)
     ;(fin_actividad_principal "DIEGO")
-    (deseo_comprar_edificio "DIEGO" "CONSTRUCTORA1")
-    (deseo_comprar_edificio "DIEGO" "HORNO DE CARBON VEGETAL")
-    (deseo_vender_carta "DIEGO" "CONSTRUCTORA1")
-    (deseo_comprar_edificio "RICARDO" "CONSTRUCTORA2")
-    (deseo_comprar_edificio "RICARDO" "MUELLE")
+    ;(deseo_comprar_edificio "DIEGO" "CONSTRUCTORA1")
+    ;(deseo_comprar_edificio "DIEGO" "HORNO DE CARBON VEGETAL")
+    ;(deseo_vender_carta "DIEGO" "CONSTRUCTORA1")
+    ;(deseo_comprar_edificio "RICARDO" "CONSTRUCTORA2")
+    ;(deseo_comprar_edificio "RICARDO" "MUELLE")
+
+
+    (BARCO_DISPONIBLE (nombre_barco "BARCO_MADERA1"))
+    (deseo_comprar_barco "DIEGO" "BARCO_MADERA1")
+    (deseo_comprar_barco "RICARDO" "BARCO_MADERA2")
+
+    (deseo_vender_barco "DIEGO" "BARCO_MADERA1")
 )

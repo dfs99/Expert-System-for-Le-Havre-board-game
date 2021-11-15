@@ -11,6 +11,20 @@
     (printout t"La loseta con posición : <" ?pos "> queda visible. " crlf)
 )
 
+
+(defrule ACTUALIZAR_DISPONIBILIDAD_BARCOS
+    (ronda_actual ?nombre_ronda)
+    ; esto falla ¿puede ser por la herencia??
+    ;?barco <- (object (is-a BARCO) (nombre ?nombre_barco)(valor ?)(tipo ?)(coste ?)(uds_comida_genera ?)(capacidad_envio ?))
+    ?introduce_barco <- (object (is-a RONDA_INTRODUCE_BARCO) (nombre_ronda ?nombre_ronda) (nombre_carta ?nombre_barco))
+    =>
+    ; TODO: NO SABEMOS EN Q ORDEN QUEDARÍAN LOS BARCOS DISPONIBLES. problema.!!!!!!!!!!!!!!!!!
+    ; creo que el orden da igual porque al final sólo se puede comprar si es la primera carta del mazo, y los mazos ya están instanciados
+    (assert (BARCO_DISPONIBLE (nombre_barco ?nombre_barco)))
+    (unmake-instance ?introduce_barco)
+)
+
+
 (defrule ACTUALIZAR_MAZO_3
 	(object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion_en_mazo ?))
 	?actualizacion_sobre_carta <- (carta_actualizada ?nombre_carta ?id)
@@ -73,6 +87,44 @@
     (printout t"El jugador: <" ?nombre_jugador "> ha comprado el edificio: <" ?nombre_edificio "> por <" ?valor_edificio "> francos al ayuntamiento." crlf)
 )
 
+;   4-. Comprar barco
+(defrule COMPRAR_BARCO
+    ; Es el turno del jugador
+    ?turno <- (turno ?nombre_jugador)
+    ; Existe el deseo de comprar el barco
+    ?deseo <- (deseo_comprar_barco ?nombre_jugador ?nombre_barco)
+    ; Ha finalizado su actividad principal dentro de su turno.
+    (fin_actividad_principal ?nombre_jugador)
+    ; El barco está disponible
+    ?disponible <- (BARCO_DISPONIBLE (nombre_barco ?nombre_barco))
+    ; El barco es el primero de su mazo
+    ?barco_en_mazo <- (object  (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_barco) (posicion_en_mazo 1))
+    ; El jugador tiene dinero para comprarlo
+    ; Obtiene el coste de comprar el barco
+    (object (is-a BARCO) (nombre ?nombre_barco) (coste ?coste_barco) (valor ?)(uds_comida_genera ?uds_comida_genera)(capacidad_envio ?capacidad_envio_barco))
+    ; Obtiene el dinero del jugador
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_recurso))
+    ; El jugador tiene suficiente dinero
+    (test (>= ?cantidad_recurso ?coste_barco))
+    ; se obtiene al jugador
+    ?jugador <- (object (is-a JUGADOR)(nombre ?nombre_jugador)(num_barcos ?num_barcos)(capacidad_envio ?capacidad_envio_jugador)(demanda_comida_cubierta ?demanda_comida_cubierta))
+    =>
+    ; Modificar el dinero del jugador
+    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?coste_barco)))
+    ; Quitar la carta del mazo
+    (unmake-instance ?barco_en_mazo)
+    ; Asignar el barco al jugador
+    (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_barco))
+    ; Actualiza los valores relacionados con el barco en el jugador
+    (modify-instance ?jugador (num_barcos (+ ?num_barcos 1)) (capacidad_envio (+ ?capacidad_envio_jugador ?capacidad_envio_barco)) (demanda_comida_cubierta (+ ?demanda_comida_cubierta ?uds_comida_genera)))
+    ; Eliminar el deseo de comprar el barco
+    (retract ?deseo)
+    ; Quitar el barco de disponibles
+    (retract ?disponible)
+    ; Generar hecho semáforo para actualizar el orden de las cartas del mazo
+    (assert (actualizar_mazo ?id_mazo))
+)
+
 (defrule COMPRAR_EDIFICIO_AL_MAZO
     ; Se puede comprar en la ronda actual. [en todas las rondas excepto la última.]
     (ronda_actual ?nombre_ronda)
@@ -132,6 +184,32 @@
     (retract ?deseo)
     ; print final
     (printout t"El jugador: <" ?nombre_jugador "> ha vendido el edificio: <" ?nombre_carta "> por <" ?ingreso "> francos." crlf)
+)
+
+(defrule VENDER_BARCO
+    ; Es el turno del jugador
+    ?turno <- (turno ?nombre_jugador)
+    ; Existe el deseo de vender el barco
+    ?deseo <- (deseo_vender_barco ?nombre_jugador ?nombre_barco)
+    ; Ha finalizado su actividad principal dentro de su turno.
+    (fin_actividad_principal ?nombre_jugador)
+    ; El barco es del jugador
+    ?jugador_tiene_barco <- (object (is-a JUGADOR_TIENE_CARTA) (nombre_jugador ?nombre_jugador)(nombre_carta ?nombre_barco))
+    ; Obtiene el valor del barco
+    ?barco <- (object (is-a BARCO)(coste ?coste_barco)(valor ?valor_barco)(uds_comida_genera ?uds_comida_genera)(capacidad_envio ?capacidad_envio_barco))
+    ; Obtiene el dinero del jugador
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_recurso))
+    ; se obtiene al jugador
+    ?jugador <- (object (is-a JUGADOR)(nombre ?nombre_jugador)(num_barcos ?num_barcos)(capacidad_envio ?capacidad_envio_jugador)(demanda_comida_cubierta ?demanda_comida_cubierta))
+    =>
+    ; Elimina el barco del jugador
+    (unmake-instance ?jugador_tiene_barco)
+    ; Actualiza los valores relacionados con el barco en el jugador
+    (modify-instance ?jugador (num_barcos (- ?num_barcos 1)) (capacidad_envio (- ?capacidad_envio_jugador ?capacidad_envio_barco)) (demanda_comida_cubierta (- ?demanda_comida_cubierta ?uds_comida_genera)))
+    ; Actualiza el dinero del jugador
+    (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso (/ ?valor_barco 2))))
+    ; Elimina el deseo
+    (retract ?deseo)
 )
 
 
