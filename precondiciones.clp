@@ -2,8 +2,8 @@
 (definstances instancias_iniciales
     "se llaman igual?"
     ; ====== JUGADORES ========
-    (Diego of JUGADOR (nombre "DIEGO")(deudas 2))
-    (Ricardo of JUGADOR (nombre "RICARDO"))
+    (Diego of JUGADOR (nombre "DIEGO"))
+    (Ricardo of JUGADOR (nombre "RICARDO")(deudas 2))
     ; ([Ayuntamiento] of JUGADOR (nombre TABLERO))
     ; ====== RECURSOS =========
     (franco of RECURSO (nombre FRANCO))
@@ -27,9 +27,9 @@
     (mazo1 of MAZO (id_mazo 1) (numero_cartas_en_mazo 5))
     (mazo2 of MAZO (id_mazo 2) (numero_cartas_en_mazo 5))
     (mazo3 of MAZO (id_mazo 3) (numero_cartas_en_mazo 5))
-    (mazo_barcos_madera of MAZO (id_mazo_4) (numero_cartas_en_mazo 0))
-    (mazo_barcos_hierro of MAZO (id_mazo_5) (numero_cartas_en_mazo 0))
-    (mazo_barcos_acero of MAZO (id_mazo_6) (numero_cartas_en_mazo 0))
+    (mazo_barcos_madera of MAZO (id_mazo 4) (numero_cartas_en_mazo 0))
+    (mazo_barcos_hierro of MAZO (id_mazo 5) (numero_cartas_en_mazo 0))
+    (mazo_barcos_acero of MAZO (id_mazo 6) (numero_cartas_en_mazo 0))
     ; ====== RONDA ======
     (ronda1 of RONDA (nombre_ronda RONDA_1) (coste_comida 4) (hay_cosecha TRUE))
     (ronda2 of RONDA (nombre_ronda RONDA_2) (coste_comida 7) (hay_cosecha TRUE))
@@ -50,23 +50,22 @@
     (loseta5 of LOSETA (posicion 5)(intereses TRUE))
     (loseta6 of LOSETA (posicion 6))
     ; ========= LOSETA TIENE RECURSO ========
-    (of LOSETA_TIENE_RECURSO (posicion 0)tidad 1))
 
     ; POSICION INICIAL  (recurso MADERA) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 0)(recurso MADERA)(cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 0) (recurso GANADO) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 1) (recurso MADERA) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 1) (recurso FRANCO) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 2) (recurso PESCADO) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 2) (recurso ARCILLA) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 3) (recurso HIERRO) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 3) (recurso FRANCO) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 4) (recurso MADERA) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 4) (recurso ARCILLA) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 5) (recurso MADERA) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 5) (recurso PESCADO) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 6) (recurso PESCADO) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 6) (recurso GRANO) (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 0)   (recurso MADERA)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 0)   (recurso GANADO)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 1)   (recurso MADERA)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 1)   (recurso FRANCO)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 2)   (recurso PESCADO)  (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 2)   (recurso ARCILLA)  (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 3)   (recurso HIERRO)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 3)   (recurso FRANCO)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 4)   (recurso MADERA)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 4)   (recurso ARCILLA)  (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 5)   (recurso MADERA)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 5)   (recurso PESCADO)  (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 6)   (recurso PESCADO)  (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 6)   (recurso GRANO)    (cantidad 1))
 
     ; POSICION INICIAL 
     (posicion_diego of JUGADOR_ESTA_EN_LOSETA (posicion 0) (nombre_jugador "DIEGO"))
@@ -92,7 +91,7 @@
     (coque_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso COQUE) (cantidad 0))
     (cuero_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso CUERO) (cantidad 0))
     ; == RICARDO
-    (francos_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso FRANCO) (cantidad 50))
+    (francos_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso FRANCO) (cantidad -4))
     (pescado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO) (cantidad 20))
     (madera_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso MADERA) (cantidad 2))
     (arcilla_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso ARCILLA) (cantidad 2))
