@@ -212,6 +212,20 @@
     (retract ?deseo)
 )
 
+;(defrule PAGAR_DEUDA
+    ; obtiene las deudas del jugador
+   ; ?jugador <- (object (is-a JUGADOR)(nombre_jugador ?nombre)(deudas ?deudas))
+    ; deseo de pagar deudas
+    ; todo: el jugador en una regla estratégica deberá comprobar cuanta deuda quiere pagar.
+    ;?deseo <- (DESEO_PAGAR_DEUDA ?nombre ?cantidad_deuda)
+    ; Obtener los francos del jugador
+    ;?jugador_dinero <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre)(recurso FRANCO) (cantidad ?cantidad_francos))
+    ;(bind cantidad_a_pagar (min (* 5 ?deudas) ?cantidad_deuda)
+    ;=>
+    ;(modify-instance ?jugador_dinero (cantidad (?cantidad_francos ?cantidad_deuda)))
+    ;()
+;)
+
 
 (defrule PASAR_TURNO_Y_RONDA
     ; para cambiar de ronda se tiene que dar la siguiente situación

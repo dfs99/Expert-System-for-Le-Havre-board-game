@@ -2,7 +2,7 @@
 (definstances instancias_iniciales
     "se llaman igual?"
     ; ====== JUGADORES ========
-    (Diego of JUGADOR (nombre "DIEGO"))
+    (Diego of JUGADOR (nombre "DIEGO")(deudas 7))
     (Ricardo of JUGADOR (nombre "RICARDO"))
     ; ([Ayuntamiento] of JUGADOR (nombre TABLERO))
     ; ====== RECURSOS =========
@@ -390,9 +390,12 @@
     ;(deseo_comprar_edificio "RICARDO" "MUELLE")
 
 
-    (BARCO_DISPONIBLE (nombre_barco "BARCO_MADERA1"))
-    (deseo_comprar_barco "DIEGO" "BARCO_MADERA1")
-    (deseo_comprar_barco "RICARDO" "BARCO_MADERA2")
+    ;(BARCO_DISPONIBLE (nombre_barco "BARCO_MADERA1"))
+    ;(deseo_comprar_barco "DIEGO" "BARCO_MADERA1")
+    ;(deseo_comprar_barco "RICARDO" "BARCO_MADERA2")
 
-    (deseo_vender_barco "DIEGO" "BARCO_MADERA1")
+    ;(deseo_vender_barco "DIEGO" "BARCO_MADERA1")
+
+    (DESEO_PAGAR_DEUDA "DIEGO" 5)
+    (DESEO_PAGAR_DEUDA "DIEGO" 2)
 )
