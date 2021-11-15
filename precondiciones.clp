@@ -343,6 +343,7 @@
     ;(fin_actividad_principal "DIEGO")
     (deseo_comprar_edificio "DIEGO" "CONSTRUCTORA1")
     (deseo_comprar_edificio "DIEGO" "HORNO DE CARBON VEGETAL")
+    (deseo_vender_carta "DIEGO" "CONSTRUCTORA1")
     (deseo_comprar_edificio "RICARDO" "CONSTRUCTORA2")
     (deseo_comprar_edificio "RICARDO" "MUELLE")
 )

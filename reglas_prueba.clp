@@ -105,7 +105,34 @@
     (printout t"El jugador: <" ?nombre_jugador "> ha comprado el edificio: <" ?nombre_edificio "> por <" ?valor_edificio "> francos al mazo." crlf)
 )
 
-
+(defrule VENDER_CARTA
+    ; No existe precondición de ronda! 
+    ; Existe un deseo de vender un edificio
+    ?deseo <- (deseo_vender_carta ?nombre_jugador ?nombre_carta)
+    ; Ha finalizado su actividad principal dentro de su turno.
+    (fin_actividad_principal ?nombre_jugador)
+    ; Es el turno del jugador
+    (turno ?nombre_jugador)
+    ; El jugador tiene la carta. 
+    ?edificio_jugador <- (object (is-a JUGADOR_TIENE_CARTA) (nombre_jugador ?nombre_jugador)(nombre_carta ?nombre_carta))
+    ; referencia de la carta para obtener su valor. 
+    ?carta <- (object (is-a CARTA) (nombre ?nombre_carta) (valor ?valor_carta))
+    ; referencia del recurso del jugador.
+    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_recurso))
+    =>
+    ; obtener el beneficio de la venta de la carta.
+    (bind ?ingreso (/ ?valor_carta 2))
+    ; Modificar el dinero del jugador
+    (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso ?ingreso)))
+    ; Asignar edificio al ayuntamiento
+    (assert (EDIFICIO_AYUNTAMIENTO (nombre_edificio ?nombre_carta)))
+    ; Quitarle el edificio al jugador
+    (unmake-instance ?edificio_jugador)
+    ; quitar el deseo.
+    (retract ?deseo)
+    ; print final
+    (printout t"El jugador: <" ?nombre_jugador "> ha vendido el edificio: <" ?nombre_carta "> por <" ?ingreso "> francos." crlf)
+)
 
 
 (defrule PASAR_TURNO_Y_RONDA
