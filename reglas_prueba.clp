@@ -12,19 +12,6 @@
 )
 
 
-(defrule ACTUALIZAR_DISPONIBILIDAD_BARCOS
-    (ronda_actual ?nombre_ronda)
-    ; esto falla ¿puede ser por la herencia??
-    ;?barco <- (object (is-a BARCO) (nombre ?nombre_barco)(valor ?)(tipo ?)(coste ?)(uds_comida_genera ?)(capacidad_envio ?))
-    ?introduce_barco <- (object (is-a RONDA_INTRODUCE_BARCO) (nombre_ronda ?nombre_ronda) (nombre_carta ?nombre_barco))
-    =>
-    ; TODO: NO SABEMOS EN Q ORDEN QUEDARÍAN LOS BARCOS DISPONIBLES. problema.!!!!!!!!!!!!!!!!!
-    ; creo que el orden da igual porque al final sólo se puede comprar si es la primera carta del mazo, y los mazos ya están instanciados
-    (assert (BARCO_DISPONIBLE (nombre_barco ?nombre_barco)))
-    (unmake-instance ?introduce_barco)
-)
-
-
 (defrule ACTUALIZAR_MAZO_3
 	(object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion_en_mazo ?))
 	?actualizacion_sobre_carta <- (carta_actualizada ?nombre_carta ?id)
@@ -212,22 +199,191 @@
     (retract ?deseo)
 )
 
-;(defrule PAGAR_DEUDA
+(defrule PAGAR_INTERESES_FRANCOS
+    ; obtiene el jugador
+    ?jugador <- (object(is-a JUGADOR)(nombre_jugador ?nombre)(deudas ?deudas))
+    ; obtiene los recursos del jugador
+    ?jugador_recursos <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre)(recurso FRANCO)(cantidad ?cantidad_francos))
+    ; obtiene la posición del jugador
+    ?jugador_loseta <- (object (is-a JUGADOR_ESTA_EN_LOSETA)(posicion ?pos)(nombre_jugador ?nombre))
+    ; la loseta tiene pago de intereses
+    ?loseta <- (object (is-a LOSETA)(posicion ?pos)(visibilidad TRUE)(intereses TRUE))
+    ; el jugador tiene deudas 
+    (test (> ?deudas 0))
+    ; el jugador tiene dinero para pagarlo
+    (test (> ?cantidad_francos 0))
+    =>
+    ; restar dinero al jugador
+    (modify-instance ?jugador_recursos (cantidad (- ?cantidad_francos 1)))
+)
+; (defrule PAGAR_INTERESES_ENDEUDANDOSE
+;     ; obtiene el jugador
+;     ?jugador <- (object(is-a JUGADOR)(nombre_jugador ?nombre)(deudas ?deudas))
+;     ; obtiene los recursos del jugador
+;     ?jugador_recursos <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre) (recurso FRANCO)(cantidad ?cantidad_francos))
+;     ; obtiene la posición del jugador
+;     ?jugador_loseta <- (object (is-a JUGADOR_ESTA_EN_LOSETA)(posicion ?pos)(nombre_jugador ?nombre))
+;     ; la loseta tiene pago de intereses
+;     ?loseta <- (object (is-a LOSETA)(posicion ?pos)(visibilidad TRUE)(intereses TRUE))
+;     ; el jugador tiene al menos una deuda.
+;     (test (> ?deudas 0))
+;     ; el jugador NO tiene dinero para pagarlo
+;     (test (< ?cantidad_francos 1))
+;     =>
+;     ; aumentar deuda del jugador en 1
+;     (modify-instance ?jugador (deudas (+ ?deudas 1)))
+;     ; una deuda otorga 4 francos, pero al necesitarla para pagar 
+;     (modify-instance ?jugador_recursos (cantidad (+ ?cantidad_francos 3)))
+    
+; )
+
+(defrule PAGAR_DEUDA
+    ; Para simplificar la ejecución, debe ser el turno del jugador
+    (turno ?nombre_jugador)
+    ; Además, simplificamos para que haya terminado la actividad principal
+    (fin_actividad_principal ?nombre_jugador)
     ; obtiene las deudas del jugador
-   ; ?jugador <- (object (is-a JUGADOR)(nombre_jugador ?nombre)(deudas ?deudas))
+    ?jugador <- (object (is-a JUGADOR) (nombre ?nombre_jugador) (deudas ?numero_deudas))
     ; deseo de pagar deudas
     ; todo: el jugador en una regla estratégica deberá comprobar cuanta deuda quiere pagar.
-    ;?deseo <- (DESEO_PAGAR_DEUDA ?nombre ?cantidad_deuda)
+    ?deseo <- (deseo_pagar_deuda ?nombre_jugador ?numero_deudas_deseo)
     ; Obtener los francos del jugador
-    ;?jugador_dinero <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre)(recurso FRANCO) (cantidad ?cantidad_francos))
-    ;(bind cantidad_a_pagar (min (* 5 ?deudas) ?cantidad_deuda)
-    ;=>
-    ;(modify-instance ?jugador_dinero (cantidad (?cantidad_francos ?cantidad_deuda)))
-    ;()
-;)
+    ?jugador_dinero <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_francos))
+    ;(bind cantidad_a_pagar (min (* 5 ?deudas) ?cantidad_deuda))
+    (test (> ?cantidad_francos (* 5 ?numero_deudas_deseo)))
+    =>
+    (modify-instance ?jugador_dinero (cantidad (- ?cantidad_francos (* 5 ?numero_deudas_deseo))))
+    (modify-instance ?jugador (deudas (- ?numero_deudas ?numero_deudas_deseo)))
+    (retract ?deseo)
+    (printout t"El jugador <" ?nombre_jugador "> ha pagado <" ?numero_deudas_deseo "> por un valor de <" (* 5 ?numero_deudas_deseo) ">." crlf)
+)
 
+(defrule PAGAR_DEMANDA_COMIDA
+    ; todo: asumir que el deseo introduce las cantidades correctamente.
+    ; semáforo cambiar ronda
+    (cambiar_ronda TRUE)
+    ; obtener los datos del jugador.
+    (object (is-a JUGADOR) (nombre ?nombre_jugador) (demanda_comida_cubierta ?cantidad_comida_cubierta))
+    ; obtener los datos de la ronda.
+    (ronda_actual ?ronda)
+    (object (is-a RONDA) (nombre_ronda ?ronda) (coste_comida ?coste_ronda))
+    ; deseo de pagar la demanda de la ronda.
+    ?deseo <- (deseo_pagar_demanda ?nombre_jugador ?deseo_pagar_pescado ?deseo_pagar_pescado_ahumado ?deseo_pagar_pan ?deseo_pagar_carne ?deseo_pagar_francos)
+    ; obtener los recursos del jugador.
+    ?jugador_pescado <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso PESCADO) (cantidad ?cantidad_pescado))
+    ?jugador_pescado_ahumado <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso PESCADO_AHUMADO) (cantidad ?cantidad_pescado_ahumado))
+    ?jugador_pan <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso PAN) (cantidad ?cantidad_pan))
+    ?jugador_carne <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARNE) (cantidad ?cantidad_carne))
+    ?jugador_francos <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_francos))
+    ; el jugador aún no ha pagado
+    (not (demanda_pagada ?nombre_jugador ?ronda))
+    (test (< ?coste_ronda (+ ?cantidad_comida_cubierta (* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2)  (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1) )))
+    =>
+    (bind ?total_recursos_para_pagar (+ ?cantidad_comida_cubierta (* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2)  (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1) ))
+    (assert (demanda_pagada ?nombre_jugador ?ronda))
+    (modify-instance ?jugador_pescado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado)))
+    (modify-instance ?jugador_pescado_ahumado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado_ahumado)))
+    (modify-instance ?jugador_pan (cantidad (- ?cantidad_pan ?deseo_pagar_pan)))
+    (modify-instance ?jugador_carne (cantidad (- ?cantidad_carne ?deseo_pagar_carne)))
+    (modify-instance ?jugador_francos (cantidad (- ?cantidad_francos ?deseo_pagar_francos)))
+    (retract ?deseo)
+    (printout t"Coste de ronda: <" ?coste_ronda "> y recursos disponibles jugador: <" ?total_recursos_para_pagar">." crlf)
+    (printout t"El jugador <" ?nombre_jugador "> ha pagado la demanda de comida de la ronda <" ?ronda ">." crlf)
+)
 
-(defrule PASAR_TURNO_Y_RONDA
+(defrule AÑADIR_GANADO_POR_COSECHA
+    (ronda_actual ?nombre_ronda_actual)
+    ; precondiciones de ejecución: se ejecutará por cada jugador que se le añada algo.
+    (object (is-a RONDA) (nombre_ronda ?nombre_ronda_actual) (hay_cosecha TRUE))
+    ; cuando ambos jugadores hayan pagado su demanda, se añadirá la cosecha
+    (object (is-a JUGADOR) (nombre ?nombre_jugador1) )
+    (object (is-a JUGADOR) (nombre ?nombre_jugador2) )
+    (test (neq ?nombre_jugador1 ?nombre_jugador2))
+    (demanda_pagada ?nombre_jugador1 ?nombre_ronda_actual)
+    (demanda_pagada ?nombre_jugador2 ?nombre_ronda_actual)
+    ; no haya pillado cosecha
+    (not (cosechado ?nombre_jugador1 ?nombre_ronda_actual GANADO))
+    ; recursos jugador.  
+    ?ganado_jugador1 <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador1) (recurso GANADO) (cantidad ?cantidad_ganado))
+    ; comprobar cantidades.
+    (test (> ?cantidad_ganado 1))
+    =>
+    (modify-instance ?ganado_jugador1 (cantidad (+ ?cantidad_ganado 1)))
+    ; bloquear que se ejecute varias veces.
+    (assert (cosechado ?nombre_jugador1 ?nombre_ronda_actual GANADO))
+    (printout t"El jugador <" ?nombre_jugador1 "> ha recibido de la cosecha +1 GANADO." crlf)
+)
+
+(defrule AÑADIR_GRANO_POR_COSECHA
+    (ronda_actual ?nombre_ronda_actual)
+    ; precondiciones de ejecución: se ejecutará por cada jugador que se le añada algo.
+    (object (is-a RONDA) (nombre_ronda ?nombre_ronda_actual) (hay_cosecha TRUE))
+    ; cuando ambos jugadores hayan pagado su demanda, se añadirá la cosecha
+    (object (is-a JUGADOR) (nombre ?nombre_jugador1) )
+    (object (is-a JUGADOR) (nombre ?nombre_jugador2) )
+    (demanda_pagada ?nombre_jugador1 ?nombre_ronda_actual)
+    (demanda_pagada ?nombre_jugador2 ?nombre_ronda_actual)
+    (test (neq ?nombre_jugador1 ?nombre_jugador2))
+    ; no haya pillado cosecha
+    (not (cosechado ?nombre_jugador1 ?nombre_ronda_actual GRANO))
+    ; recursos jugador.  
+    ?grano_jugador1 <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador1) (recurso GRANO) (cantidad ?cantidad_grano))
+    ; comprobar cantidades.
+    (test (> ?cantidad_grano 0))
+    =>
+    (modify-instance ?grano_jugador1 (cantidad (+ ?cantidad_grano 1)))
+    (assert (cosechado ?nombre_jugador1 ?nombre_ronda_actual GRANO))
+    (printout t"El jugador <" ?nombre_jugador1 "> ha recibido de la cosecha +1 GRANO." crlf)
+)
+
+; (defrule AÑADIR_CARTA_AYUNTO_FINAL_RONDA
+;     ; encontrarse en el cambio de ronda.
+;     (cambiar_ronda TRUE)
+;     ; ronda actual
+;     (ronda_actual ?nombre_ronda_actual)
+;     ; la ronda actual asigna un edificio al ayunto.
+;     ?asignacion_edificio <- (object (is-a RONDA_ASIGNA_EDIFICIO) (nombre_ronda ?nombre_ronda_actual) (id_mazo ?id_mazo))
+;     ; el mazo tiene que tener más de 1 carta.
+;     ?ref_mazo <- (object (is-a MAZO) (id_mazo ?id_mazo) (numero_cartas_en_mazo ?num_cartas_en_mazo))
+;     ; seleccionar la primera carta del mazo.
+;     ?carta_en_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_edificio) (posicion_en_mazo 1))
+    
+;     =>
+;     (unmake-instance ?carta_en_mazo)
+;     ; indicar que el edificio se encuentra ahora en el ayunto.
+;     (assert (EDIFICIO_AYUNTAMIENTO ?nombre_edificio))
+;     ; Generar hecho semáforo para actualizar el orden de las cartas del mazo
+;     (assert (actualizar_mazo ?id_mazo))
+; )
+
+(defrule PASAR_RONDA 
+    ; Semáforo pasar ronda.
+    ?cambiar <- (cambiar_ronda TRUE)
+    ; ambos jugadores han pagado la comida.
+    (object (is-a JUGADOR) (nombre ?nombre_jugador1))
+    (object (is-a JUGADOR) (nombre ?nombre_jugador2))
+    (test (neq ?nombre_jugador1 ?nombre_jugador2))
+    ?demanda_pagada_j1 <- (demanda_pagada ?nombre_jugador1 ?nombre_ronda_actual)
+    ?demanda_pagada_j2 <- (demanda_pagada ?nombre_jugador2 ?nombre_ronda_actual)
+    ; selección de siguiente ronda
+    ?ronda_actual <- (ronda_actual ?nombre_ronda_actual)
+    ?ronda_siguiente <- (object (is-a RONDA) (nombre_ronda ?nombre_ronda_siguiente))
+    (siguiente_ronda ?nombre_ronda_actual ?nombre_ronda_siguiente)
+    ; introducir barco
+    ?introduce_barco <- (object (is-a RONDA_INTRODUCE_BARCO) (nombre_ronda ?nombre_ronda_actual) (nombre_carta ?nombre_barco))
+    =>
+    (retract ?ronda_actual)
+    (assert (ronda_actual ?nombre_ronda_siguiente))
+    (retract ?cambiar)
+    (retract ?demanda_pagada_j1)
+    (retract ?demanda_pagada_j2)
+    (assert (BARCO_DISPONIBLE (nombre_barco ?nombre_barco)))
+    (unmake-instance ?introduce_barco)
+    (printout t"Nuevo Barco disponible para la nueva ronda: <" ?nombre_barco ">." crlf)
+    (printout t"Se ha cambiado de Ronda: <"?nombre_ronda_actual "> a Ronda: <"?nombre_ronda_siguiente">." crlf)
+)
+
+(defrule PASAR_TURNO_AL_FINAL_RONDA
     ; para cambiar de ronda se tiene que dar la siguiente situación
     ;1| |1| |1|2|1|   y turno de 2
     ;0|1|2|3|4|5|6|0
@@ -242,10 +398,7 @@
     ; Ha finalizado su actividad principal dentro de su turno.
     ?turno_finalizado <- (fin_actividad_principal ?nombre_jugador1)
     ?turno_j1 <- (turno ?nombre_jugador1)
-    ; selección de siguiente ronda
-    ?ronda_actual <- (ronda_actual ?nombre_ronda_actual)
-    ?ronda_siguiente <- (object (is-a RONDA) (nombre_ronda ?nombre_ronda_siguiente))
-    (siguiente_ronda ?nombre_ronda_actual ?nombre_ronda_siguiente)
+
     ; eliminar el semaforo de la restriccion de añadir recurso a la oferta.
     ?semaforo <- (recursos_añadidos_loseta ?)
     =>
@@ -260,16 +413,17 @@
     (modify-instance ?posicion_jugador2 (posicion (mod ?nueva_posicion 7)))
     ; eliminar semaforo
     (retract ?semaforo)
-    (retract ?ronda_actual)
-    (assert (ronda_actual ?nombre_ronda_siguiente))
+    ; añadir semaforo
+    (assert (cambiar_ronda TRUE))
     
-    (retract ?semaforo)
     (printout t"=====================================================================================================" crlf)
     (printout t"El jugador: <" ?nombre_jugador1 "> ha finalizado su turno. " crlf)
     (printout t"El jugador: <" ?nombre_jugador2 "> ha empezado su turno en la posicion <" (mod ?nueva_posicion 7) ">. " crlf)
 
-    (printout t"Cambio de ronda: <"?nombre_ronda_actual "> ==> <"?nombre_ronda_siguiente">." crlf)
+    (printout t"Produciendose el Cambio de Ronda..." crlf)
+    ;(printout t"Cambiando de Ronda: <"?nombre_ronda_actual "> a Ronda: <"?nombre_ronda_siguiente">..." crlf)
 )
+
 
 (defrule PASAR_TURNO
     ; pensar si debería haber alguna precondición o si simplemente por estar 
@@ -311,6 +465,8 @@
 
 
 (defrule AÑADIR_RECURSOS_OFERTA
+    ; Esperar a que termine el proceso de ejecución de cambio de ronda.
+    (not (cambiar_ronda TRUE))
     ; no añadir dos veces 
     (not (recursos_añadidos_loseta ?pos))
     ; obtiene la loseta con visibilidad TRUE
@@ -366,6 +522,8 @@
 
 
 (defrule GENERAR_DESEO
+    ; Esperar a que termine el proceso de ejecución de cambio de ronda.
+    (not (cambiar_ronda TRUE))
     (turno ?jugador)
     (not (deseo_coger_recurso ?jugador ?recurso))
     (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))

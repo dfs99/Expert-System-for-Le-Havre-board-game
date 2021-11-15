@@ -2,7 +2,7 @@
 (definstances instancias_iniciales
     "se llaman igual?"
     ; ====== JUGADORES ========
-    (Diego of JUGADOR (nombre "DIEGO")(deudas 7))
+    (Diego of JUGADOR (nombre "DIEGO")(deudas 2))
     (Ricardo of JUGADOR (nombre "RICARDO"))
     ; ([Ayuntamiento] of JUGADOR (nombre TABLERO))
     ; ====== RECURSOS =========
@@ -24,12 +24,12 @@
     (coque of RECURSO (nombre COQUE))
     (cuero of RECURSO (nombre CUERO))
     ; ====== MAZOS ======
-    ;   ([mazo1] of MAZO (id_mazo 1))
-    ;   ([mazo2] of MAZO (id_mazo 2))
-    ;   ([mazo3] of MAZO (id_mazo 3))
-    ;   ([mazo_barcos_madera] of MAZO (id_mazo_4))
-    ;   ([mazo_barcos_hierro] of MAZO (id_mazo_5))
-    ;   ([mazo_barcos_acero] of MAZO (id_mazo_6))
+    (mazo1 of MAZO (id_mazo 1) (numero_cartas_en_mazo 5))
+    (mazo2 of MAZO (id_mazo 2) (numero_cartas_en_mazo 5))
+    (mazo3 of MAZO (id_mazo 3) (numero_cartas_en_mazo 5))
+    (mazo_barcos_madera of MAZO (id_mazo_4) (numero_cartas_en_mazo 0))
+    (mazo_barcos_hierro of MAZO (id_mazo_5) (numero_cartas_en_mazo 0))
+    (mazo_barcos_acero of MAZO (id_mazo_6) (numero_cartas_en_mazo 0))
     ; ====== RONDA ======
     (ronda1 of RONDA (nombre_ronda RONDA_1) (coste_comida 4) (hay_cosecha TRUE))
     (ronda2 of RONDA (nombre_ronda RONDA_2) (coste_comida 7) (hay_cosecha TRUE))
@@ -47,10 +47,13 @@
     (loseta2 of LOSETA (posicion 2))
     (loseta3 of LOSETA (posicion 3))
     (loseta4 of LOSETA (posicion 4))
-    (loseta5 of LOSETA (posicion 5))
+    (loseta5 of LOSETA (posicion 5)(intereses TRUE))
     (loseta6 of LOSETA (posicion 6))
     ; ========= LOSETA TIENE RECURSO ========
-    (of LOSETA_TIENE_RECURSO (posicion 0) (recurso MADERA) (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 0)tidad 1))
+
+    ; POSICION INICIAL  (recurso MADERA) (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 0)(recurso MADERA)(cantidad 1))
     (of LOSETA_TIENE_RECURSO (posicion 0) (recurso GANADO) (cantidad 1))
     (of LOSETA_TIENE_RECURSO (posicion 1) (recurso MADERA) (cantidad 1))
     (of LOSETA_TIENE_RECURSO (posicion 1) (recurso FRANCO) (cantidad 1))
@@ -72,12 +75,12 @@
     ; ========= RECURSOS INICIALES DE LOS JUGADORES =========
     ; == DIEGO
     (francos_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso FRANCO) (cantidad 50))
-    (pescado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PESCADO) (cantidad 2))
+    (pescado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PESCADO) (cantidad 20))
     (madera_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso MADERA) (cantidad 2))
     (arcilla_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso ARCILLA) (cantidad 2))
     (hierro_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso HIERRO) (cantidad 2))
-    (grano_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso GRANO) (cantidad 0))
-    (ganado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso GANADO) (cantidad 1))
+    (grano_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso GRANO) (cantidad 1))
+    (ganado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso GANADO) (cantidad 0))
     (carbon_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso CARBON) (cantidad 2))
     (piel_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PIEL) (cantidad 2))
     (pescado_ahumado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PESCADO_AHUMADO) (cantidad 0))
@@ -90,7 +93,7 @@
     (cuero_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso CUERO) (cantidad 0))
     ; == RICARDO
     (francos_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso FRANCO) (cantidad 50))
-    (pescado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO) (cantidad 2))
+    (pescado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO) (cantidad 20))
     (madera_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso MADERA) (cantidad 2))
     (arcilla_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso ARCILLA) (cantidad 2))
     (hierro_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso HIERRO) (cantidad 2))
@@ -310,14 +313,14 @@
     (of CARTA (nombre "BARCO_LUJOSO") (valor 30))
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_LUJOSO") (cantidad_acero 3))
         ; Ronda introduce barco al final de la ronda.
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_2) (nombre_carta "BARCO_MADERA1"))
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_3) (nombre_carta "BARCO_MADERA2"))
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_4) (nombre_carta "BARCO_MADERA3"))
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_5) (nombre_carta "BARCO_HIERRO1"))
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_6) (nombre_carta "BARCO_HIERRO2"))
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_7) (nombre_carta "BARCO_ACERO1"))
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_8) (nombre_carta "BARCO_ACERO2"))
-    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_EXTRA_FINAL) (nombre_carta "BARCO_LUJOSO"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_1) (nombre_carta "BARCO_MADERA1"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_2) (nombre_carta "BARCO_MADERA2"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_3) (nombre_carta "BARCO_MADERA3"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_4) (nombre_carta "BARCO_HIERRO1"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_5) (nombre_carta "BARCO_HIERRO2"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_6) (nombre_carta "BARCO_ACERO1"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_7) (nombre_carta "BARCO_ACERO2"))
+    (of RONDA_INTRODUCE_BARCO (nombre_ronda RONDA_8) (nombre_carta "BARCO_LUJOSO"))
 
     (of CARTA_PERTENECE_A_MAZO (id_mazo 4) (nombre_carta "BARCO_MADERA1") (posicion_en_mazo 1))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 4) (nombre_carta "BARCO_MADERA2") (posicion_en_mazo 2))
@@ -328,6 +331,12 @@
 
     (of CARTA_PERTENECE_A_MAZO (id_mazo 6) (nombre_carta "BARCO_ACERO1") (posicion_en_mazo 1))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 6) (nombre_carta "BARCO_ACERO2") (posicion_en_mazo 2))
+
+    ; Ronda introduce primer edificio del mazo aleatoriamente.
+    (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_1) (id_mazo 1))
+    (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_3) (id_mazo 2))
+    (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_5) (id_mazo 3))
+    (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_7) (id_mazo 1))
 
 )
 
@@ -395,7 +404,10 @@
     ;(deseo_comprar_barco "RICARDO" "BARCO_MADERA2")
 
     ;(deseo_vender_barco "DIEGO" "BARCO_MADERA1")
+    ; pagar con pescado
+    (deseo_pagar_demanda "DIEGO" 4 0 0 0 0)
+    (deseo_pagar_demanda "RICARDO" 4 0 0 0 0)
 
-    (DESEO_PAGAR_DEUDA "DIEGO" 5)
-    (DESEO_PAGAR_DEUDA "DIEGO" 2)
+    ;(deseo_pagar_deuda "DIEGO" 5)
+    ;(deseo_pagar_deuda "DIEGO" 2)
 )

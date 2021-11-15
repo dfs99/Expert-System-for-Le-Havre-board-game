@@ -46,6 +46,12 @@
         (allowed-values PESCADOR MARTILLO) (access initialize-only) (create-accessor read-write))
 )
 
+(defclass MAZO
+    (is-a USER)
+    (slot id_mazo (type INTEGER) (access read-write) (create-accessor read-write))
+    (slot numero_cartas_en_mazo (type INTEGER) (access read-write) (create-accessor read-write))
+)
+
 ; OK, cuidado, los access y create-accesor solo en clases!
 ; default none implica que hay q rellenar el campo obligatoriamente. 
 (deftemplate OFERTA_RECURSO
@@ -93,7 +99,8 @@
         (allowed-values RONDA_1 RONDA_2 RONDA_3 RONDA_4 RONDA_5 RONDA_6 RONDA_7 RONDA_8 RONDA_EXTRA_FINAL)
         (access initialize-only) (create-accessor read-write))
     (slot coste_comida (type INTEGER) (access initialize-only) (create-accessor read-write))
-    (slot hay_cosecha (type SYMBOL) (allowed-values TRUE, FALSE) (access initialize-only) (create-accessor read-write))
+    ; todo: cambiado para generalizar una regla.
+    (slot hay_cosecha (type SYMBOL) (allowed-values TRUE FALSE) (access initialize-only) (create-accessor read-write))
 )
 
 ; Validada sintácticamente en CLIPS.
@@ -237,7 +244,9 @@
 ; el id del mazo ya está todo representado. 
 (defclass RONDA_ASIGNA_EDIFICIO
     (is-a USER)
-    (slot nombre_ronda (type SYMBOL))
+    (slot nombre_ronda (type SYMBOL)
+    (allowed-values RONDA_1 RONDA_3 RONDA_5 RONDA_7)
+        (access initialize-only) (create-accessor read-write))
     (slot id_mazo (type INTEGER) (access initialize-only) (create-accessor read-write))
 )
 

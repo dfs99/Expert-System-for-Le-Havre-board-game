@@ -1199,25 +1199,36 @@
 )
 ; 12-. Pagar comida final ronda (se pueden endeudar)
 ; 12A-. El jugador tiene suficientes recursos para pagar la comida
-(defrule PAGAR_COMIDA_CON_RECURSOS
-    ; hecho semáforo para pagar comida
-    (PAGAR_COMIDA (nombre_jugador ?nombre) (ronda ?ronda))
-    ; deseo de pagar la oferta de la ronda.
-    (deseo_pagar_demanda ?nombre PESCADO ?deseo_pagar_pescado PESCADO_AHUMADO ?deseo_pagar_pescado_ahumado PAN ?deseo_pagar_pan CARNE ?deseo_pagar_carne FRANCOS ?deseo_pagar_francos)
-    ?ronda <- (object (is-a RONDA) (nombre_ronda ?ronda) (coste_comida ?coste_ronda) (hay_cosecha ?))
-    ?jugador_pescado <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso PESCADO) (cantidad ?cantidad_pescado))
-    ?jugador_pescado_ahumado <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso PESCADO_AHUMADO) (cantidad ?cantidad_pescado_ahumado))
-    ?jugador_pan <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso PAN) (cantidad ?cantidad_pan))
-    ?jugador_carne <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso CARNE) (cantidad ?cantidad_carne))
-    ?jugador_francos <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre) (recurso FRANCOS) (cantidad ?cantidad_francos))
-    ; se puede hacer un sumatorio de una serie de productos? canditad_recurso*uds_proporciona
-    test(>= =(+ =(* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2) (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1)) ?coste_ronda)
- =>
+(defrule PAGAR_COMIDA
+    ; todo: asumir que el deseo introduce las cantidades correctamente.
+    ; semáforo cambiar ronda
+    (cambiar_ronda TRUE)
+    ; el jugador aún no ha pagado
+    (not (demanda_pagada ?nombre_jugador ?ronda))
+    ; obtener los datos del jugador.
+    (object (is-a JUGADOR) (nombre ?nombre_jugador) (demanda_comida_cubierta ?cantidad_comida_cubierta))
+    ; obtener los datos de la ronda.
+    (object (is-a RONDA) (nombre_ronda ?ronda) (coste_comida ?coste_ronda))
+    ; deseo de pagar la demanda de la ronda.
+    ?deseo <- (deseo_pagar_demanda ?nombre_jugador ?deseo_pagar_pescado ?deseo_pagar_pescado_ahumado ?deseo_pagar_pan ?deseo_pagar_carne ?deseo_pagar_francos)
+    ; obtener los recursos del jugador.
+    ?jugador_pescado <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso PESCADO) (cantidad ?cantidad_pescado))
+    ?jugador_pescado_ahumado <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso PESCADO_AHUMADO) (cantidad ?cantidad_pescado_ahumado))
+    ?jugador_pan <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso PAN) (cantidad ?cantidad_pan))
+    ?jugador_carne <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARNE) (cantidad ?cantidad_carne))
+    ?jugador_francos <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_francos))
+    
+    (test (< ?coste_ronda (+ ?cantidad_comida_cubierta (* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2)  (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1) )))
+    
+    =>
+    (assert (demanda_pagada ?nombre_jugador ?ronda))
     (modify-instance ?jugador_pescado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado)))
     (modify-instance ?jugador_pescado_ahumado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado_ahumado)))
     (modify-instance ?jugador_pan (cantidad (- ?cantidad_pan ?deseo_pagar_pan)))
     (modify-instance ?jugador_carne (cantidad (- ?cantidad_carne ?deseo_pagar_carne)))
     (modify-instance ?jugador_francos (cantidad (- ?cantidad_francos ?deseo_pagar_francos)))
+    (retract ?deseo)
+    (printout t"El jugador <" ?nombre_jugador "> ha pagado la demanda de comida de la ronda <" ?ronda ">." crlf)
  )
 
  (defrule PAGAR_COMIDA_CON_DEUDA
