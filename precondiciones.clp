@@ -73,8 +73,8 @@
 
     ; ========= RECURSOS INICIALES DE LOS JUGADORES =========
     ; == DIEGO
-    (francos_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso FRANCO) (cantidad 50))
-    (pescado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PESCADO) (cantidad 20))
+    (francos_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso FRANCO) (cantidad 0))
+    (pescado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PESCADO) (cantidad -2))
     (madera_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso MADERA) (cantidad 2))
     (arcilla_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso ARCILLA) (cantidad 2))
     (hierro_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso HIERRO) (cantidad 2))
@@ -91,8 +91,8 @@
     (coque_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso COQUE) (cantidad 0))
     (cuero_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso CUERO) (cantidad 0))
     ; == RICARDO
-    (francos_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso FRANCO) (cantidad -4))
-    (pescado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO) (cantidad 20))
+    (francos_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso FRANCO) (cantidad 0))
+    (pescado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO) (cantidad 0))
     (madera_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso MADERA) (cantidad 2))
     (arcilla_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso ARCILLA) (cantidad 2))
     (hierro_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso HIERRO) (cantidad 2))
@@ -404,8 +404,8 @@
 
     ;(deseo_vender_barco "DIEGO" "BARCO_MADERA1")
     ; pagar con pescado
-    (deseo_pagar_demanda "DIEGO" 4 0 0 0 0)
-    (deseo_pagar_demanda "RICARDO" 4 0 0 0 0)
+    (deseo_pagar_demanda "DIEGO" 2 0 0 0 0)
+    (deseo_pagar_demanda "RICARDO" 1 0 0 0 3)
 
     ;(deseo_pagar_deuda "DIEGO" 5)
     ;(deseo_pagar_deuda "DIEGO" 2)

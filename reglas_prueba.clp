@@ -330,7 +330,7 @@
     ;(assert (demanda_pagada ?nombre_jugador ?ronda))
     
     (modify-instance ?jugador_pescado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado)))
-    (modify-instance ?jugador_pescado_ahumado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado_ahumado)))
+    (modify-instance ?jugador_pescado_ahumado (cantidad (- ?cantidad_pescado_ahumado ?deseo_pagar_pescado_ahumado)))
     (modify-instance ?jugador_pan (cantidad (- ?cantidad_pan ?deseo_pagar_pan)))
     (modify-instance ?jugador_carne (cantidad (- ?cantidad_carne ?deseo_pagar_carne)))
     (modify-instance ?jugador_francos (cantidad (- ?cantidad_francos ?deseo_pagar_francos)))
@@ -341,7 +341,7 @@
     ; eliminar deseo.
     (retract ?deseo)
     (printout t"Coste de ronda: <" ?coste_ronda "> y recursos disponibles jugador: <" ?total_recursos_para_pagar">." crlf)
-    (printout t"El jugador <" ?nombre_jugador "> ha pagado la demanda de comida de la ronda <" ?ronda ">." crlf)
+    (printout t"El jugador <" ?nombre_jugador "> ha pagado la demanda de comida de la ronda <" ?ronda ">. Le queda por pagar <" (- ?cantidad_queda_por_pagar ?total_recursos_para_pagar)"> unidad(es)." crlf)
 )
 
 ; comprobar
@@ -372,6 +372,8 @@
     (modify-instance ?jugador (deudas (+ ?deudas ?deudas_a_obtener)))
     (modify-instance ?jugador_francos (cantidad (- (* ?deudas_a_obtener 4) ?cantidad_queda_por_pagar)))
     (retract ?comida_restante)
+
+    (printout t"<"?nombre_jugador"> ha tomado <"?deudas_a_obtener"> deuda(s) para poder pagar <"?cantidad_queda_por_pagar"> unidad(es) de comida demandada restante(s)." crlf)
 )
 
 (defrule AÑADIR_GANADO_POR_COSECHA
