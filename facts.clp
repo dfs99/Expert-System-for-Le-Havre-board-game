@@ -61,8 +61,8 @@
 ; INSTANCIAS
 (definstances situacion_inicial
     ; ====== JUGADORES ========
-    (Diego of JUGADOR (nombre "DIEGO"))
-    (Ricardo of JUGADOR (nombre "RICARDO"))
+    (Diego of JUGADOR (nombre "DIEGO")(num_barcos 1)(capacidad_envio 2)(demanda_comida_cubierta 4))
+    (Ricardo of JUGADOR (nombre "RICARDO")(num_barcos 1)(capacidad_envio 2)(demanda_comida_cubierta 4))
     ; ([Ayuntamiento] of JUGADOR (nombre TABLERO))
     ; ====== RECURSOS =========
     (franco of RECURSO (nombre FRANCO))
@@ -161,6 +161,9 @@
     (coque_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso COQUE) (cantidad 0))
     (cuero_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso CUERO) (cantidad 0))
 
+    ; BARCOS INICIALES
+    (barco_inicial1 of JUGADOR_TIENE_CARTA (nombre_jugador "DIEGO")(nombre_carta "BARCO_MADERA_INICIAL1"))
+    (barco_inicial1 of JUGADOR_TIENE_CARTA (nombre_jugador "RICARDO")(nombre_carta "BARCO_MADERA_INICIAL2"))
     ; ======= BONUS ========
     (bonus_pescador of BONUS (nombre PESCADOR))
     (bonus_martillo of BONUS (nombre MARTILLO))
@@ -335,6 +338,13 @@
 
     ;=================================================================
     ; BARCOS 
+    ; Barcos iniciales de los jugadores
+    (of BARCO (nombre "BARCO_MADERA_INICIAL1")(valor 2)(coste 14)(comida_genera 4)(capacidad_envio 2))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_MADERA_INICIAL1")(cantidad_madera 5))
+
+    (of BARCO (nombre "BARCO_MADERA_INICIAL2")(valor 2)(coste 14)(comida_genera 4)(capacidad_envio 2))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_MADERA_INICIAL2")(cantidad_madera 5))
+    ; Barcos en los mazos
     (of BARCO (nombre "BARCO_MADERA1") (valor 4) (coste 14) (uds_comida_genera 4) (capacidad_envio 2))
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_MADERA1") (cantidad_madera 5))
     (of BARCO (nombre "BARCO_MADERA2") (valor 6) (coste 14) (uds_comida_genera 4) (capacidad_envio 2))
