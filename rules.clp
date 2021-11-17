@@ -464,319 +464,319 @@
 ;       =>
 ;       añadir recursos al jugador
 
-(defrule EDIFICIO_GENERA_RECURSO_CASO1
-    ;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
-    ;      0               1              1        0        (pescaderia, arcilla, colliery [* máximo 1 ud con bonuses])
-    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
-    ; el jugador no ha usado anteriormente el edificio
-    ;(not (edificio_usado ?nombre_edificio ?nombre_jugador))
-    ;(edificio_usado "" diego)
+; (defrule EDIFICIO_GENERA_RECURSO_CASO1
+;     ;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
+;     ;      0               1              1        0        (pescaderia, arcilla, colliery [* máximo 1 ud con bonuses])
+;     (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+;     ; el jugador no ha usado anteriormente el edificio
+;     ;(not (edificio_usado ?nombre_edificio ?nombre_jugador))
+;     ;(edificio_usado "" diego)
     
-    ; el jugador no ha usado anteriormente el edificio
-    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
-    (test (neq ?nombre_edificio ?ed))
+;     ; el jugador no ha usado anteriormente el edificio
+;     ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+;     (test (neq ?nombre_edificio ?ed))
     
-    (turno ?nombre_jugador)
-    (not (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?) (cantidad_maxima ?)))
-    (EDIFICIO_OUTPUT (nombre_carta ?nombre_edificio)(recurso ?recurso)(cantidad_min_generada_por_unidad ?cantidad_output))
-    ; obtener el tipo de bonus de output de la carta
-    (object (is-a CARTA_OUTPUT_BONUS)(nombre_carta ?nombre_edificio)(bonus ?tipo_bonus) (cantidad_maxima_permitida ?cantidad_max_permitida)
-    ; obtener los bonus del mismo tipo que el output que tiene el jugador
-    (object (is-a) JUGADOR_TIENE_BONUS (nombre_jugador ?nombre_jugador)(bonus ?tipo_bonus)(cantidad ?cantidad_bonus))
-    ; obtener los recursos del jugador que otorga el edificio
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador)(recurso ?recurso)(cantidad ?cantidad_recurso))
-    (bind ?cantidad_proporciona_bonus =(min ?cantidad_bonus ?cantidad_max_permitida))
-    =>
-    ; añadir recursos al jugador 
-    (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso ( + ?cantidad_output ?cantidad_proporciona_bonus))))
-    ; Ha finalizado su actividad principal dentro de su turno.
-    (assert (fin_actividad_principal ?nombre_jugador))
-    (printout t"El jugador: <" ?nombre_jugador "> ha generado en el edificio: <" ?nombre_edificio "> un total de <" =( + ?cantidad_output ?cantidad_proporciona_bonus) "> recursos de <" ?recurso ">. Los cuales <" ?cantidad_output "> son por entrar y <" ?cantidad_proporciona_bonus "> por los bonus que tiene." crlf)
-    ; flag para no permitir usar el mismo edificio dos veces.
-    (retract ?ha_usado_edificio)
-    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
-)
+;     (turno ?nombre_jugador)
+;     (not (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?) (cantidad_maxima ?)))
+;     (EDIFICIO_OUTPUT (nombre_carta ?nombre_edificio)(recurso ?recurso)(cantidad_min_generada_por_unidad ?cantidad_output))
+;     ; obtener el tipo de bonus de output de la carta
+;     (object (is-a CARTA_OUTPUT_BONUS)(nombre_carta ?nombre_edificio)(bonus ?tipo_bonus) (cantidad_maxima_permitida ?cantidad_max_permitida)
+;     ; obtener los bonus del mismo tipo que el output que tiene el jugador
+;     (object (is-a) JUGADOR_TIENE_BONUS (nombre_jugador ?nombre_jugador)(bonus ?tipo_bonus)(cantidad ?cantidad_bonus))
+;     ; obtener los recursos del jugador que otorga el edificio
+;     ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador)(recurso ?recurso)(cantidad ?cantidad_recurso))
+;     (bind ?cantidad_proporciona_bonus =(min ?cantidad_bonus ?cantidad_max_permitida))
+;     =>
+;     ; añadir recursos al jugador 
+;     (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso ( + ?cantidad_output ?cantidad_proporciona_bonus))))
+;     ; Ha finalizado su actividad principal dentro de su turno.
+;     (assert (fin_actividad_principal ?nombre_jugador))
+;     (printout t"El jugador: <" ?nombre_jugador "> ha generado en el edificio: <" ?nombre_edificio "> un total de <" =( + ?cantidad_output ?cantidad_proporciona_bonus) "> recursos de <" ?recurso ">. Los cuales <" ?cantidad_output "> son por entrar y <" ?cantidad_proporciona_bonus "> por los bonus que tiene." crlf)
+;     ; flag para no permitir usar el mismo edificio dos veces.
+;     (retract ?ha_usado_edificio)
+;     (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+; )
 
 
-(defrule EDIFICIO_GENERA_RECURSO_CASO2
-;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
-;      1               1              0        0        (Carbon vegetal, ironworks)
-    ; el jugador está dentro del edificio
-    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio) (nombre_jugador ?nombre_jugador))
+; (defrule EDIFICIO_GENERA_RECURSO_CASO2
+; ;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
+; ;      1               1              0        0        (Carbon vegetal, ironworks)
+;     ; el jugador está dentro del edificio
+;     (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio) (nombre_jugador ?nombre_jugador))
 
-    ; el jugador no ha usado anteriormente el edificio
-    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
-    (test (neq ?nombre_edificio ?ed))
+;     ; el jugador no ha usado anteriormente el edificio
+;     ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+;     (test (neq ?nombre_edificio ?ed))
 
-    ; turno del jugador
-    (turno ?nombre_jugador)
-    ; el edificio tiene 1 input como recurso.
-    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
-    ; el jugador tiene el deseo de generar X recursos outputs empleando Y recursos inputs.
-    (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)  
-    ; el eficio tiene 1 output como recurso.  
-    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida) (cantidad_min_generada_por_unidad ?cantidad_unitaria))
-    ; el edificio no genera recursos adicionales por bonus.
-    (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
-    ; referencia los recursos del jugador
-    ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
-    ?recurso_jugador_salida <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_salida) (cantidad ?cantidad_recurso_salida_jugador))
-    ; comprobar que tenga los recursos necesarios.
-    (test (>= ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar))
-    ; obtener la cantidad que ha transformado del recurso de salida.
-    (bind ?cantidad_transformada =(* ?cantidad_a_transformar ?cantidad_unitaria))
-    =>
-    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada ?cantidad_a_transformar)))
-    (modify-instance ?recurso_jugador_salida (cantidad (+ ?cantidad_recurso_salida ?cantidad_transformada)))
-    ; Ha finalizado su actividad principal dentro de su turno.
-    (assert (fin_actividad_principal ?nombre_jugador))
-    ; flag para no permitir usar el mismo edificio dos veces.
-    (retract ?ha_usado_edificio)
-    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
-    (printout t"El jugador: <" ?nombre_jugador "> ha transformado en el edificio: <" ?nombre_edificio "> <" ?cantidad_a_transformar "> recursos de <" ?recurso_entrada "> en <" ?cantidad_transformada "> recursos de <" ?recurso_salida ">." crlf)
-)
+;     ; turno del jugador
+;     (turno ?nombre_jugador)
+;     ; el edificio tiene 1 input como recurso.
+;     (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
+;     ; el jugador tiene el deseo de generar X recursos outputs empleando Y recursos inputs.
+;     (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)  
+;     ; el eficio tiene 1 output como recurso.  
+;     (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida) (cantidad_min_generada_por_unidad ?cantidad_unitaria))
+;     ; el edificio no genera recursos adicionales por bonus.
+;     (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
+;     ; referencia los recursos del jugador
+;     ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
+;     ?recurso_jugador_salida <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_salida) (cantidad ?cantidad_recurso_salida_jugador))
+;     ; comprobar que tenga los recursos necesarios.
+;     (test (>= ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar))
+;     ; obtener la cantidad que ha transformado del recurso de salida.
+;     (bind ?cantidad_transformada =(* ?cantidad_a_transformar ?cantidad_unitaria))
+;     =>
+;     (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada ?cantidad_a_transformar)))
+;     (modify-instance ?recurso_jugador_salida (cantidad (+ ?cantidad_recurso_salida ?cantidad_transformada)))
+;     ; Ha finalizado su actividad principal dentro de su turno.
+;     (assert (fin_actividad_principal ?nombre_jugador))
+;     ; flag para no permitir usar el mismo edificio dos veces.
+;     (retract ?ha_usado_edificio)
+;     (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+;     (printout t"El jugador: <" ?nombre_jugador "> ha transformado en el edificio: <" ?nombre_edificio "> <" ?cantidad_a_transformar "> recursos de <" ?recurso_entrada "> en <" ?cantidad_transformada "> recursos de <" ?recurso_salida ">." crlf)
+; )
 
-(defrule EDIFICIO_GENERA_RECURSO_CASO3
-;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
-;      1               1              0        1        (steel meel 5 energia por cada output.)
-; ENERGIA VARIABLE...
+; (defrule EDIFICIO_GENERA_RECURSO_CASO3
+; ;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
+; ;      1               1              0        1        (steel meel 5 energia por cada output.)
+; ; ENERGIA VARIABLE...
 
-    ; el jugador está dentro del edificio
-    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio) (nombre_jugador ?nombre_jugador))
-    ; el jugador no ha usado anteriormente el edificio
-    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
-    (test (neq ?nombre_edificio ?ed))
-    ; es el turno del jugador
-    (turno ?nombre_jugador)
-    ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
-    ?deseo_generar <- (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
-    ?deseo_pago_energia <- (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ? ?cantidad_madera ? ?cantidad_carbon_vegetal ? ?cantidad_carbon ? ?cantidad_coque)
-    ; obtiene el input del edificio 
-    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?) (cantidad_maxima ?))
-    ;obtiene el output del edificio
-    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida) (cantidad_min_generada_por_unidad ?cantidad_unitaria))
-    ; obtiene el coste energético del edificio
-    (object (is-a COSTE_ENERGIA) (coste_unitario TRUE) (cantidad ?coste_energia))
-    ; el edificio no tiene bonus
-    (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
-    ; obtiene los recursos del jugador del mismo tipo que el input
-    ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
-    ; obtiene los recursos del jugador del mismo tipo que el output
-    ?recurso_jugador_salida <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_salida) (cantidad ?cantidad_recurso_salida_jugador))
-    ; comprueba que el jugador tiene suficiente input
-    (test (> ?recurso_jugador_entrada ?recurso_entrada))
-    ; calcula la cantidad generada
-    (bind ?cantidad_transformada =(* ?cantidad_unitaria ?cantidad_a_transformar))
-    ; calcula la cantidad de energía empleada
-    (bind ?cantidad_energia_empleada =(* ?cantidad_a_transformar ?coste_energia))
-    ; obtener los recursos de energia del jugador.
-    ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
-    ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
-    ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
-    ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
-    ;comprueba que el jugador tiene suficiente energía
-    (test (> =(+ =(* ?cantidad_madera 1) =(* ?cantidad_carbon_vegetal 3) =(* ?cantidad_carbon 3) =(* ?cantidad_coque 10)) ?cantidad_energia_empleada))
-    =>
-    ; modifica los inputs del jugador
-    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
-    ; modifica los outputs del jugador
-    (modify-instance ?recurso_jugador_salida (cantidad (+ ?cantidad_recurso_salida_jugador ?cantidad_transformada)))
-    ; modifica los recursos energéticos del jugador.
-    (modify-instance ?madera_jugador (cantidad (- ?cantidad_madera_jugador ?cantidad_madera)))
-    (modify-instance ?carbon_vegetal_jugador (cantidad (- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
-    (modify-instance ?carbon_jugador (cantidad (- ?cantidad_cabon_jugador ?cantidad_carbon)))
-    (modify-instance ?coque_jugador (cantidad (- ?cantidad_coque_jugador ?cantidad_coque)))
-    ; Ha finalizado su actividad principal dentro de su turno.
-    (assert (fin_actividad_principal ?nombre_jugador))
-    ; eliminar deseos
-    (retract ?deseo_generar)
-    (retract ?deseo_pago_energia)
-    ; flag para no permitir usar el mismo edificio dos veces.
-    (retract ?ha_usado_edificio)
-    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
-)
+;     ; el jugador está dentro del edificio
+;     (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio) (nombre_jugador ?nombre_jugador))
+;     ; el jugador no ha usado anteriormente el edificio
+;     ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+;     (test (neq ?nombre_edificio ?ed))
+;     ; es el turno del jugador
+;     (turno ?nombre_jugador)
+;     ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
+;     ?deseo_generar <- (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
+;     ?deseo_pago_energia <- (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ? ?cantidad_madera ? ?cantidad_carbon_vegetal ? ?cantidad_carbon ? ?cantidad_coque)
+;     ; obtiene el input del edificio 
+;     (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?) (cantidad_maxima ?))
+;     ;obtiene el output del edificio
+;     (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida) (cantidad_min_generada_por_unidad ?cantidad_unitaria))
+;     ; obtiene el coste energético del edificio
+;     (object (is-a COSTE_ENERGIA) (coste_unitario TRUE) (cantidad ?coste_energia))
+;     ; el edificio no tiene bonus
+;     (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
+;     ; obtiene los recursos del jugador del mismo tipo que el input
+;     ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
+;     ; obtiene los recursos del jugador del mismo tipo que el output
+;     ?recurso_jugador_salida <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_salida) (cantidad ?cantidad_recurso_salida_jugador))
+;     ; comprueba que el jugador tiene suficiente input
+;     (test (> ?recurso_jugador_entrada ?recurso_entrada))
+;     ; calcula la cantidad generada
+;     (bind ?cantidad_transformada =(* ?cantidad_unitaria ?cantidad_a_transformar))
+;     ; calcula la cantidad de energía empleada
+;     (bind ?cantidad_energia_empleada =(* ?cantidad_a_transformar ?coste_energia))
+;     ; obtener los recursos de energia del jugador.
+;     ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
+;     ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
+;     ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
+;     ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
+;     ;comprueba que el jugador tiene suficiente energía
+;     (test (> =(+ =(* ?cantidad_madera 1) =(* ?cantidad_carbon_vegetal 3) =(* ?cantidad_carbon 3) =(* ?cantidad_coque 10)) ?cantidad_energia_empleada))
+;     =>
+;     ; modifica los inputs del jugador
+;     (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+;     ; modifica los outputs del jugador
+;     (modify-instance ?recurso_jugador_salida (cantidad (+ ?cantidad_recurso_salida_jugador ?cantidad_transformada)))
+;     ; modifica los recursos energéticos del jugador.
+;     (modify-instance ?madera_jugador (cantidad (- ?cantidad_madera_jugador ?cantidad_madera)))
+;     (modify-instance ?carbon_vegetal_jugador (cantidad (- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
+;     (modify-instance ?carbon_jugador (cantidad (- ?cantidad_cabon_jugador ?cantidad_carbon)))
+;     (modify-instance ?coque_jugador (cantidad (- ?cantidad_coque_jugador ?cantidad_coque)))
+;     ; Ha finalizado su actividad principal dentro de su turno.
+;     (assert (fin_actividad_principal ?nombre_jugador))
+;     ; eliminar deseos
+;     (retract ?deseo_generar)
+;     (retract ?deseo_pago_energia)
+;     ; flag para no permitir usar el mismo edificio dos veces.
+;     (retract ?ha_usado_edificio)
+;     (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+; )
 
-(defrule EDIFICIO_GENERA_RECURSO_CASO4
-;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
-;      1               2              0        0        (matadero, peleteria y coqueria)
-    ; el jugador está dentro del edificio
-    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
-    ; el jugador no ha usado anteriormente el edificio
-    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
-    (test (neq ?nombre_edificio ?ed))
-    ; es el turno del jugador
-    (turno ?nombre_jugador)
-    ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
-    (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
-    ; obtiene el input del edificio 
-    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
-    ; obtiene el primer output del edificio
-    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida1) (cantidad_min_generada_por_unidad ?cantidad_unitaria1))
-    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida2) (cantidad_min_generada_por_unidad ?cantidad_unitaria2))
+; (defrule EDIFICIO_GENERA_RECURSO_CASO4
+; ;   INPUTS          OUTPUT          BONUS   ENERGIA     EDIFICIOS
+; ;      1               2              0        0        (matadero, peleteria y coqueria)
+;     ; el jugador está dentro del edificio
+;     (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+;     ; el jugador no ha usado anteriormente el edificio
+;     ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+;     (test (neq ?nombre_edificio ?ed))
+;     ; es el turno del jugador
+;     (turno ?nombre_jugador)
+;     ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
+;     (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
+;     ; obtiene el input del edificio 
+;     (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
+;     ; obtiene el primer output del edificio
+;     (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida1) (cantidad_min_generada_por_unidad ?cantidad_unitaria1))
+;     (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida2) (cantidad_min_generada_por_unidad ?cantidad_unitaria2))
     
-    ; el edificio no tiene bonus
-    (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
-    ; el edificio no tiene coste energético
-    (not (object (is-a COSTE_ENERGIA) (nombre_carta ?nombre_edificio) (coste_unitario ?) (cantidad ?) ))
-    ; obtiene los recursos del jugador del mismo tipo que el input y output
-    ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
-    ?recurso_jugador_salida1 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida1) (cantidad ?cantidad_recurso_salida1_jugador))
-    ?recurso_jugador_salida2 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida2) (cantidad ?cantidad_recurso_salida2_jugador))
-    ; comprueba que el jugador tiene suficiente input
-    (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
-    ; calcula la cantidad a transformar
-    (bind ?cantidad_transformada_recurso_salida1 (min (* ?cantidad_maxima ?cantidad_unitaria1) (* ?cantidad_a_transformar ?cantidad_unitaria1)))
-    (bind ?cantidad_transformada_recurso_salida2 (min (* ?cantidad_maxima ?cantidad_unitaria2) (* ?cantidad_a_transformar ?cantidad_unitaria2)))
-    =>
-    ; modifica el recurso input del jugador
-    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
-    ; modifica el primer output del jugador
-    (modify-instance ?recurso_jugador_salida1 (cantidad (+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
-    ; modifica el segundo output del jugador
-    (modify-instance ?recurso_jugador_salida2 (cantidad (+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
-    ; Ha finalizado su actividad principal dentro de su turno.
-    (assert (fin_actividad_principal ?nombre_jugador))
-    ; flag para no permitir usar el mismo edificio dos veces.
-    (retract ?ha_usado_edificio)
-    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
-)
+;     ; el edificio no tiene bonus
+;     (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
+;     ; el edificio no tiene coste energético
+;     (not (object (is-a COSTE_ENERGIA) (nombre_carta ?nombre_edificio) (coste_unitario ?) (cantidad ?) ))
+;     ; obtiene los recursos del jugador del mismo tipo que el input y output
+;     ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
+;     ?recurso_jugador_salida1 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida1) (cantidad ?cantidad_recurso_salida1_jugador))
+;     ?recurso_jugador_salida2 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida2) (cantidad ?cantidad_recurso_salida2_jugador))
+;     ; comprueba que el jugador tiene suficiente input
+;     (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
+;     ; calcula la cantidad a transformar
+;     (bind ?cantidad_transformada_recurso_salida1 (min (* ?cantidad_maxima ?cantidad_unitaria1) (* ?cantidad_a_transformar ?cantidad_unitaria1)))
+;     (bind ?cantidad_transformada_recurso_salida2 (min (* ?cantidad_maxima ?cantidad_unitaria2) (* ?cantidad_a_transformar ?cantidad_unitaria2)))
+;     =>
+;     ; modifica el recurso input del jugador
+;     (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+;     ; modifica el primer output del jugador
+;     (modify-instance ?recurso_jugador_salida1 (cantidad (+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
+;     ; modifica el segundo output del jugador
+;     (modify-instance ?recurso_jugador_salida2 (cantidad (+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
+;     ; Ha finalizado su actividad principal dentro de su turno.
+;     (assert (fin_actividad_principal ?nombre_jugador))
+;     ; flag para no permitir usar el mismo edificio dos veces.
+;     (retract ?ha_usado_edificio)
+;     (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+; )
 
-(defrule EDIFICIO_GENERA_RECURSO_CASO5
-    ;   INPUTS          OUTPUT          BONUS   ENERGIA     edificios
-    ;      1               2              0        1        (ahumador (1 total), ladrillos (por ud), panaderia (por ud))
-    ; el jugador está dentro del edificio
-    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
-    ; el jugador no ha usado anteriormente el edificio
-    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
-    (test (neq ?nombre_edificio ?ed))
-    ; es el turno del jugador
-    (turno ?nombre_jugador)
-    ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
-    (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
+; (defrule EDIFICIO_GENERA_RECURSO_CASO5
+;     ;   INPUTS          OUTPUT          BONUS   ENERGIA     edificios
+;     ;      1               2              0        1        (ahumador (1 total), ladrillos (por ud), panaderia (por ud))
+;     ; el jugador está dentro del edificio
+;     (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+;     ; el jugador no ha usado anteriormente el edificio
+;     ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+;     (test (neq ?nombre_edificio ?ed))
+;     ; es el turno del jugador
+;     (turno ?nombre_jugador)
+;     ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
+;     (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
     
-    ?deseo_pago_energia <- (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ? ?cantidad_madera ? ?cantidad_carbon_vegetal ? ?cantidad_carbon ? ?cantidad_coque)
+;     ?deseo_pago_energia <- (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ? ?cantidad_madera ? ?cantidad_carbon_vegetal ? ?cantidad_carbon ? ?cantidad_coque)
     
-    ; obtiene el input del edificio 
-    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
-    ; obtiene el primer output del edificio
-    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida1) (cantidad_min_generada_por_unidad ?cantidad_unitaria1))
-    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida2) (cantidad_min_generada_por_unidad ?cantidad_unitaria2))
+;     ; obtiene el input del edificio 
+;     (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
+;     ; obtiene el primer output del edificio
+;     (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida1) (cantidad_min_generada_por_unidad ?cantidad_unitaria1))
+;     (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida2) (cantidad_min_generada_por_unidad ?cantidad_unitaria2))
     
-    ; obtiene el coste energético del edificio
-    (object (is-a COSTE_ENERGIA) (coste_unitario TRUE) (cantidad ?coste_energia))
+;     ; obtiene el coste energético del edificio
+;     (object (is-a COSTE_ENERGIA) (coste_unitario TRUE) (cantidad ?coste_energia))
 
-    ; el edificio no tiene bonus
-    (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
-    ; obtiene los recursos del jugador del mismo tipo que el input y output
-    ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
-    ?recurso_jugador_salida1 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida1) (cantidad ?cantidad_recurso_salida1_jugador))
-    ?recurso_jugador_salida2 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida2) (cantidad ?cantidad_recurso_salida2_jugador))
-    ; comprueba que el jugador tiene suficiente input
-    (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
-    ; calcula la cantidad a transformar
-    (bind ?cantidad_transformada_recurso_salida1 (min (* ?cantidad_maxima ?cantidad_unitaria1) (* ?cantidad_a_transformar ?cantidad_unitaria1)))
-    (bind ?cantidad_transformada_recurso_salida2 (min (* ?cantidad_maxima ?cantidad_unitaria2) (* ?cantidad_a_transformar ?cantidad_unitaria2)))
+;     ; el edificio no tiene bonus
+;     (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
+;     ; obtiene los recursos del jugador del mismo tipo que el input y output
+;     ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
+;     ?recurso_jugador_salida1 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida1) (cantidad ?cantidad_recurso_salida1_jugador))
+;     ?recurso_jugador_salida2 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida2) (cantidad ?cantidad_recurso_salida2_jugador))
+;     ; comprueba que el jugador tiene suficiente input
+;     (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
+;     ; calcula la cantidad a transformar
+;     (bind ?cantidad_transformada_recurso_salida1 (min (* ?cantidad_maxima ?cantidad_unitaria1) (* ?cantidad_a_transformar ?cantidad_unitaria1)))
+;     (bind ?cantidad_transformada_recurso_salida2 (min (* ?cantidad_maxima ?cantidad_unitaria2) (* ?cantidad_a_transformar ?cantidad_unitaria2)))
 
-    ; calcula la cantidad de energía empleada
-    (bind ?cantidad_energia_empleada (* ?cantidad_a_transformar ?coste_energia))
-    ; obtener los recursos de energia del jugador.
-    ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
-    ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
-    ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
-    ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
-    ;comprueba que el jugador tiene suficiente energía
-    (test (> =(+ =(* ?cantidad_madera 1) (* ?cantidad_carbon_vegetal 3) (* ?cantidad_carbon 3) (* ?cantidad_coque 10)) ?cantidad_energia_empleada))
+;     ; calcula la cantidad de energía empleada
+;     (bind ?cantidad_energia_empleada (* ?cantidad_a_transformar ?coste_energia))
+;     ; obtener los recursos de energia del jugador.
+;     ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
+;     ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
+;     ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
+;     ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
+;     ;comprueba que el jugador tiene suficiente energía
+;     (test (> =(+ =(* ?cantidad_madera 1) (* ?cantidad_carbon_vegetal 3) (* ?cantidad_carbon 3) (* ?cantidad_coque 10)) ?cantidad_energia_empleada))
 
-    =>
-    ; modifica el recurso input del jugador
-    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
-    ; modifica el primer output del jugador
-    (modify-instance ?recurso_jugador_salida1 (cantidad (+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
-    ; modifica el segundo output del jugador
-    (modify-instance ?recurso_jugador_salida2 (cantidad (+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
+;     =>
+;     ; modifica el recurso input del jugador
+;     (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+;     ; modifica el primer output del jugador
+;     (modify-instance ?recurso_jugador_salida1 (cantidad (+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
+;     ; modifica el segundo output del jugador
+;     (modify-instance ?recurso_jugador_salida2 (cantidad (+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
 
-    ; modifica los recursos energéticos del jugador.
-    (modify-instance ?madera_jugador (cantidad (- ?cantidad_madera_jugador ?cantidad_madera)))
-    (modify-instance ?carbon_vegetal_jugador (cantidad (- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
-    (modify-instance ?carbon_jugador (cantidad (- ?cantidad_cabon_jugador ?cantidad_carbon)))
-    (modify-instance ?coque_jugador (cantidad (- ?cantidad_coque_jugador ?cantidad_coque)))
-    ; Ha finalizado su actividad principal dentro de su turno.
-    (assert (fin_actividad_principal ?nombre_jugador))
-    ; eliminar deseos
-    (retract ?deseo_generar)
-    (retract ?deseo_pago_energia)
-    ; flag para no permitir usar el mismo edificio dos veces.
-    (retract ?ha_usado_edificio)
-    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+;     ; modifica los recursos energéticos del jugador.
+;     (modify-instance ?madera_jugador (cantidad (- ?cantidad_madera_jugador ?cantidad_madera)))
+;     (modify-instance ?carbon_vegetal_jugador (cantidad (- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
+;     (modify-instance ?carbon_jugador (cantidad (- ?cantidad_cabon_jugador ?cantidad_carbon)))
+;     (modify-instance ?coque_jugador (cantidad (- ?cantidad_coque_jugador ?cantidad_coque)))
+;     ; Ha finalizado su actividad principal dentro de su turno.
+;     (assert (fin_actividad_principal ?nombre_jugador))
+;     ; eliminar deseos
+;     (retract ?deseo_generar)
+;     (retract ?deseo_pago_energia)
+;     ; flag para no permitir usar el mismo edificio dos veces.
+;     (retract ?ha_usado_edificio)
+;     (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
 
-)
-(defrule EDIFICIO_GENERA_RECURSO_CASO5_BIS
-    ;   INPUTS          OUTPUT          BONUS   ENERGIA     edificios
-    ;      1               2              0        1        (ahumador (1 total), ladrillos (por ud), panaderia (por ud))
-    ; el jugador está dentro del edificio
-    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
-    ; el jugador no ha usado anteriormente el edificio
-    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
-    (test (neq ?nombre_edificio ?ed))
-    ; es el turno del jugador
-    (turno ?nombre_jugador)
-    ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
-    (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
+; )
+; (defrule EDIFICIO_GENERA_RECURSO_CASO5_BIS
+;     ;   INPUTS          OUTPUT          BONUS   ENERGIA     edificios
+;     ;      1               2              0        1        (ahumador (1 total), ladrillos (por ud), panaderia (por ud))
+;     ; el jugador está dentro del edificio
+;     (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_edificio)(nombre_jugador ?nombre_jugador))
+;     ; el jugador no ha usado anteriormente el edificio
+;     ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+;     (test (neq ?nombre_edificio ?ed))
+;     ; es el turno del jugador
+;     (turno ?nombre_jugador)
+;     ; el jugador tiene el deseo de usar el edificio empleando X recursos de entrada
+;     (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
     
-    ?deseo_pago_energia <- (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ? ?cantidad_madera ? ?cantidad_carbon_vegetal ? ?cantidad_carbon ? ?cantidad_coque)
+;     ?deseo_pago_energia <- (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ? ?cantidad_madera ? ?cantidad_carbon_vegetal ? ?cantidad_carbon ? ?cantidad_coque)
     
-    ; obtiene el input del edificio 
-    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
-    ; obtiene el primer output del edificio
-    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida1) (cantidad_min_generada_por_unidad ?cantidad_unitaria1))
-    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida2) (cantidad_min_generada_por_unidad ?cantidad_unitaria2))
+;     ; obtiene el input del edificio 
+;     (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_entrada) (cantidad_maxima ?cantidad_maxima))
+;     ; obtiene el primer output del edificio
+;     (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida1) (cantidad_min_generada_por_unidad ?cantidad_unitaria1))
+;     (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso_salida2) (cantidad_min_generada_por_unidad ?cantidad_unitaria2))
     
-    ; obtiene el coste energético del edificio
-    (object (is-a COSTE_ENERGIA) (coste_unitario FALSE) (cantidad ?coste_energia))
+;     ; obtiene el coste energético del edificio
+;     (object (is-a COSTE_ENERGIA) (coste_unitario FALSE) (cantidad ?coste_energia))
 
-    ; el edificio no tiene bonus
-    (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
-    ; obtiene los recursos del jugador del mismo tipo que el input y output
-    ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
-    ?recurso_jugador_salida1 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida1) (cantidad ?cantidad_recurso_salida1_jugador))
-    ?recurso_jugador_salida2 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida2) (cantidad ?cantidad_recurso_salida2_jugador))
-    ; comprueba que el jugador tiene suficiente input
-    (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
-    ; calcula la cantidad a transformar
-    (bind ?cantidad_transformada_recurso_salida1 =(min =(* ?cantidad_maxima ?cantidad_unitaria1) =(* ?cantidad_a_transformar ?cantidad_unitaria1)))
-    (bind ?cantidad_transformada_recurso_salida2 =(min =(* ?cantidad_maxima ?cantidad_unitaria2) =(* ?cantidad_a_transformar ?cantidad_unitaria2)))
+;     ; el edificio no tiene bonus
+;     (not (object (is-a CARTA_OUTPUT_BONUS) (nombre_carta ?nombre_edificio) (bonus ?)))
+;     ; obtiene los recursos del jugador del mismo tipo que el input y output
+;     ?recurso_jugador_entrada <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_entrada_jugador))
+;     ?recurso_jugador_salida1 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida1) (cantidad ?cantidad_recurso_salida1_jugador))
+;     ?recurso_jugador_salida2 <- (object (is-a JUGADOR_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso ?recurso_salida2) (cantidad ?cantidad_recurso_salida2_jugador))
+;     ; comprueba que el jugador tiene suficiente input
+;     (test (>= ?canditad_recurso_entrada_jugador ?cantidad_a_transformar))
+;     ; calcula la cantidad a transformar
+;     (bind ?cantidad_transformada_recurso_salida1 =(min =(* ?cantidad_maxima ?cantidad_unitaria1) =(* ?cantidad_a_transformar ?cantidad_unitaria1)))
+;     (bind ?cantidad_transformada_recurso_salida2 =(min =(* ?cantidad_maxima ?cantidad_unitaria2) =(* ?cantidad_a_transformar ?cantidad_unitaria2)))
 
-    ; obtener los recursos de energia del jugador.
-    ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
-    ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
-    ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
-    ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
-    ;comprueba que el jugador tiene suficiente energía
-    (test (> =(+ =(* ?cantidad_madera 1) =(* ?cantidad_carbon_vegetal 3) =(* ?cantidad_carbon 3) =(* ?cantidad_coque 10)) ?coste_energia))
+;     ; obtener los recursos de energia del jugador.
+;     ?madera_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
+;     ?carbon_vegetal_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal_jugador))
+;     ?carbon_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_cabon_jugador))
+;     ?coque_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque_jugador))
+;     ;comprueba que el jugador tiene suficiente energía
+;     (test (> =(+ =(* ?cantidad_madera 1) =(* ?cantidad_carbon_vegetal 3) =(* ?cantidad_carbon 3) =(* ?cantidad_coque 10)) ?coste_energia))
 
-    =>
-    ; modifica el recurso input del jugador
-    (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
-    ; modifica el primer output del jugador
-    (modify-instance ?recurso_jugador_salida1 (cantidad (+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
-    ; modifica el segundo output del jugador
-    (modify-instance ?recurso_jugador_salida2 (cantidad (+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
+;     =>
+;     ; modifica el recurso input del jugador
+;     (modify-instance ?recurso_jugador_entrada (cantidad (- ?cantidad_recurso_entrada_jugador ?cantidad_a_transformar)))
+;     ; modifica el primer output del jugador
+;     (modify-instance ?recurso_jugador_salida1 (cantidad (+ ?cantidad_recurso_salida1_jugador ?cantidad_transformada_recurso_salida1)))
+;     ; modifica el segundo output del jugador
+;     (modify-instance ?recurso_jugador_salida2 (cantidad (+ ?cantidad_recurso_salida2_jugador ?cantidad_transformada_recurso_salida2)))
 
-    ; modifica los recursos energéticos del jugador.
-    (modify-instance ?madera_jugador (cantidad (- ?cantidad_madera_jugador ?cantidad_madera)))
-    (modify-instance ?carbon_vegetal_jugador (cantidad (- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
-    (modify-instance ?carbon_jugador (cantidad (- ?cantidad_cabon_jugador ?cantidad_carbon)))
-    (modify-instance ?coque_jugador (cantidad (- ?cantidad_coque_jugador ?cantidad_coque)))
-    ; Ha finalizado su actividad principal dentro de su turno.
-    (assert (fin_actividad_principal ?nombre_jugador))
-    ; eliminar deseos
-    (retract ?deseo_generar)
-    (retract ?deseo_pago_energia)
-    ; flag para no permitir usar el mismo edificio dos veces.
-    (retract ?ha_usado_edificio)
-    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+;     ; modifica los recursos energéticos del jugador.
+;     (modify-instance ?madera_jugador (cantidad (- ?cantidad_madera_jugador ?cantidad_madera)))
+;     (modify-instance ?carbon_vegetal_jugador (cantidad (- ?cantidad_carbon_vegetal_jugador ?cantidad_carbon_vegetal)))
+;     (modify-instance ?carbon_jugador (cantidad (- ?cantidad_cabon_jugador ?cantidad_carbon)))
+;     (modify-instance ?coque_jugador (cantidad (- ?cantidad_coque_jugador ?cantidad_coque)))
+;     ; Ha finalizado su actividad principal dentro de su turno.
+;     (assert (fin_actividad_principal ?nombre_jugador))
+;     ; eliminar deseos
+;     (retract ?deseo_generar)
+;     (retract ?deseo_pago_energia)
+;     ; flag para no permitir usar el mismo edificio dos veces.
+;     (retract ?ha_usado_edificio)
+;     (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
 
-)
+; )
 
 ; ; TODO: FALTA MODELADO DE ENERGIA.
 ; (defrule UTILIZAR_EDIFICIO_CONSTRUCTOR

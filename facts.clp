@@ -216,9 +216,8 @@
     (of COSTE_ENTRADA_CARTA (nombre_carta "MERCADO") (tipo COMIDA) (cantidad 2))
     
 
-    ; MAZO 1
-    (of CARTA (nombre "HORNO DE CARBON VEGETAL") (valor 8) (tipo BASICO))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "HORNO DE CARBON VEGETAL") (posicion 1))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "HORNO DE CARBON VEGETAL") (valor 8) (tipo BASICO) (numero_recursos_salida 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "HORNO DE CARBON VEGETAL") (posicion_en_mazo 1))
     (of EDIFICIO_INPUT (nombre_carta "HORNO DE CARBON VEGETAL") (recurso MADERA) (cantidad_maxima 1000))    
     (of EDIFICIO_OUTPUT (nombre_carta "HORNO DE CARBON VEGETAL") (recurso CARBON_VEGETAL) (cantidad_min_generada_por_unidad 1))
     ; cuesta fabricarlo 1 de arcilla
@@ -226,14 +225,14 @@
 
 
     (of CARTA (nombre "MUELLE") (valor 14) (tipo INDUSTRIAL))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "MUELLE") (posicion 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "MUELLE") (posicion_en_mazo 2))
     ; ---> Muelle (2 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "MUELLE")(tipo COMIDA)(cantidad 2))
     ; cuesta fabricarlo 2 de madera 2 de arcilla y 2 de hierro.
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "MUELLE")(cantidad_madera 2)(cantidad_arcilla 2)(cantidad_hierro 2))
 
-    (of CARTA (nombre "FABRICA DE LADRILLOS") (valor 14) (tipo INDUSTRIAL))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "FABRICA DE LADRILLOS") (posicion 3))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "FABRICA DE LADRILLOS") (valor 14) (tipo INDUSTRIAL) (numero_recursos_salida 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "FABRICA DE LADRILLOS") (posicion_en_mazo 3))
     ; ---> Fábrica de ladrillos (1 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "FABRICA DE LADRILLOS")(tipo COMIDA)(cantidad 1))
     (of EDIFICIO_INPUT (nombre_carta "FABRICA DE LADRILLOS") (recurso ARCILLA) (cantidad_maxima 1000))
@@ -246,8 +245,8 @@
     (of COSTE_ENERGIA (nombre_carta "FABRICA DE LADRILLOS") (coste_unitario TRUE) (cantidad 0.5))
 
 
-    (of CARTA (nombre "COQUERIA") (valor 18) (tipo INDUSTRIAL))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "COQUERIA") (posicion 4))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "COQUERIA") (valor 18) (tipo INDUSTRIAL) (numero_recursos_salida 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "COQUERIA") (posicion_en_mazo 4))
     ; ---> Coquería (1 franco)
     (of COSTE_ENTRADA_CARTA (nombre_carta "COQUERIA")(tipo DINERO)(cantidad 1))
     (of EDIFICIO_INPUT (nombre_carta "COQUERIA") (recurso CARBON) (cantidad_maxima 1000))
@@ -258,20 +257,22 @@
 
 
     (of CARTA_BANCO (nombre "BANCO") (coste 40) (valor 16))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "BANCO") (posicion 5))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "BANCO") (posicion_en_mazo 5))
     ; cuesta fabricarlo 4 ladrillos 1 acero
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BANCO") (cantidad_ladrillo 4) (cantidad_acero 1))
 
 
     ; MAZO 2
-    (of CARTA (nombre "PISCIFACTORIA") (valor 10) (tipo BASICO))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "PISCIFACTORIA") (posicion 1))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "PISCIFACTORIA") (valor 10) (tipo BASICO) (numero_recursos_salida 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "PISCIFACTORIA") (posicion_en_mazo 1))
     (of EDIFICIO_OUTPUT (nombre_carta "PISCIFACTORIA") (recurso PESCADO) (cantidad_min_generada_por_unidad 3))
     ; cuesta fabricarlo 1 madera 1 arcilla.
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "PISCIFACTORIA") (cantidad_madera 1)(cantidad_arcilla 1))
+    ; bonus salida
+    (of CARTA_OUTPUT_BONUS (nombre_carta "PISCIFACTORIA") (bonus PESCADOR) (cantidad_maxima_permitida 10000))
 
-    (of CARTA (nombre "PANADERIA") (valor 8) (tipo BASICO))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "PANADERIA") (posicion 2))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "PANADERIA") (valor 8) (tipo BASICO) (numero_recursos_salida 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "PANADERIA") (posicion_en_mazo 2))
     ; ---> Panadería (1 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "PANADERIA") (tipo COMIDA) (cantidad 1))
     (of EDIFICIO_INPUT (nombre_carta "PANADERIA") (recurso GRANO) (cantidad_maxima 1000))
@@ -283,36 +284,40 @@
     ; coste energia 0.5 energia por grano transformado.
     (of COSTE_ENERGIA (nombre_carta "PANADERIA") (coste_unitario TRUE) (cantidad 0.5))
 
-    (of CARTA (nombre "MONTICULO DE ARCILLA") (valor 2) (tipo NINGUNO))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "MONTICULO DE ARCILLA") (posicion 3))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "MONTICULO DE ARCILLA") (valor 2) (tipo NINGUNO) (numero_recursos_salida 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "MONTICULO DE ARCILLA") (posicion_en_mazo 3))
     ; ---> Montículo de arcilla (1 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "MONTICULO DE ARCILLA")(tipo COMIDA)(cantidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "MONTICULO DE ARCILLA") (recurso ARCILLA) (cantidad_min_generada_por_unidad 3))
+    ; bonus salida
+    (of CARTA_OUTPUT_BONUS (nombre_carta "MONTICULO DE ARCILLA") (bonus MARTILLO) (cantidad_maxima_permitida 10000))
 
-
-    (of CARTA (nombre "MINA DE CARBON") (valor 10) (tipo INDUSTRIAL))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "MINA DE CARBON") (posicion 4))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "MINA DE CARBON") (valor 10) (tipo INDUSTRIAL) (numero_recursos_salida 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "MINA DE CARBON") (posicion_en_mazo 4))
     ; ---> Mina de carbón (2 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "MINA DE CARBON") (tipo COMIDA) (cantidad 2))
     (of EDIFICIO_OUTPUT (nombre_carta "MINA DE CARBON") (recurso CARBON) (cantidad_min_generada_por_unidad 3))
     ; cuesta fabricarlo 1 madera 3 arcilla
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "MINA DE CARBON")(cantidad_madera 1)(cantidad_arcilla 3))
+    ; bonus salida
+    (of CARTA_OUTPUT_BONUS (nombre_carta "MINA DE CARBON") (bonus MARTILLO) (cantidad_maxima_permitida 1))
 
-    (of CARTA (nombre "SIDERURGIA") (valor 22) (tipo INDUSTRIAL))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "SIDERURGIA") (posicion 5))
+
+    (of CARTA_EDIFICIO_GENERADOR (nombre "SIDERURGIA") (valor 22) (tipo INDUSTRIAL) (numero_recursos_salida 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "SIDERURGIA") (posicion_en_mazo 5))
     ; ---> Siderurgia (2 francos)
     (of COSTE_ENTRADA_CARTA (nombre_carta "SIDERURGIA")(tipo DINERO)(cantidad 2))
     (of EDIFICIO_INPUT (nombre_carta "SIDERURGIA") (recurso HIERRO) (cantidad_maxima 1000))
     (of EDIFICIO_OUTPUT (nombre_carta "SIDERURGIA") (recurso ACERO) (cantidad_min_generada_por_unidad 1))
     (of COSTE_ENERGIA (nombre_carta "SIDERURGIA") (coste_unitario FALSE) (cantidad 5))
     ; cuesta fabricarlo: 4 LADRILLOS Y 2 HIERRO
-    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "SIDERURGIA")(cantidad_ladrillos 4)(cantidad_hierro 2))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "SIDERURGIA")(cantidad_ladrillo 4)(cantidad_hierro 2))
     ; coste energía 5 uds por acero generado.
     (of COSTE_ENERGIA (nombre_carta "SIDERURGIA") (coste_unitario TRUE) (cantidad 5))
 
     ; MAZO 3
-    (of CARTA (nombre "AHUMADOR") (valor 6) (tipo BASICO))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "AHUMADOR") (posicion 1))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "AHUMADOR") (valor 6) (tipo BASICO) (numero_recursos_salida 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "AHUMADOR") (posicion_en_mazo 1))
     ; ---> Ahumador (2 de comida o 1 franco)
     (of COSTE_ENTRADA_CARTA (nombre_carta "AHUMADOR")(tipo DINERO)(cantidad 1))
     (of COSTE_ENTRADA_CARTA (nombre_carta "AHUMADOR")(tipo COMIDA)(cantidad 2))
@@ -325,8 +330,8 @@
     ; coste energia, 1 ud por 1 - 6 pescados
     (of COSTE_ENERGIA (nombre_carta "AHUMADOR") (coste_unitario FALSE) (cantidad 1))
 
-    (of CARTA (nombre "MATADERO") (valor 8) (tipo BASICO))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "MATADERO") (posicion 2))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "MATADERO") (valor 8) (tipo BASICO) (numero_recursos_salida 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "MATADERO") (posicion_en_mazo 2))
      ; ---> Matedero
     (of COSTE_ENTRADA_CARTA (nombre_carta "MATADERO")(tipo DINERO)(cantidad 2))
     (of EDIFICIO_INPUT (nombre_carta "MATADERO") (recurso GANADO) (cantidad_maxima 1000))
@@ -336,26 +341,26 @@
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "MATADERO")(cantidad_madera 1)(cantidad_arcilla 1)(cantidad_hierro 1))
 
     (of CARTA (nombre "COMPAÑIA NAVIERA") (valor 10) (tipo COMERCIAL))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "COMPAÑIA NAVIERA") (posicion 3))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "COMPAÑIA NAVIERA") (posicion_en_mazo 3))
     ; ---> Compañía naviera (2 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "COMPAÑIA NAVIERA") (tipo COMIDA) (cantidad 2))
     (of COSTE_ENERGIA (nombre_carta "COMPAÑIA NAVIERA") (coste_unitario TRUE) (cantidad 3))
     ; cuesta fabricarlo: 2 madera y 3 ladrillos
-    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "COMPAÑIA NAVIERA")(cantidad_madera 2)(cantidad_ladrillos 3))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "COMPAÑIA NAVIERA")(cantidad_madera 2)(cantidad_ladrillo 3))
     ; coste energia: 3 uds por barco
     (of COSTE_ENERGIA (nombre_carta "COMPAÑIA NAVIERA") (coste_unitario TRUE) (cantidad 3))
 
 
-    (of CARTA (nombre "PELETERIA") (valor 12) (tipo BASICO))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion 4))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "PELETERIA") (valor 12) (tipo BASICO) (numero_recursos_salida 2))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion_en_mazo 4))
     (of EDIFICIO_INPUT (nombre_carta "PELETERIA") (recurso PIEL) (cantidad_maxima 4))
     (of EDIFICIO_OUTPUT (nombre_carta "PELETERIA") (recurso CUERO) (cantidad_min_generada_por_unidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "PELETERIA") (recurso FRANCO) (cantidad_min_generada_por_unidad 1))
     ; cuesta fabricarlo 1 madera y 1 ladrillo.
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "PELETERIA")(cantidad_madera 1)(cantidad_ladrillo 1))
 
-    (of CARTA (nombre "HERRERIA") (valor 12) (tipo INDUSTRIAL))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "HERRERIA") (posicion 5))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "HERRERIA") (valor 12) (tipo INDUSTRIAL) (numero_recursos_salida 1))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "HERRERIA") (posicion_en_mazo 5))
     ; ---> Herrería (3 de comida o 1 franco, la comida represento todas las posibilidades?)
     (of COSTE_ENTRADA_CARTA (nombre_carta "HERRERIA")(tipo DINERO)(cantidad 1))
     (of COSTE_ENTRADA_CARTA (nombre_carta "HERRERIA")(tipo COMIDA)(cantidad 3))

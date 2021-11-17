@@ -128,8 +128,14 @@
     (is-a USER)
     (role concrete)
     (slot nombre (type STRING) (access initialize-only) (create-accessor read-write))
+    ; 17/11 no sabemos bien porq lo del tipo xd
     (slot tipo (type SYMBOL)(allowed-values BASICO INDUSTRIAL COMERCIAL BARCO NINGUNO))
     (slot valor (type INTEGER) (access initialize-only) (create-accessor read-write))
+)
+
+(defclass CARTA_EDIFICIO_GENERADOR
+    (is-a CARTA)
+    (slot numero_recursos_salida (type INTEGER) (access initialize-only) (create-accessor read-write))
 )
 
 (defclass CARTA_BANCO

@@ -4,6 +4,7 @@
     ; ====== JUGADORES ========
     (Diego of JUGADOR (nombre "DIEGO")(num_barcos 1)(capacidad_envio 2)(demanda_comida_cubierta 4))
     (Ricardo of JUGADOR (nombre "RICARDO")(num_barcos 1)(capacidad_envio 2)(demanda_comida_cubierta 4))
+
     ; ([Ayuntamiento] of JUGADOR (nombre TABLERO))
     ; ====== RECURSOS =========
     (franco of RECURSO (nombre FRANCO))
@@ -86,28 +87,28 @@
     (francos_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso FRANCO) (cantidad 50))
     (pescado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PESCADO) (cantidad 2))
     (madera_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso MADERA) (cantidad 2))
-    (arcilla_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso ARCILLA) (cantidad 2))
-    (hierro_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso HIERRO) (cantidad 2))
+    (arcilla_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso ARCILLA) (cantidad 6))
+    (hierro_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso HIERRO) (cantidad 10))
     (grano_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso GRANO) (cantidad 1))
     (ganado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso GANADO) (cantidad 0))
     (carbon_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso CARBON) (cantidad 2))
     (piel_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PIEL) (cantidad 2))
     (pescado_ahumado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PESCADO_AHUMADO) (cantidad 0))
     (carbon_vegetal_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso CARBON_VEGETAL) (cantidad 0))
-    (ladrillo_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso LADRILLOS) (cantidad 0))
+    (ladrillo_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso LADRILLOS) (cantidad 10))
     (acero_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso ACERO) (cantidad 0))
     (pan_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PAN) (cantidad 0))
     (carne_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso CARNE) (cantidad 0))
     (coque_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso COQUE) (cantidad 0))
     (cuero_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso CUERO) (cantidad 0))
     ; == RICARDO
-    (francos_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso FRANCO) (cantidad 0))
-    (pescado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO) (cantidad 2))
-    (madera_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso MADERA) (cantidad 2))
+    (francos_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso FRANCO) (cantidad 10))
+    (pescado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO) (cantidad 10))
+    (madera_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso MADERA) (cantidad 5))
     (arcilla_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso ARCILLA) (cantidad 2))
-    (hierro_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso HIERRO) (cantidad 2))
-    (grano_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso GRANO) (cantidad 0))
-    (ganado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso GANADO) (cantidad 1))
+    (hierro_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso HIERRO) (cantidad 10))
+    (grano_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso GRANO) (cantidad 3))
+    (ganado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso GANADO) (cantidad 5))
     (carbon_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso CARBON) (cantidad 2))
     (piel_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PIEL) (cantidad 2))
     (pescado_ahumado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO_AHUMADO) (cantidad 0))
@@ -116,7 +117,7 @@
     (acero_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso ACERO) (cantidad 0))
     (pan_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PAN) (cantidad 0))
     (carne_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso CARNE) (cantidad 0))
-    (coque_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso COQUE) (cantidad 0))
+    (coque_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso COQUE) (cantidad 5))
     (cuero_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso CUERO) (cantidad 0))
 
      ; BARCOS INICIALES
@@ -149,110 +150,107 @@
     
 
     ; MAZO 1
-    (of CARTA (nombre "HORNO DE CARBON VEGETAL") (valor 8) (tipo BASICO))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "HORNO DE CARBON VEGETAL") (valor 8) (tipo BASICO) (numero_recursos_salida 1))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "HORNO DE CARBON VEGETAL") (posicion_en_mazo 1))
     (of EDIFICIO_INPUT (nombre_carta "HORNO DE CARBON VEGETAL") (recurso MADERA) (cantidad_maxima 1000))    
     (of EDIFICIO_OUTPUT (nombre_carta "HORNO DE CARBON VEGETAL") (recurso CARBON_VEGETAL) (cantidad_min_generada_por_unidad 1))
-    ; cuesta fabricarlo 1 de arcill
-    ;(deseo_coger_recurso "RICARDO" FRANCO)
-    ;(deseo_coger_recurso "RICARDO" MADERA)
-    ;(deseo_coger_recurso "RICARDO" HIERRO)
-    ;(deseo_coger_recurso "RICARDO" GRANO)
-    ;(deseo_coger_recurso "RICARDO" PESCADO)
-    ;(deseo_coger_recurso "RICARDO" GANADO)
-    ;(fin_actividad_principal "DIEGO")
-
-
-     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "HORNO DE CARBON VEGETAL") (cantidad_arcilla 1))
+    ; cuesta fabricarlo 1 de arcilla
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "HORNO DE CARBON VEGETAL") (cantidad_arcilla 1))
 
 
     (of CARTA (nombre "MUELLE") (valor 14) (tipo INDUSTRIAL))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "MUELLE") (posicion_en_mazo 2))
-    ; ; ---> Muelle (2 de comida)
+    ; ---> Muelle (2 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "MUELLE")(tipo COMIDA)(cantidad 2))
     ; cuesta fabricarlo 2 de madera 2 de arcilla y 2 de hierro.
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "MUELLE")(cantidad_madera 2)(cantidad_arcilla 2)(cantidad_hierro 2))
 
-    (of CARTA (nombre "FABRICA DE LADRILLOS") (valor 14) (tipo INDUSTRIAL))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "FABRICA DE LADRILLOS") (valor 14) (tipo INDUSTRIAL) (numero_recursos_salida 2))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "FABRICA DE LADRILLOS") (posicion_en_mazo 3))
-    ; ; ---> Fábrica de ladrillos (1 de comida)
+    ; ---> Fábrica de ladrillos (1 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "FABRICA DE LADRILLOS")(tipo COMIDA)(cantidad 1))
     (of EDIFICIO_INPUT (nombre_carta "FABRICA DE LADRILLOS") (recurso ARCILLA) (cantidad_maxima 1000))
     (of EDIFICIO_OUTPUT (nombre_carta "FABRICA DE LADRILLOS") (recurso FRANCO) (cantidad_min_generada_por_unidad 0.5))
     (of EDIFICIO_OUTPUT (nombre_carta "FABRICA DE LADRILLOS") (recurso LADRILLOS) (cantidad_min_generada_por_unidad 1))
     (of COSTE_ENERGIA (nombre_carta "FABRICA DE LADRILLOS") (coste_unitario TRUE) (cantidad 0.5))
-    ; ; cuesta fabricarlo 2 madera 1 arcilla 1 hierro
+    ; cuesta fabricarlo 2 madera 1 arcilla 1 hierro
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "FABRICA DE LADRILLOS") (cantidad_madera 2)(cantidad_arcilla 1)(cantidad_hierro 1))
-    ; ; coste energia 0.5 energia por arcilla transformado.
+    ; coste energia 0.5 energia por arcilla transformado.
     (of COSTE_ENERGIA (nombre_carta "FABRICA DE LADRILLOS") (coste_unitario TRUE) (cantidad 0.5))
 
 
-    (of CARTA (nombre "COQUERIA") (valor 18) (tipo INDUSTRIAL))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "COQUERIA") (valor 18) (tipo INDUSTRIAL) (numero_recursos_salida 2))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "COQUERIA") (posicion_en_mazo 4))
-    ; ; ---> Coquería (1 franco)
+    ; ---> Coquería (1 franco)
     (of COSTE_ENTRADA_CARTA (nombre_carta "COQUERIA")(tipo DINERO)(cantidad 1))
     (of EDIFICIO_INPUT (nombre_carta "COQUERIA") (recurso CARBON) (cantidad_maxima 1000))
     (of EDIFICIO_OUTPUT (nombre_carta "COQUERIA") (recurso COQUE) (cantidad_min_generada_por_unidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "COQUERIA") (recurso FRANCO) (cantidad_min_generada_por_unidad 1))
-    ; ; cuesta fabricarlo 2 ladrillos 2 hierro
+    ; cuesta fabricarlo 2 ladrillos 2 hierro
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "COQUERIA") (cantidad_ladrillo 2) (cantidad_hierro 2))
 
 
     (of CARTA_BANCO (nombre "BANCO") (coste 40) (valor 16))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 1) (nombre_carta "BANCO") (posicion_en_mazo 5))
     ; cuesta fabricarlo 4 ladrillos 1 acero
-    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BANCO") (cantidad_ladrillo 4) (cantidad_acero 5))
+    (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BANCO") (cantidad_ladrillo 4) (cantidad_acero 1))
 
 
     ; MAZO 2
-    (of CARTA (nombre "PISCIFACTORIA") (valor 10) (tipo BASICO))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "PISCIFACTORIA") (valor 10) (tipo BASICO) (numero_recursos_salida 1))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "PISCIFACTORIA") (posicion_en_mazo 1))
     (of EDIFICIO_OUTPUT (nombre_carta "PISCIFACTORIA") (recurso PESCADO) (cantidad_min_generada_por_unidad 3))
     ; cuesta fabricarlo 1 madera 1 arcilla.
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "PISCIFACTORIA") (cantidad_madera 1)(cantidad_arcilla 1))
+    ; bonus salida
+    (of CARTA_OUTPUT_BONUS (nombre_carta "PISCIFACTORIA") (bonus PESCADOR) (cantidad_maxima_permitida 10000))
 
-    (of CARTA (nombre "PANADERIA") (valor 8) (tipo BASICO))
+
+    (of CARTA_EDIFICIO_GENERADOR (nombre "PANADERIA") (valor 8) (tipo BASICO) (numero_recursos_salida 2))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "PANADERIA") (posicion_en_mazo 2))
     ; ---> Panadería (1 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "PANADERIA") (tipo COMIDA) (cantidad 1))
     (of EDIFICIO_INPUT (nombre_carta "PANADERIA") (recurso GRANO) (cantidad_maxima 1000))
     (of EDIFICIO_OUTPUT (nombre_carta "PANADERIA") (recurso PAN) (cantidad_min_generada_por_unidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "PANADERIA") (recurso FRANCO) (cantidad_min_generada_por_unidad 0.5))
-    (of COSTE_ENERGIA (nombre_carta "PANADERIA") (coste_unitario TRUE) (cantidad 0.5))
+    
     ; cuesta fabricarlo 2 arcilla
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "PANADERIA")(cantidad_arcilla 2))
     ; coste energia 0.5 energia por grano transformado.
     (of COSTE_ENERGIA (nombre_carta "PANADERIA") (coste_unitario TRUE) (cantidad 0.5))
 
-    (of CARTA (nombre "MONTICULO DE ARCILLA") (valor 2) (tipo NINGUNO))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "MONTICULO DE ARCILLA") (valor 2) (tipo NINGUNO) (numero_recursos_salida 1))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "MONTICULO DE ARCILLA") (posicion_en_mazo 3))
     ; ---> Montículo de arcilla (1 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "MONTICULO DE ARCILLA")(tipo COMIDA)(cantidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "MONTICULO DE ARCILLA") (recurso ARCILLA) (cantidad_min_generada_por_unidad 3))
+    ; bonus salida
+    (of CARTA_OUTPUT_BONUS (nombre_carta "MONTICULO DE ARCILLA") (bonus MARTILLO) (cantidad_maxima_permitida 10000))
 
-
-    (of CARTA (nombre "MINA DE CARBON") (valor 10) (tipo INDUSTRIAL))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "MINA DE CARBON") (valor 10) (tipo INDUSTRIAL) (numero_recursos_salida 1))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "MINA DE CARBON") (posicion_en_mazo 4))
     ; ---> Mina de carbón (2 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "MINA DE CARBON") (tipo COMIDA) (cantidad 2))
     (of EDIFICIO_OUTPUT (nombre_carta "MINA DE CARBON") (recurso CARBON) (cantidad_min_generada_por_unidad 3))
     ; cuesta fabricarlo 1 madera 3 arcilla
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "MINA DE CARBON")(cantidad_madera 1)(cantidad_arcilla 3))
+    ; bonus salida
+    (of CARTA_OUTPUT_BONUS (nombre_carta "MINA DE CARBON") (bonus MARTILLO) (cantidad_maxima_permitida 1))
 
-    (of CARTA (nombre "SIDERURGIA") (valor 22) (tipo INDUSTRIAL))
+
+    (of CARTA_EDIFICIO_GENERADOR (nombre "SIDERURGIA") (valor 22) (tipo INDUSTRIAL) (numero_recursos_salida 1))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 2) (nombre_carta "SIDERURGIA") (posicion_en_mazo 5))
     ; ---> Siderurgia (2 francos)
     (of COSTE_ENTRADA_CARTA (nombre_carta "SIDERURGIA")(tipo DINERO)(cantidad 2))
     (of EDIFICIO_INPUT (nombre_carta "SIDERURGIA") (recurso HIERRO) (cantidad_maxima 1000))
     (of EDIFICIO_OUTPUT (nombre_carta "SIDERURGIA") (recurso ACERO) (cantidad_min_generada_por_unidad 1))
-    (of COSTE_ENERGIA (nombre_carta "SIDERURGIA") (coste_unitario FALSE) (cantidad 5))
     ; cuesta fabricarlo: 4 LADRILLOS Y 2 HIERRO
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "SIDERURGIA")(cantidad_ladrillo 4)(cantidad_hierro 2))
     ; coste energía 5 uds por acero generado.
     (of COSTE_ENERGIA (nombre_carta "SIDERURGIA") (coste_unitario TRUE) (cantidad 5))
 
     ; MAZO 3
-    (of CARTA (nombre "AHUMADOR") (valor 6) (tipo BASICO))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "AHUMADOR") (valor 6) (tipo BASICO) (numero_recursos_salida 2))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "AHUMADOR") (posicion_en_mazo 1))
     ; ---> Ahumador (2 de comida o 1 franco)
     (of COSTE_ENTRADA_CARTA (nombre_carta "AHUMADOR")(tipo DINERO)(cantidad 1))
@@ -260,13 +258,12 @@
     (of EDIFICIO_INPUT (nombre_carta "AHUMADOR") (recurso PESCADO) (cantidad_maxima 6))
     (of EDIFICIO_OUTPUT (nombre_carta "AHUMADOR") (recurso PESCADO_AHUMADO) (cantidad_min_generada_por_unidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "AHUMADOR") (recurso FRANCO) (cantidad_min_generada_por_unidad 0.5))
-    (of COSTE_ENERGIA (nombre_carta "AHUMADOR") (coste_unitario FALSE) (cantidad 0.5))
     ; cuesta fabricarlo: 2 madera y 1 arcilla
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "AHUMADOR")(cantidad_madera 2)(cantidad_arcilla 1))
     ; coste energia, 1 ud por 1 - 6 pescados
     (of COSTE_ENERGIA (nombre_carta "AHUMADOR") (coste_unitario FALSE) (cantidad 1))
 
-    (of CARTA (nombre "MATADERO") (valor 8) (tipo BASICO))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "MATADERO") (valor 8) (tipo BASICO) (numero_recursos_salida 2))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "MATADERO") (posicion_en_mazo 2))
      ; ---> Matedero
     (of COSTE_ENTRADA_CARTA (nombre_carta "MATADERO")(tipo DINERO)(cantidad 2))
@@ -287,7 +284,7 @@
     (of COSTE_ENERGIA (nombre_carta "COMPAÑIA NAVIERA") (coste_unitario TRUE) (cantidad 3))
 
 
-    (of CARTA (nombre "PELETERIA") (valor 12) (tipo BASICO))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "PELETERIA") (valor 12) (tipo BASICO) (numero_recursos_salida 2))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion_en_mazo 4))
     (of EDIFICIO_INPUT (nombre_carta "PELETERIA") (recurso PIEL) (cantidad_maxima 4))
     (of EDIFICIO_OUTPUT (nombre_carta "PELETERIA") (recurso CUERO) (cantidad_min_generada_por_unidad 1))
@@ -295,7 +292,7 @@
     ; cuesta fabricarlo 1 madera y 1 ladrillo.
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "PELETERIA")(cantidad_madera 1)(cantidad_ladrillo 1))
 
-    (of CARTA (nombre "HERRERIA") (valor 12) (tipo INDUSTRIAL))
+    (of CARTA_EDIFICIO_GENERADOR (nombre "HERRERIA") (valor 12) (tipo INDUSTRIAL) (numero_recursos_salida 1))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "HERRERIA") (posicion_en_mazo 5))
     ; ---> Herrería (3 de comida o 1 franco, la comida represento todas las posibilidades?)
     (of COSTE_ENTRADA_CARTA (nombre_carta "HERRERIA")(tipo DINERO)(cantidad 1))
@@ -303,7 +300,6 @@
     (of EDIFICIO_OUTPUT (nombre_carta "HERRERIA") (recurso HIERRO) (cantidad_min_generada_por_unidad 3))
     ; cuesta fabricarlo 3 madera y 2 ladrillo
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "HERRERIA")(cantidad_madera 3)(cantidad_ladrillo 2))
-    
 
     ; BARCOS 
     ; Barcos iniciales de los jugadores
@@ -451,5 +447,12 @@
     ;(deseo_pagar_deuda "DIEGO" 2)
 
     (deseo_entrar_edificio "DIEGO" "CONSTRUCTORA2" COMIDA PESCADO )
-    (deseo_construccion "DIEGO" "PISCIFACTORIA")
+    (deseo_entrar_edificio "RICARDO" "MATADERO" DINERO FRANCO )
+    ;(deseo_entrar_edificio "RICARDO" "SIDERURGIA" DINERO FRANCO )
+    (deseo_construccion "DIEGO" "MATADERO")
+
+
+    (deseo_generar_con_recurso "RICARDO" "MATADERO" GANADO 5)
+    ;(deseo_emplear_energia "RICARDO" "AHUMADOR" 1 0 0 0)
+    ;(deseo_emplear_energia ?nombre_jugador ?nombre_edificio ?cantidad_madera ?cantidad_carbon_vegetal ?cantidad_carbon ?cantidad_coque)
 )
