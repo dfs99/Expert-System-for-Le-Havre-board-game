@@ -29,6 +29,17 @@
     ; hechos semáforo para cambiar de jugador
     (siguiente_jugador "DIEGO" "RICARDO")
     (siguiente_jugador "RICARDO" "DIEGO")
+
+    ; Para evitar generar dos reglas para entrar a un edificio (una para cuando se entra a un 
+    ; edificio por primera vez y otra para cuando se cambia de edificio), se generan estos
+    ; hechos iniciales con el edificio vacío. 
+    (edificio_diego of JUGADOR_ESTA_EDIFICIO (nombre_jugador "DIEGO")(nombre_edificio ""))
+    (edificio_diego of JUGADOR_ESTA_EDIFICIO (nombre_jugador "RICARDO")(nombre_edificio ""))
+
+    (edificio_usado_diego of JUGADOR_HA_USADO_EDIFICIO (nombre_jugador "DIEGO")(nombre_edificio ""))
+    (edificio_usado_ricardo of JUGADOR_HA_USADO_EDIFICIO (nombre_jugador "RICARDO")(nombre_edificio ""))
+
+
     ; turno
     (turno "DIEGO")
     ; hechos semaforo para cambiar de rondas.

@@ -72,6 +72,15 @@
     (posicion_diego of JUGADOR_ESTA_EN_LOSETA (posicion 0) (nombre_jugador "DIEGO"))
     (posicion_ricardo of JUGADOR_ESTA_EN_LOSETA (posicion -1) (nombre_jugador "RICARDO"))
 
+    ; Para evitar generar dos reglas para entrar a un edificio (una para cuando se entra a un 
+    ; edificio por primera vez y otra para cuando se cambia de edificio), se generan estos
+    ; hechos iniciales con el edificio vacío. 
+    (edificio_diego of JUGADOR_ESTA_EDIFICIO (nombre_jugador "DIEGO")(nombre_edificio ""))
+    (edificio_ricardo of JUGADOR_ESTA_EDIFICIO (nombre_jugador "RICARDO")(nombre_edificio ""))
+    ; lo mismo ocurre con edificio_usado
+    (edificio_usado_diego of JUGADOR_HA_USADO_EDIFICIO (nombre_jugador "DIEGO")(nombre_edificio ""))
+    (edificio_usado_ricardo of JUGADOR_HA_USADO_EDIFICIO (nombre_jugador "RICARDO")(nombre_edificio ""))
+
     ; ========= RECURSOS INICIALES DE LOS JUGADORES =========
     ; == DIEGO
     (francos_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso FRANCO) (cantidad 50))
@@ -426,7 +435,7 @@
     ;(deseo_comprar_edificio "DIEGO" "HORNO DE CARBON VEGETAL")
     ;(deseo_vender_carta "DIEGO" "CONSTRUCTORA1")
     ;(deseo_comprar_edificio "RICARDO" "CONSTRUCTORA2")
-    (deseo_comprar_edificio "DIEGO" "BANCO")
+    ;(deseo_comprar_edificio "DIEGO" "BANCO")
 
 
     ;(BARCO_DISPONIBLE (nombre_barco "BARCO_MADERA1"))
@@ -440,4 +449,7 @@
 
     ;(deseo_pagar_deuda "DIEGO" 5)
     ;(deseo_pagar_deuda "DIEGO" 2)
+
+    (deseo_entrar_edificio "DIEGO" "CONSTRUCTORA2" COMIDA PESCADO )
+    (deseo_construccion "DIEGO" "PISCIFACTORIA")
 )

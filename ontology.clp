@@ -71,9 +71,16 @@
     (slot nombre_edificio (type STRING) (default ?NONE))
 )
 
-(deftemplate JUGADOR_ESTA_EDIFICIO
-    (slot nombre_edificio (type STRING) (default ?NONE))
-    (slot nombre_jugador (type STRING) (default ?NONE))
+(defclass JUGADOR_ESTA_EDIFICIO
+    (is-a USER)
+    (slot nombre_edificio (type STRING) (default "")(access read-write)(create-accessor read-write))
+    (slot nombre_jugador (type STRING) (default "")(access read-write)(create-accessor read-write))
+)
+
+(defclass JUGADOR_HA_USADO_EDIFICIO
+    (is-a USER)
+    (slot nombre_edificio (type STRING) (default "")(access read-write)(create-accessor read-write))
+    (slot nombre_jugador (type STRING) (default "")(access read-write)(create-accessor read-write))
 )
 
 ; representar la información de q el barco ahora queda disponible y se podrá adquirir.
