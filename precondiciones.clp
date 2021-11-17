@@ -27,9 +27,10 @@
     (mazo1 of MAZO (id_mazo 1) (numero_cartas_en_mazo 5))
     (mazo2 of MAZO (id_mazo 2) (numero_cartas_en_mazo 5))
     (mazo3 of MAZO (id_mazo 3) (numero_cartas_en_mazo 5))
-    (mazo_barcos_madera of MAZO (id_mazo 4) (numero_cartas_en_mazo 0))
-    (mazo_barcos_hierro of MAZO (id_mazo 5) (numero_cartas_en_mazo 0))
-    (mazo_barcos_acero of MAZO (id_mazo 6) (numero_cartas_en_mazo 0))
+    (mazo_barcos_madera of MAZO (id_mazo 4) (numero_cartas_en_mazo 3))
+    (mazo_barcos_hierro of MAZO (id_mazo 5) (numero_cartas_en_mazo 2))
+    (mazo_barcos_acero of MAZO (id_mazo 6) (numero_cartas_en_mazo 2))
+    (mazo_barcos_lujosos of MAZO (id_mazo 7) (numero_cartas_en_mazo 1))
     ; ====== RONDA ======
     (ronda1 of RONDA (nombre_ronda RONDA_1) (coste_comida 4) (hay_cosecha TRUE))
     (ronda2 of RONDA (nombre_ronda RONDA_2) (coste_comida 7) (hay_cosecha TRUE))
@@ -297,10 +298,10 @@
 
     ; BARCOS 
     ; Barcos iniciales de los jugadores
-    (of BARCO (nombre "BARCO_MADERA_INICIAL1")(valor 2)(coste 14)(comida_genera 4)(capacidad_envio 2))
+    (of BARCO (nombre "BARCO_MADERA_INICIAL1")(valor 2)(coste 14)(uds_comida_genera 4)(capacidad_envio 2))
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_MADERA_INICIAL1")(cantidad_madera 5))
 
-    (of BARCO (nombre "BARCO_MADERA_INICIAL2")(valor 2)(coste 14)(comida_genera 4)(capacidad_envio 2))
+    (of BARCO (nombre "BARCO_MADERA_INICIAL2")(valor 2)(coste 14)(uds_comida_genera 4)(capacidad_envio 2))
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "BARCO_MADERA_INICIAL2")(cantidad_madera 5))
     ; Barcos en los mazos
     (of BARCO (nombre "BARCO_MADERA1") (valor 4) (coste 14) (uds_comida_genera 4) (capacidad_envio 2))
@@ -342,6 +343,8 @@
     (of CARTA_PERTENECE_A_MAZO (id_mazo 6) (nombre_carta "BARCO_ACERO1") (posicion_en_mazo 1))
     (of CARTA_PERTENECE_A_MAZO (id_mazo 6) (nombre_carta "BARCO_ACERO2") (posicion_en_mazo 2))
 
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 7) (nombre_carta "BARCO_LUJOSO") (posicion_en_mazo 1))
+
     ; Ronda introduce primer edificio del mazo aleatoriamente.
     (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_1) (id_mazo 1))
     (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_3) (id_mazo 2))
@@ -380,6 +383,23 @@
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "CONSTRUCTORA2"))
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "CONSTRUCTORA3"))
     (EDIFICIO_AYUNTAMIENTO (nombre_edificio "MERCADO"))    
+
+
+    ; Asignación barcos a mazos para poder devolverlos a su mazo tras ser vendidos
+    (barco_pertenece_mazo "BARCO_MADERA1" 4)
+    (barco_pertenece_mazo "BARCO_MADERA2" 4)
+    (barco_pertenece_mazo "BARCO_MADERA3" 4)
+    (barco_pertenece_mazo "BARCO_MADERA_INICIAL1" 4)
+    (barco_pertenece_mazo "BARCO_MADERA_INICIAL2" 4)
+
+    (barco_pertenece_mazo "BARCO_HIERRO1" 5)
+    (barco_pertenece_mazo "BARCO_HIERRO2" 5)
+    
+    (barco_pertenece_mazo "BARCO_ACERO1" 6)
+    (barco_pertenece_mazo "BARCO_ACERO2" 6)
+
+    (barco_pertenece_mazo "BARCO_LUJOSO" 7)
+
 
     (edificio_usado "" "DIEGO")
     (edificio_usado "" "RICARDO")

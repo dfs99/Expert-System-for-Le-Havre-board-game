@@ -36,3 +36,27 @@
 ;3	4	3	(act)	3
 ;4	5	4	(act)	4
 ;5
+
+; ACTUALIZAR MAZOS
+
+(defrule ACTUALIZAR_MAZO
+	
+	?ref <- (actualizar_mazo ?id ?numero_actualizaciones_restante ?pos1)
+    ?carta_mazo1 <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta1) (posicion_en_mazo ?pos1))
+	;(not (carta_actualizada ?nombre_carta1 ?id ?pos1))
+	(test (> ?numero_actualizaciones_restante 0))
+	=>
+	(modify-instance ?carta_mazo1(posicion_en_mazo (- ?pos1 1)))
+	(retract ?ref)
+	(assert (actualiza_mazo ?id (- ?numero_actualizaciones_restante 1) (+ ?pos1 1)))
+	;(assert (carta_actualizada ?nombre_carta1 ?id ?pos1))
+    (printout t"El mazo <" ?id "> ha actualizado la posición de la carta <" ?nombre_carta1 ">, ahora se encuentra en la posción <" (- ?pos1 1) ">." crlf)
+)
+
+(defrule FIN_ACTUALIZAR_MAZO
+	(object (is-a MAZO) (id_mazo ?id) (numero_cartas_en_mazo ?num_cartas_en_mazo))
+	?ref <- (actualizar_mazo ?id 0 ?)
+	=>
+	(retract ?ref)
+	(printput t"mazo finalizado" crlf)
+)

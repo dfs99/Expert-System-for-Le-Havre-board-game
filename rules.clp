@@ -125,69 +125,69 @@
 ; )
 
 
-(defrule COMPRAR_EDIFICIO_BANCO_DEL_AYUNTO
-    ; Se puede comprar en la ronda actual. [en todas las rondas excepto la última.]
-    (ronda_actual ?nombre_ronda)
-    (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
-    ; Obtener el turno del jugador
-    ?turno <- (turno ?nombre_jugador)
-    ; Obtener el edificio del deseo
-    ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
-    ; Ha finalizado su actividad principal dentro de su turno.
-    (fin_actividad_principal ?nombre_jugador)
-    ; El edificio es del ayuntamiento
-    ?ayunto <- (EDIFICIO_AYUNTAMIENTO (nombre_edificio ?nombre_edificio))
-    ; Obtiene el coste de comprar el banco.
-    (object (is-a CARTA_BANCO) (nombre ?nombre_edificio) (coste ?valor_edificio) (valor ?))
-    ; Obtiene el dinero del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
-    ; El jugador tiene suficiente dinero
-    (test (>= ?cantidad_recurso ?valor_edificio))
-    =>
-    ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?valor_edificio)))
-    ; Quitar el edificio al ayuntamiento
-    (retract ?ayunto)
-    ; Asignar el edificio al jugador
-    (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio))
-    ; Eliminar el deseo de comprar el edificio
-    (retract ?deseo)
-    ; Print final
-    printout t"El jugador: <" ?nombre_jugador "> ha comprado el edificio: <" ?nombre_edificio "> por <" ?valor_edificio "> francos al ayuntamiento." crlf)
-)
-)
+; (defrule COMPRAR_EDIFICIO_BANCO_DEL_AYUNTO
+;     ; Se puede comprar en la ronda actual. [en todas las rondas excepto la última.]
+;     (ronda_actual ?nombre_ronda)
+;     (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
+;     ; Obtener el turno del jugador
+;     ?turno <- (turno ?nombre_jugador)
+;     ; Obtener el edificio del deseo
+;     ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
+;     ; Ha finalizado su actividad principal dentro de su turno.
+;     (fin_actividad_principal ?nombre_jugador)
+;     ; El edificio es del ayuntamiento
+;     ?ayunto <- (EDIFICIO_AYUNTAMIENTO (nombre_edificio ?nombre_edificio))
+;     ; Obtiene el coste de comprar el banco.
+;     (object (is-a CARTA_BANCO) (nombre ?nombre_edificio) (coste ?valor_edificio) (valor ?))
+;     ; Obtiene el dinero del jugador
+;     ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+;     ; El jugador tiene suficiente dinero
+;     (test (>= ?cantidad_recurso ?valor_edificio))
+;     =>
+;     ; Modificar el dinero del jugador
+;     (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?valor_edificio)))
+;     ; Quitar el edificio al ayuntamiento
+;     (retract ?ayunto)
+;     ; Asignar el edificio al jugador
+;     (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio))
+;     ; Eliminar el deseo de comprar el edificio
+;     (retract ?deseo)
+;     ; Print final
+;     printout t"El jugador: <" ?nombre_jugador "> ha comprado el edificio: <" ?nombre_edificio "> por <" ?valor_edificio "> francos al ayuntamiento." crlf)
+; )
+; )
 
-(defrule COMPRAR_EDIFICIO_BANCO_DEL_MAZO
-    ; Se puede comprar en la ronda actual. [en todas las rondas excepto la última.]
-    (ronda_actual ?nombre_ronda)
-    (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
-    ; Obtener el turno del jugador
-    ?turno <- (turno ?nombre_jugador)
-    ; Obtener el edificio del deseo
-    ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
-    ; Ha finalizado su actividad principal dentro de su turno.
-    (fin_actividad_principal ?nombre_jugador)
-    ; El edificio es del mazo
-    ?carta_en_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_edificio) (posicion_en_mazo 1))
-    ; Obtiene el coste de comprar el edificio
-    (object (is-a CARTA_BANCO) (nombre ?nombre_edificio) (coste ?valor_edificio) (valor ?))
-    ; Obtiene el dinero del jugador
-    ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
-    ; El jugador tiene suficiente dinero
-    (test (>= ?cantidad_recurso ?valor_edificio))
-    =>
-    ; Modificar el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?valor_edificio)))
-    ; Quitar la carta del mazo y mover todas las cartas 1 posición
-    (unmake-instance ?carta_en_mazo)
-    ; Asignar el edificio al jugador
-    (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio))
-    ; Eliminar el deseo de comprar el edificio
-    (retract ?deseo)
-    ; Generar hecho semáforo para actualizar el orden de las cartas del mazo
-    (assert (actualizar_mazo ?id_mazo))
-    (printout t"El jugador: <" ?nombre_jugador "> ha comprado el edificio: <" ?nombre_edificio "> por <" ?valor_edificio "> francos al mazo." crlf)
-)
+; (defrule COMPRAR_EDIFICIO_BANCO_DEL_MAZO
+;     ; Se puede comprar en la ronda actual. [en todas las rondas excepto la última.]
+;     (ronda_actual ?nombre_ronda)
+;     (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
+;     ; Obtener el turno del jugador
+;     ?turno <- (turno ?nombre_jugador)
+;     ; Obtener el edificio del deseo
+;     ?deseo <- (deseo_comprar_edificio ?nombre_edificio)
+;     ; Ha finalizado su actividad principal dentro de su turno.
+;     (fin_actividad_principal ?nombre_jugador)
+;     ; El edificio es del mazo
+;     ?carta_en_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_edificio) (posicion_en_mazo 1))
+;     ; Obtiene el coste de comprar el edificio
+;     (object (is-a CARTA_BANCO) (nombre ?nombre_edificio) (coste ?valor_edificio) (valor ?))
+;     ; Obtiene el dinero del jugador
+;     ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCOS) (cantidad ?cantidad_recurso))
+;     ; El jugador tiene suficiente dinero
+;     (test (>= ?cantidad_recurso ?valor_edificio))
+;     =>
+;     ; Modificar el dinero del jugador
+;     (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?valor_edificio)))
+;     ; Quitar la carta del mazo y mover todas las cartas 1 posición
+;     (unmake-instance ?carta_en_mazo)
+;     ; Asignar el edificio al jugador
+;     (make-instance of JUGADOR_TIENE_CARTA (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_edificio))
+;     ; Eliminar el deseo de comprar el edificio
+;     (retract ?deseo)
+;     ; Generar hecho semáforo para actualizar el orden de las cartas del mazo
+;     (assert (actualizar_mazo ?id_mazo))
+;     (printout t"El jugador: <" ?nombre_jugador "> ha comprado el edificio: <" ?nombre_edificio "> por <" ?valor_edificio "> francos al mazo." crlf)
+; )
 
 ; OK
 ;   3-. Vender Carta (otorga mitad de valor) [tanto edificio como barco, todos igual.]

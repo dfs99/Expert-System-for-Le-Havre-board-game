@@ -81,3 +81,10 @@ BARCOS INICIALES
 
 valor 2 coste 14 madera 5, cuando se venden van al mazo de barcos de madera
 
+
+
+PLANTEAMIENTO ACTUALIZAR MAZO
+
+(actualizar_mazo ?id_mazo)
+()
+

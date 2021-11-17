@@ -1,3 +1,6 @@
+
+
+
 ; ESTO SE ACTIVA DESPUES DE TOMAR_RECURSO_OFERTA?????? POR QUÉ
 (defrule DESTAPAR_LOSETA
     ; obtener casilla y que esté oculta.
@@ -64,85 +67,25 @@
      (printout t"El jugador <" ?nombre "> ha pagado intereses por sus deudas, ¡endeudándose aún más! " crlf)
 
 )
-
-; reglas eliminar cartas de un mazo.
-
-(defrule ACTUALIZAR_MAZO_1
-	?carta_mazo1 <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta1) (posicion_en_mazo ?pos1))
-	(test (> ?pos1 2))
-	(actualizar_mazo ?id)
-    (not (carta_actualizada ?nombre_carta1 ?id ?pos1))
-    =>
-    (modify-instance ?carta_mazo1(posicion_en_mazo (- ?pos1 1)))
-	(assert (carta_actualizada ?nombre_carta1 ?id ?pos1))
-    (printout t"El mazo <" ?id "> ha actualizado la posición de la carta <" ?nombre_carta1 ">, ahora se encuentra en la posción <" (- ?pos1 1) ">." crlf)
-)
-
-(defrule ACTUALIZAR_MAZO3BIS
-    ; ultima regla gestion de mazos q permite tener el caso extremo de cuando queda una sola carta en el 
-    ; mazo, y por cualquier motivo sale de el, indicar el hecho semáforo para reglas sucesivas...
-    (object (is-a MAZO) (id_mazo ?id) (numero_cartas_en_mazo ?numero_cartas_en_mazo))
-    (test (= ?numero_cartas_en_mazo 0))
-    ?actualizar <- (actualizar_mazo ?id)
-    =>
-    (assert (tercera_fase_actualizar_mazo 0))
-    (retract ?actualizar)
-    (printout t"actualizando mazo..." crlf)
-)
-
-(defrule ACTUALIZAR_MAZO_3
-    ;(declare (salience 1))
-	(object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion_en_mazo ?))
-	?actualizacion_sobre_carta <- (carta_actualizada ?nombre_carta ?id ?)
-    (not (actualizar_mazo ?id))
-    ?ref <- (tercera_fase_actualizar_mazo ?numero_cartas_en_mazo)
+(defrule ACTUALIZAR_MAZO
+	?ref <- (actualizar_mazo ?id ?numero_actualizaciones_restante ?pos1)
+    ?carta_mazo1 <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion_en_mazo ?pos1))
+	;(not (carta_actualizada ?nombre_carta1 ?id ?pos1))
+	(test (> ?numero_actualizaciones_restante 0))
 	=>
-	(retract ?actualizacion_sobre_carta)
-    ; semáforo para evitar que pasar ronda nos adelante por la derecha.
-    (retract ?ref)
-    (assert (tercera_fase_actualizar_mazo (- ?numero_cartas_en_mazo 1)))
-	;(printout t"=====================================================================================================" crlf)
-    (printout t"actualizando mazo..." crlf)
+	(modify-instance ?carta_mazo1(posicion_en_mazo (- ?pos1 1)))
+	(retract ?ref)
+	(assert (actualizar_mazo ?id (- ?numero_actualizaciones_restante 1) (+ ?pos1 1)))
+	;(assert (carta_actualizada ?nombre_carta1 ?id ?pos1))
+    (printout t"El mazo <" ?id "> ha actualizado la posición de la carta <" ?nombre_carta ">, ahora se encuentra en la posción <" (- ?pos1 1) ">." crlf)
 )
 
-(defrule ACTUALIZAR_MAZO_2BIS
-    (object (is-a MAZO) (id_mazo ?id) (numero_cartas_en_mazo ?numero_cartas_en_mazo))
-    
-    ; para cuando hay queda 1.   
-	(test (= ?numero_cartas_en_mazo 1))
-    ?carta_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion_en_mazo ?pos))
-	(test (> ?pos 1))
-	?actualizar <- (actualizar_mazo ?id)
-	(not (carta_actualizada ?nombre_carta ?id ?pos))
+(defrule FIN_ACTUALIZAR_MAZO
+	(object (is-a MAZO) (id_mazo ?id) (numero_cartas_en_mazo ?num_cartas_en_mazo))
+	?ref <- (actualizar_mazo ?id 0 ?)
 	=>
-	(modify-instance ?carta_mazo (posicion_en_mazo (- ?pos 1)))
-	(retract ?actualizar)
-    (assert (carta_actualizada ?nombre_carta ?id ?pos))
-    (assert (tercera_fase_actualizar_mazo ?numero_cartas_en_mazo))
-	(printout t"El mazo <" ?id "> ha actualizado la posición de la carta <" ?nombre_carta ">, ahora se encuentra en la posción <" (- ?pos 1) ">." crlf)
-)
-
-(defrule ACTUALIZAR_MAZO_2
-    (object (is-a MAZO) (id_mazo ?id) (numero_cartas_en_mazo ?numero_cartas_en_mazo))
-    
-    ; no puede existir una carta con posición mayor q 2 y que no haya sido actualizada.
-    (carta_actualizada ?nombre_carta2 ?id ?pos_en_mazo)
-    (test (> ?pos_en_mazo 2))
-    
-	
-    ?carta_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id) (nombre_carta ?nombre_carta) (posicion_en_mazo ?pos))
-	(test (> ?pos 1))
-	?actualizar <- (actualizar_mazo ?id)
-	(not (carta_actualizada ?nombre_carta ?id ?pos))
-
-    ; cartas distintas
-    (test (neq ?nombre_carta2 ?nombre_carta))
-	=>
-	(modify-instance ?carta_mazo (posicion_en_mazo (- ?pos 1)))
-	(retract ?actualizar)
-    (assert (carta_actualizada ?nombre_carta ?id ?pos))
-    (assert (tercera_fase_actualizar_mazo ?numero_cartas_en_mazo))
-	(printout t"El mazo <" ?id "> ha actualizado la posición de la carta <" ?nombre_carta ">, ahora se encuentra en la posción <" (- ?pos 1) ">." crlf)
+	(retract ?ref)
+	(printout t"mazo finalizado" crlf)
 )
 
 (defrule COMPRAR_EDIFICIO_AL_AYUNTO
@@ -327,11 +270,15 @@
     ; El barco es del jugador
     ?jugador_tiene_barco <- (object (is-a JUGADOR_TIENE_CARTA) (nombre_jugador ?nombre_jugador)(nombre_carta ?nombre_barco))
     ; Obtiene el valor del barco
-    ?barco <- (object (is-a BARCO)(coste ?coste_barco)(valor ?valor_barco)(uds_comida_genera ?uds_comida_genera)(capacidad_envio ?capacidad_envio_barco))
+    ?barco <- (object (is-a BARCO)(nombre ?nombre_barco)(coste ?coste_barco)(valor ?valor_barco)(uds_comida_genera ?uds_comida_genera)(capacidad_envio ?capacidad_envio_barco))
     ; Obtiene el dinero del jugador
     ?recurso_jugador <- (object (is-a JUGADOR_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_recurso))
     ; se obtiene al jugador
     ?jugador <- (object (is-a JUGADOR)(nombre ?nombre_jugador)(num_barcos ?num_barcos)(capacidad_envio ?capacidad_envio_jugador)(demanda_comida_cubierta ?demanda_comida_cubierta))
+    ; Obtener el mazo del barco
+    (barco_pertenece_mazo ?nombre_barco ?id_mazo)
+    ?mazo_barco <- (object(is-a MAZO)(id_mazo ?id_mazo)(numero_cartas_en_mazo ?num_cartas_mazo))
+
     =>
     ; Elimina el barco del jugador
     (unmake-instance ?jugador_tiene_barco)
@@ -339,6 +286,9 @@
     (modify-instance ?jugador (num_barcos (- ?num_barcos 1)) (capacidad_envio (- ?capacidad_envio_jugador ?capacidad_envio_barco)) (demanda_comida_cubierta (- ?demanda_comida_cubierta ?uds_comida_genera)))
     ; Actualiza el dinero del jugador
     (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso (/ ?valor_barco 2))))
+    ; Insertar el barco en el mazo
+    (make-instance of CARTA_PERTENECE_A_MAZO (?nombre_barco)(?id_mazo))
+    (modify-instance ?mazo_barco (numero_cartas_en_mazo (+ ?num_cartas_mazo 1)))
     ; Elimina el deseo
     (retract ?deseo)
 )
@@ -384,7 +334,7 @@
     ; actualiza el numero de cartas en el mazo.
     (modify-instance ?ref_mazo (numero_cartas_en_mazo (- ?num_cartas_en_mazo 1)))
     ; Generar hecho semáforo para actualizar el orden de las cartas del mazo
-    (assert (actualizar_mazo ?id_mazo))
+    (assert (actualizar_mazo ?id_mazo (- ?num_cartas_en_mazo 1) 2))
     ; Elimina la instancia de ronda_asigna_edificio
     (unmake-instance ?asignacion_edificio)
     ; semáforo para pasar de ronda 
@@ -667,6 +617,84 @@
     (printout t"El jugador: <" ?nombre_jugador "> ha tomado de la oferta: <" ?cantidad_oferta "> de <" ?recurso_deseado ">. " crlf)
 )
 
+(defrule ENTRAR_EDIFICIO_GRATIS_RONDAS
+
+    ; Se puede entrar de uno en uno en el resto de las rondas.
+    (ronda_actual ?nombre_ronda)
+    (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
+    ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
+    ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
+    ; Es el turno del jugador
+    ?turno <- (turno ?nombre_jugador)
+    ; obtener nombre de la carta. 
+    (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
+    ; no exista un jugador en ese edificio.
+
+    ?pos_jugador <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+    (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?nombre_carta) (nombre_jugador ?otro_jugador))
+    (test (neq ?nombre_jugador ?otro_jugador))
+    (test (neq ?edificio_actual ?nombre_edificio))
+
+    ; No tiene coste de entrada y pertence a otro jugador o pertenece al jugador y entra gratis. 
+    (or
+        (and
+            (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?) (cantidad ?))) 
+                 
+            (object (is-a JUGADOR_TIENE_CARTA)(nombre_jugador ?otro_jugador) (nombre_carta ?nombre_carta))
+        ) 
+         
+        (object (is-a JUGADOR_TIENE_CARTA) (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_carta))
+    )
+    
+    =>
+    ; indicar que el jugador está en el edificio.
+    (modify ?pos_jugador (nombre_edificio ?nombre_carta))
+    ; quitar el deseo.
+    (retract ?deseo)
+    ; Acción principal terminada
+    (assert (fin_actividad_principal ?nombre_jugador))
+    
+    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> sin coste de entrada o porque le pertenece." crlf)
+)
+
+(defrule ENTRAR_EDIFICIO_GRATIS_RONDA_FINAL
+; Se puede entrar de uno en uno en el resto de las rondas.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
+    ?deseo <- (deseo_entrar_edificio ?nombre_edificio ?tipo_recurso ?nombre_recurso)
+    ; Es el turno del jugador
+    ?turno <- (turno ?nombre_jugador)
+    ; obtener nombre de la carta. 
+    (object (is-a CARTA) (nombre ?nombre_carta) (valor ?))
+    ; comprobar que el jugador no se encuentre ya en el edificio. 
+    ?pos_jugador <- (JUGADOR_ESTA_EDIFICIO (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+    (test (neq ?edificio_actual ?nombre_carta))
+
+    (object (is-a JUGADOR)(nombre ?otro_jugador))
+    (test (neq ?nombre_jugador ?otro_jugador))
+
+    ; No tiene coste de entrada y pertence a otro jugador o pertenece al jugador y entra gratis. 
+    (or
+        (and
+            (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo ?) (cantidad ?))) 
+                 
+            (object (is-a JUGADOR_TIENE_CARTA)(nombre_jugador ?otro_jugador) (nombre_carta ?nombre_carta))
+        ) 
+         
+        (object (is-a JUGADOR_TIENE_CARTA) (nombre_jugador ?nombre_jugador) (nombre_carta ?nombre_carta))
+    )
+
+    =>
+    ; indicar que el jugador está en el edificio.
+    (modify ?pos_jugador (nombre_edificio ?nombre_carta))
+
+    ; quitar el deseo.
+    (retract ?deseo)
+    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_carta "> sin coste de entrada en la ronda final." crlf)
+
+
+)
+
 (defrule PASAR_RONDA 
     ; Semáforo pasar ronda.
     ?cambiar <- (cambiar_ronda TRUE)
@@ -687,20 +715,19 @@
     (siguiente_ronda ?nombre_ronda_actual ?nombre_ronda_siguiente)
     ; introducir barco
     ?introduce_barco <- (object (is-a RONDA_INTRODUCE_BARCO) (nombre_ronda ?nombre_ronda_actual) (nombre_carta ?nombre_barco))
-
     ; semáforo para que en las rondas impares asigne el edificio al ayuntamiento antes de pasar de ronda
     (or (eq ?nombre_ronda_actual RONDA_2)
         (eq ?nombre_ronda_actual RONDA_4)
         (eq ?nombre_ronda_actual RONDA_6)
         (eq ?nombre_ronda_actual RONDA_8)
-        (and (tercera_fase_actualizar_mazo 0)
-             (edificio_entregado ?nombre_ronda_actual)
-        )
+        (edificio_entregado ?nombre_ronda_actual)
     )
     
     ; evita que se pase de ronda antes de actualizar el mazo cuando se entrega un edificio al ayuntamiento
-    (not (actualizar_mazo ?))
+    ;(not (actualizar_mazo ?))
+    (not (actualizar_mazo ? ? ?))
      =>
+     
     (retract ?ronda_actual)
     (assert (ronda_actual ?nombre_ronda_siguiente))
     (retract ?cambiar)
