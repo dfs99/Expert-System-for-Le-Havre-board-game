@@ -114,12 +114,17 @@ PLANTEAMIENTO ACTUALIZAR MAZO
 
 ======================================================================
 
+
+
+
+
+TODOS LOS DESEOS: 
 deseo_comprar_edificio
 deseo_comprar_barco
 deseo_vender_carta
 deseo_vender_barco 
 deseo_pagar_deuda 
-deseo_papar_demanda
+deseo_pagar_demanda
 deseo_coger_recurso 
 deseo_entrar_edificio
 deseo_construccion 
@@ -128,8 +133,44 @@ deseo_emplear_energia
 deseo_usar_mercado 
 deseo_usar_compañia_naviera 
 
+DESEOS NUESTRA ESTRATEGIA: 
+deseo_comprar_edificio
+deseo_pagar_demanda
+deseo_coger_recurso
+deseo_entrar_edificio
+deseo_construccion
+deseo_generar_con_recurso
+deseo_emplear_energia
+deseo_usar_compañia_naviera
+
+=> para ejecutar deseos:
+    => especialista : tipo_basico_recurso_alimenticio
+    => edificios construir : {ed1, ed2, ed3, ...}
+    => 
 
 
+el pescado sale 3 veces por ronda. 
+la madera sale 4 veces por ronda.
+Ganado / grano sale 1 vez por ronda. 
+franco / arcilla sale 2 veces por ronda. 
+hierro 1 vez. 
 
+oferta inicial:
+Pescado: 3
+franco: 3
+madera: 3
+arcilla: 2
+hierro: 1 
+grano: 1
+ganado: 1
 
-
+recursos inicio jugadores. 
+Pescado: 2
+franco: 5
+madera: 2
+arcilla: 2
+hierro: 2 
+grano: 0
+ganado: 1
+carbon 2
+piel 2

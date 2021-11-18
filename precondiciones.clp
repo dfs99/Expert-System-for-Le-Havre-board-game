@@ -291,7 +291,6 @@
     (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "COMPAÑIA NAVIERA") (posicion_en_mazo 3))
     ; ---> Compañía naviera (2 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "COMPAÑIA NAVIERA") (tipo COMIDA) (cantidad 2))
-    (of COSTE_ENERGIA (nombre_carta "COMPAÑIA NAVIERA") (coste_unitario TRUE) (cantidad 3))
     ; cuesta fabricarlo: 2 madera y 3 ladrillos
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "COMPAÑIA NAVIERA")(cantidad_madera 2)(cantidad_ladrillo 3))
     ; coste energia: 3 uds por barco
@@ -319,8 +318,6 @@
     (of CARTA_TIENE_BONUS (nombre_carta "PISCIFACTORIA")(bonus PESCADOR))
     (of CARTA_TIENE_BONUS (nombre_carta "AHUMADOR")(bonus PESCADOR))
     (of CARTA_TIENE_BONUS (nombre_carta "COMPAÑIA NAVIERA")(bonus PESCADOR))
-    (of CARTA_TIENE_BONUS (nombre_carta "MINA DE CARBON")(bonus MARTILLO))
-    (of CARTA_TIENE_BONUS (nombre_carta "MONTICULO DE ARCILLA")(bonus MARTILLO))
     (of CARTA_TIENE_BONUS (nombre_carta "HERRERIA")(bonus MARTILLO))
     (of CARTA_TIENE_BONUS (nombre_carta "CONSTRUCTORA1")(bonus MARTILLO))
     (of CARTA_TIENE_BONUS (nombre_carta "CONSTRUCTORA2")(bonus MARTILLO))
