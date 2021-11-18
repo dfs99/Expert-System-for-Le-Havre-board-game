@@ -232,7 +232,7 @@
 
 (defclass JUGADOR_TIENE_CARTA
     (is-a USER)
-    (slot nombre_jugador (type STRING))
+    (slot nombre_jugador (type STRING)(access read-write) (create-accessor read-write))
     (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read-write))
 )
 

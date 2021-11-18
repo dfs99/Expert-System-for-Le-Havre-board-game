@@ -848,92 +848,92 @@
 ; OTRO (pez madera arcilla grano) 1 franco
 
 ; REGLAS PARA COMERCIAR. SE INCLUYE UNA REGLA PARA EL MERCADO Y OTRA PARA LA COMPAÑÍA NAVIERA
-(defrule COMERCIAR_EN_COMPAÑIA_NAVIERA
-    ; jugador dentro del edificio
-    (JUGADOR_ESTA_EDIFICIO (nombre_edificio "COMPAÑIA NAVIERA") (nombre_jugador ?nombre_jugador))
-    ; el jugador no ha usado anteriormente el edificio
-    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
-    (test (neq ?nombre_edificio ?ed))
-    ; existe el deseo de usar la compañía naviera (contiene qué objetos vender)
-    ?deseo <- (deseo_usar_compañia_naviera ?nombre_jugador ?pescado ?madera ?arcilla ?hierro ?grano ?ganado ?carbon ?piel ?pescado_ahumado ?carbon_vegetal ?ladrillos ?acero ?pan ?carne ?coque ?cuero)
-    (bind ?unidades_comerciar =(+ ?pescado ?madera ?arcilla ?hierro ?grano ?ganado ?carbon ?piel ?pescado_ahumado ?carbon_vegetal ?ladrillos ?acero ?pan ?carne ?coque ?cuero)
-    ; obtiene los datos del jugador.
-    ?jugador <- (object (is-a JUGADOR)(nombre ?nombre_jugador)(deudas ?)(num_barcos ?)(capacidad_envio ?capacidad_envio)(demanda_comida_cubierta ?))
-    ; comprobar que la suma no excede la capacidad de los barcos
-    (test (<= ?unidades_comerciar ?capacidad_envio))
-    ; obtencion numero de recursos del jugador.
-    ?pescado_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso PESCADO) (cantidad ?cantidad_pescado))
-    ?madera_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera))
-    ?arcilla_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso ARCILLA) (cantidad ?cantidad_arcilla))
-    ?hierro_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso HIERRO) (cantidad ?cantidad_hierro))
-    ?grano_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso GRANO) (cantidad ?cantidad_grano))
-    ?ganado_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso GANADO) (cantidad ?cantidad_ganado))
-    ?carbon_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_carbon))
-    ?piel_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso PIEL) (cantidad ?cantidad_piel))
-    ?pescado_ahumado_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso PESCADO_AHUMADO) (cantidad ?cantidad_pescado_ahumado))
-    ?carbon_vegetal_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal))
-    ?ladrillos_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso LADRILLOS) (cantidad ?cantidad_ladrillos))
-    ?acero_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso ACERO) (cantidad ?cantidad_acero))
-    ?pan_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso PAN) (cantidad ?cantidad_pan))
-    ?carne_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso CARNE) (cantidad ?cantidad_carne))
-    ?coque_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque))
-    ?cuero_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso CUERO) (cantidad ?cantidad_cuero))
-    ; las cantidades quedan comprobadas en el deseo.
-    ; obtener la referencia de los francos para el jugador.
-    ?francos_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_francos))
-    ; obtener la cantidad generada por el deseo.
-    (bind ?ingresos_comercio (+ (* ?pescado 1) (* ?madera 1) (* ?arcilla 1) (* ?hierro 2) (* ?grano 1) (* ?ganado 3) (* ?carbon 3) (* ?piel 2)
-                                (* ?pescado_ahumado 2) (* ?carbon_vegetal 2) (* ?ladrillo 2) (* ?acero 8)
-                                (* ?pan 3) (* ?carne 2) (* ?coque 5) (* ?cuero 4) ))
-    =>
-    ; restar cantidades vendidas
-    (modify-instance ?pescado_jugador (cantidad (- ?cantidad_pescado ?pescado)))
-    (modify-instance ?madera_jugador (cantidad (- ?madera_jugador ?pescado)))
-    (modify-instance ?arcilla_jugador (cantidad (- ?arcilla_jugador ?pescado)))
-    (modify-instance ?hierro_jugador (cantidad (- ?hierro_jugador ?pescado)))
-    (modify-instance ?grano_jugador (cantidad (- ?grano_jugador ?pescado)))
-    (modify-instance ?ganado_jugador (cantidad (- ?ganado_jugador ?pescado)))
-    (modify-instance ?carbon_jugador (cantidad (- ?carbon_jugador ?pescado)))
-    (modify-instance ?piel_jugador (cantidad (- ?piel_jugador ?pescado)))
-    (modify-instance ?pescado_ahumado_jugador (cantidad (- ?pescado_ahumado_jugador ?pescado)))
-    (modify-instance ?carbon_vegetal_jugador (cantidad (- ?carbon_vegetal_jugador ?pescado)))
-    (modify-instance ?ladrillos_jugador (cantidad (- ?ladrillos_jugador ?pescado)))
-    (modify-instance ?acero_jugador (cantidad (- ?acero_jugador ?pescado)))
-    (modify-instance ?pan_jugador (cantidad (- ?pan_jugador ?pescado)))
-    (modify-instance ?carne_jugador (cantidad (- ?carne_jugador ?pescado)))
-    (modify-instance ?coque_jugador (cantidad (- ?coque_jugador ?pescado)))
-    (modify-instance ?cuero_jugador (cantidad (- ?cuero_jugador ?pescado)))
+; (defrule COMERCIAR_EN_COMPAÑIA_NAVIERA
+;     ; jugador dentro del edificio
+;     (JUGADOR_ESTA_EDIFICIO (nombre_edificio "COMPAÑIA NAVIERA") (nombre_jugador ?nombre_jugador))
+;     ; el jugador no ha usado anteriormente el edificio
+;     ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+;     (test (neq ?nombre_edificio ?ed))
+;     ; existe el deseo de usar la compañía naviera (contiene qué objetos vender)
+;     ?deseo <- (deseo_usar_compañia_naviera ?nombre_jugador ?pescado ?madera ?arcilla ?hierro ?grano ?ganado ?carbon ?piel ?pescado_ahumado ?carbon_vegetal ?ladrillos ?acero ?pan ?carne ?coque ?cuero)
+;     (bind ?unidades_comerciar =(+ ?pescado ?madera ?arcilla ?hierro ?grano ?ganado ?carbon ?piel ?pescado_ahumado ?carbon_vegetal ?ladrillos ?acero ?pan ?carne ?coque ?cuero)
+;     ; obtiene los datos del jugador.
+;     ?jugador <- (object (is-a JUGADOR)(nombre ?nombre_jugador)(deudas ?)(num_barcos ?)(capacidad_envio ?capacidad_envio)(demanda_comida_cubierta ?))
+;     ; comprobar que la suma no excede la capacidad de los barcos
+;     (test (<= ?unidades_comerciar ?capacidad_envio))
+;     ; obtencion numero de recursos del jugador.
+;     ?pescado_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso PESCADO) (cantidad ?cantidad_pescado))
+;     ?madera_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera))
+;     ?arcilla_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso ARCILLA) (cantidad ?cantidad_arcilla))
+;     ?hierro_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso HIERRO) (cantidad ?cantidad_hierro))
+;     ?grano_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso GRANO) (cantidad ?cantidad_grano))
+;     ?ganado_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso GANADO) (cantidad ?cantidad_ganado))
+;     ?carbon_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso CARBON) (cantidad ?cantidad_carbon))
+;     ?piel_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso PIEL) (cantidad ?cantidad_piel))
+;     ?pescado_ahumado_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso PESCADO_AHUMADO) (cantidad ?cantidad_pescado_ahumado))
+;     ?carbon_vegetal_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso CARBON_VEGETAL) (cantidad ?cantidad_carbon_vegetal))
+;     ?ladrillos_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso LADRILLOS) (cantidad ?cantidad_ladrillos))
+;     ?acero_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso ACERO) (cantidad ?cantidad_acero))
+;     ?pan_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso PAN) (cantidad ?cantidad_pan))
+;     ?carne_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso CARNE) (cantidad ?cantidad_carne))
+;     ?coque_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso COQUE) (cantidad ?cantidad_coque))
+;     ?cuero_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso CUERO) (cantidad ?cantidad_cuero))
+;     ; las cantidades quedan comprobadas en el deseo.
+;     ; obtener la referencia de los francos para el jugador.
+;     ?francos_jugador <- (JUGADOR_TIENE_RECURSO (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_francos))
+;     ; obtener la cantidad generada por el deseo.
+;     (bind ?ingresos_comercio (+ (* ?pescado 1) (* ?madera 1) (* ?arcilla 1) (* ?hierro 2) (* ?grano 1) (* ?ganado 3) (* ?carbon 3) (* ?piel 2)
+;                                 (* ?pescado_ahumado 2) (* ?carbon_vegetal 2) (* ?ladrillo 2) (* ?acero 8)
+;                                 (* ?pan 3) (* ?carne 2) (* ?coque 5) (* ?cuero 4) ))
+;     =>
+;     ; restar cantidades vendidas
+;     (modify-instance ?pescado_jugador (cantidad (- ?cantidad_pescado ?pescado)))
+;     (modify-instance ?madera_jugador (cantidad (- ?madera_jugador ?pescado)))
+;     (modify-instance ?arcilla_jugador (cantidad (- ?arcilla_jugador ?pescado)))
+;     (modify-instance ?hierro_jugador (cantidad (- ?hierro_jugador ?pescado)))
+;     (modify-instance ?grano_jugador (cantidad (- ?grano_jugador ?pescado)))
+;     (modify-instance ?ganado_jugador (cantidad (- ?ganado_jugador ?pescado)))
+;     (modify-instance ?carbon_jugador (cantidad (- ?carbon_jugador ?pescado)))
+;     (modify-instance ?piel_jugador (cantidad (- ?piel_jugador ?pescado)))
+;     (modify-instance ?pescado_ahumado_jugador (cantidad (- ?pescado_ahumado_jugador ?pescado)))
+;     (modify-instance ?carbon_vegetal_jugador (cantidad (- ?carbon_vegetal_jugador ?pescado)))
+;     (modify-instance ?ladrillos_jugador (cantidad (- ?ladrillos_jugador ?pescado)))
+;     (modify-instance ?acero_jugador (cantidad (- ?acero_jugador ?pescado)))
+;     (modify-instance ?pan_jugador (cantidad (- ?pan_jugador ?pescado)))
+;     (modify-instance ?carne_jugador (cantidad (- ?carne_jugador ?pescado)))
+;     (modify-instance ?coque_jugador (cantidad (- ?coque_jugador ?pescado)))
+;     (modify-instance ?cuero_jugador (cantidad (- ?cuero_jugador ?pescado)))
 
-    ; añadir francos al jugador
-    (modify-instance ?francos_jugador (cantidad (+ ?francos_jugador ?ingresos_comercio)))
-    ; eliminar deseo
-    (retract ?deseo)
-    ; semaforo final actividad principal.
-    (assert (fin_actividad_principal ?nombre_jugador))
-    ; flag para no permitir usar el mismo edificio dos veces.
-    (retract ?ha_usado_edificio)
-    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
-    ; log
-    (printout t"El jugador <" ?nombre_jugador "> ha obtenido <" ?ingresos_comercio"> francos comerciando con sus barcos." crlf)
-)
+;     ; añadir francos al jugador
+;     (modify-instance ?francos_jugador (cantidad (+ ?francos_jugador ?ingresos_comercio)))
+;     ; eliminar deseo
+;     (retract ?deseo)
+;     ; semaforo final actividad principal.
+;     (assert (fin_actividad_principal ?nombre_jugador))
+;     ; flag para no permitir usar el mismo edificio dos veces.
+;     (retract ?ha_usado_edificio)
+;     (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+;     ; log
+;     (printout t"El jugador <" ?nombre_jugador "> ha obtenido <" ?ingresos_comercio"> francos comerciando con sus barcos." crlf)
+; )
 
-(defrule COMERCIAR_MERCADO
-    ; El jugador está en el mercado
+; (defrule COMERCIAR_MERCADO
+;     ; El jugador está en el mercado
 
-    ; el jugador no ha usado anteriormente el edificio
-    ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
-    (test (neq ?nombre_edificio ?ed))
-    ; SOLO PUEDE TOMAR UNA UNIDAD DE CADA RECURSO QUE HAY EN EL MERCADO (POR CADA VEZ).
-    ; UN MINIMO DE 2 VECES Y UN MÁXIMO DE 8
-    ; rECURSOS: 1 de pescado, madera, arcilla, hierro, grano, ganado, carbon, piel
+;     ; el jugador no ha usado anteriormente el edificio
+;     ?ha_usado_edificio <- (edificio_usado ?ed ?nombre_jugador)
+;     (test (neq ?nombre_edificio ?ed))
+;     ; SOLO PUEDE TOMAR UNA UNIDAD DE CADA RECURSO QUE HAY EN EL MERCADO (POR CADA VEZ).
+;     ; UN MINIMO DE 2 VECES Y UN MÁXIMO DE 8
+;     ; rECURSOS: 1 de pescado, madera, arcilla, hierro, grano, ganado, carbon, piel
 
-    ; PROBLEMA ECONTRADO: COMO RECORRER LOS EDIFICIOS DEL JUGADOR PARA OBTENER EL Nº DE EDIFICOS BASICOS.
-    =>
+;     ; PROBLEMA ECONTRADO: COMO RECORRER LOS EDIFICIOS DEL JUGADOR PARA OBTENER EL Nº DE EDIFICOS BASICOS.
+;     =>
 
-    ; flag para no permitir usar el mismo edificio dos veces.
-    (retract ?ha_usado_edificio)
-    (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
-)
+;     ; flag para no permitir usar el mismo edificio dos veces.
+;     (retract ?ha_usado_edificio)
+;     (assert (edificio_usado ?nombre_edificio ?nombre_jugador))
+; )
 
 
 

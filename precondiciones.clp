@@ -274,7 +274,7 @@
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "MATADERO")(cantidad_madera 1)(cantidad_arcilla 1)(cantidad_hierro 1))
 
     (of CARTA (nombre "COMPAÑIA NAVIERA") (valor 10) (tipo COMERCIAL))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "COMPAÑIA NAVIERA") (posicion_en_mazo 3))
+    ;(of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "COMPAÑIA NAVIERA") (posicion_en_mazo 3))
     ; ---> Compañía naviera (2 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "COMPAÑIA NAVIERA") (tipo COMIDA) (cantidad 2))
     (of COSTE_ENERGIA (nombre_carta "COMPAÑIA NAVIERA") (coste_unitario TRUE) (cantidad 3))
@@ -285,7 +285,7 @@
 
 
     (of CARTA_EDIFICIO_GENERADOR (nombre "PELETERIA") (valor 12) (tipo BASICO) (numero_recursos_salida 2))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion_en_mazo 4))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion_en_mazo 3))
     (of EDIFICIO_INPUT (nombre_carta "PELETERIA") (recurso PIEL) (cantidad_maxima 4))
     (of EDIFICIO_OUTPUT (nombre_carta "PELETERIA") (recurso CUERO) (cantidad_min_generada_por_unidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "PELETERIA") (recurso FRANCO) (cantidad_min_generada_por_unidad 1))
@@ -293,7 +293,7 @@
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "PELETERIA")(cantidad_madera 1)(cantidad_ladrillo 1))
 
     (of CARTA_EDIFICIO_GENERADOR (nombre "HERRERIA") (valor 12) (tipo INDUSTRIAL) (numero_recursos_salida 1))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "HERRERIA") (posicion_en_mazo 5))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "HERRERIA") (posicion_en_mazo 4))
     ; ---> Herrería (3 de comida o 1 franco, la comida represento todas las posibilidades?)
     (of COSTE_ENTRADA_CARTA (nombre_carta "HERRERIA")(tipo DINERO)(cantidad 1))
     (of COSTE_ENTRADA_CARTA (nombre_carta "HERRERIA")(tipo COMIDA)(cantidad 3))
@@ -356,6 +356,9 @@
     (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_5) (id_mazo 3))
     (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_7) (id_mazo 1))
 
+
+    (of JUGADOR_TIENE_CARTA (nombre_jugador "DIEGO")(nombre_carta "COMPAÑIA NAVIERA"))
+
 )
 
 (deffacts hechos_iniciales
@@ -411,7 +414,7 @@
 
 
     ; COSAS QUE VAMOS METIENDO
-    ;(deseo_coger_recurso "DIEGO" GANADO)
+    (deseo_coger_recurso "DIEGO" GANADO)
     ;(deseo_coger_recurso "DIEGO" GRANO)
     ;(deseo_coger_recurso "DIEGO" FRANCO)
     ;(deseo_coger_recurso "DIEGO" MADERA)
@@ -446,13 +449,14 @@
     ;(deseo_pagar_deuda "DIEGO" 5)
     ;(deseo_pagar_deuda "DIEGO" 2)
 
-    (deseo_entrar_edificio "DIEGO" "CONSTRUCTORA2" COMIDA PESCADO )
-    (deseo_entrar_edificio "RICARDO" "MATADERO" DINERO FRANCO )
+    ;(deseo_entrar_edificio "DIEGO" "CONSTRUCTORA2" COMIDA PESCADO )
+    (deseo_entrar_edificio "RICARDO" "COMPAÑIA NAVIERA" COMIDA PESCADO)
     ;(deseo_entrar_edificio "RICARDO" "SIDERURGIA" DINERO FRANCO )
-    (deseo_construccion "DIEGO" "MATADERO")
+    ;(deseo_construccion "DIEGO" "MATADERO")
 
-
-    (deseo_generar_con_recurso "RICARDO" "MATADERO" GANADO 5)
+    
+    (deseo_usar_compañia_naviera "RICARDO" 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0)
+    ;(deseo_generar_con_recurso "RICARDO" "MATADERO" GANADO 5)
     ;(deseo_emplear_energia "RICARDO" "AHUMADOR" 1 0 0 0)
     ;(deseo_emplear_energia ?nombre_jugador ?nombre_edificio ?cantidad_madera ?cantidad_carbon_vegetal ?cantidad_carbon ?cantidad_coque)
 )
