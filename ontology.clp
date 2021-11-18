@@ -67,9 +67,9 @@
 ; Pensamos que su objetivo inicial era ligar todos aquellos edificios con el ayunto. El ayunto no hace
 ; falta que sea representado a través de un concepto pues no tiene atributos significativos, por esa razón
 ; se ha pensado en emplear un deftemplate.
-(deftemplate EDIFICIO_AYUNTAMIENTO
-    (slot nombre_edificio (type STRING) (default ?NONE))
-)
+; (deftemplate EDIFICIO_AYUNTAMIENTO
+;     (slot nombre_edificio (type STRING) (default ?NONE))
+; )
 
 (defclass JUGADOR_ESTA_EDIFICIO
     (is-a USER)
@@ -111,14 +111,33 @@
 )
 
 ; Validada sintácticamente en CLIPS.
-(defclass JUGADOR
+; (defclass JUGADOR
+;     (is-a USER)
+;     (role concrete)
+;     (slot nombre (type STRING) (access initialize-only) (create-accessor read-write))
+;     (slot deudas (type INTEGER)(default 0)(access read-write) (create-accessor read-write))
+;     (slot num_barcos (type INTEGER) (default 0) (access read-write) (create-accessor read-write))
+;     (slot capacidad_envio (type INTEGER) (default 0) (access read-write) (create-accessor read-write))
+;     (slot demanda_comida_cubierta (type INTEGER) (default 0) (access read-write) (create-accessor read-write))
+;     ; Ya tienen riqueza 2 por el barco de madera inicial.
+;     (slot riqueza (type INTEGER) (default 2) (access read-write) (create-accessor read-write))
+; )
+
+(defclass PARTICIPANTE
     (is-a USER)
     (role concrete)
     (slot nombre (type STRING) (access initialize-only) (create-accessor read-write))
+)
+
+(defclass JUGADOR
+    (is-a PARTICIPANTE)
+    (role concrete)
     (slot deudas (type INTEGER)(default 0)(access read-write) (create-accessor read-write))
     (slot num_barcos (type INTEGER) (default 0) (access read-write) (create-accessor read-write))
     (slot capacidad_envio (type INTEGER) (default 0) (access read-write) (create-accessor read-write))
     (slot demanda_comida_cubierta (type INTEGER) (default 0) (access read-write) (create-accessor read-write))
+    ; Ya tienen riqueza 2 por el barco de madera inicial.
+    (slot riqueza (type INTEGER) (default 2) (access read-write) (create-accessor read-write))
 )
 
 
@@ -183,7 +202,7 @@
 
 
 
-(defclass JUGADOR_TIENE_RECURSO
+(defclass PARTICIPANTE_TIENE_RECURSO
     (is-a USER)
     (slot nombre_jugador (type STRING))
     (slot recurso (type SYMBOL)
@@ -230,7 +249,7 @@
 )
 
 
-(defclass JUGADOR_TIENE_CARTA
+(defclass PARTICIPANTE_TIENE_CARTA
     (is-a USER)
     (slot nombre_jugador (type STRING)(access read-write) (create-accessor read-write))
     (slot nombre_carta (type STRING) (access initialize-only) (create-accessor read-write))

@@ -1,3 +1,25 @@
+==========================================================
+TODO:
+    => ver como hacer las actividades del jugador en la ronda final. OK
+    => ver como terminar la partida                                  OK (PREGUNTAR PUBLICAR GANADOR)
+    => añadir los pagos de un jugador a otro. => Generalizar.        OK 
+    => estrategia.              
+    => Muelle.                                                       OK
+
+
+MODELADO PAGOS:
+
+variante PARTICIPANTE
+    - Cambiar relación jugador tiene carta por participante tiene carta
+    - Cambiar relación jugador tiene recurso por participante tiene recurso --> Inconveniente: tiene que inicializarse en facts (poco natural)
+            si no queremos hacer esta segunda modificación |
+                                                           |
+                                                           |
+                                                           |
+                                                           v 
+variante de ayuntamiento = jugador --> PROBLEMA: no puedes controlar que no se referencia al referenciar dos jugadores
+
+==========================================================
 El jugador puede:
     actividad principal 
         entrar edificio
@@ -87,4 +109,27 @@ PLANTEAMIENTO ACTUALIZAR MAZO
 
 (actualizar_mazo ?id_mazo)
 ()
+
+
+
+======================================================================
+
+deseo_comprar_edificio
+deseo_comprar_barco
+deseo_vender_carta
+deseo_vender_barco 
+deseo_pagar_deuda 
+deseo_papar_demanda
+deseo_coger_recurso 
+deseo_entrar_edificio
+deseo_construccion 
+deseo_generar_con_recurso 
+deseo_emplear_energia 
+deseo_usar_mercado 
+deseo_usar_compañia_naviera 
+
+
+
+
+
 

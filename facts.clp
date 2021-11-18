@@ -90,7 +90,7 @@
     ; ====== JUGADORES ========
     (Diego of JUGADOR (nombre "DIEGO")(num_barcos 1)(capacidad_envio 2)(demanda_comida_cubierta 4))
     (Ricardo of JUGADOR (nombre "RICARDO")(num_barcos 1)(capacidad_envio 2)(demanda_comida_cubierta 4))
-    ; ([Ayuntamiento] of JUGADOR (nombre TABLERO))
+    (Ayuntamiento of PARTICIPANTE (nombre "AYUNTAMIENTO"))
     ; ====== RECURSOS =========
     (franco of RECURSO (nombre FRANCO))
     (madera of RECURSO (nombre MADERA))
