@@ -120,6 +120,9 @@
 
 ;   4-. Comprar barco
 (defrule COMPRAR_BARCO
+    ; Se puede comprar en la ronda actual. [en todas las rondas excepto la última.]
+    (ronda_actual ?nombre_ronda)
+    (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
     ; Existe el deseo de comprar el barco
@@ -324,6 +327,7 @@
     ?asignacion_edificio <- (object (is-a RONDA_ASIGNA_EDIFICIO) (nombre_ronda ?nombre_ronda_actual) (id_mazo ?id_mazo))
     ; el mazo tiene que tener más de 1 carta.
     ?ref_mazo <- (object (is-a MAZO) (id_mazo ?id_mazo) (numero_cartas_en_mazo ?num_cartas_en_mazo))
+    (test (> ?num_cartas_en_mazo 0))
     ; seleccionar la primera carta del mazo.
     ?carta_en_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_edificio) (posicion_en_mazo 1))
     =>
@@ -377,9 +381,10 @@
 
     ; restar a comida por pagar la cantidad que el jugador pueda pagar con sus propios recursos
     (retract ?comida_restante )
-    (assert (cantidad_comida_demandada ?nombre_jugador ?ronda (- ?cantidad_queda_por_pagar ?total_recursos_para_pagar)))
+    ; AÑADIDO MÁXIMO  Y DEJO DESEO PARA EJECUTAR TODAS LAS RONDA ======================================================================================================================
+    (assert (cantidad_comida_demandada ?nombre_jugador ?ronda (max 0 (- ?cantidad_queda_por_pagar ?total_recursos_para_pagar)) ))
     ; eliminar deseo.
-    (retract ?deseo)
+    ;(retract ?deseo)
     (printout t"Coste de ronda: <" ?coste_ronda "> y recursos disponibles jugador: <" ?total_recursos_para_pagar">." crlf)
     (printout t"El jugador <" ?nombre_jugador "> ha pagado la demanda de comida de la ronda <" ?ronda ">. Le queda por pagar <" (- ?cantidad_queda_por_pagar ?total_recursos_para_pagar)"> unidad(es)." crlf)
 )
@@ -566,6 +571,8 @@
 (defrule AÑADIR_RECURSOS_OFERTA
     ; Esperar a que termine el proceso de ejecución de cambio de ronda.
     (not (cambiar_ronda TRUE))
+    ; la ronda actual no puede ser la ronda final
+    (not (ronda_actual RONDA_EXTRA_FINAL))
     ; no añadir dos veces 
     (not (recursos_añadidos_loseta ?pos))
     ; obtiene la loseta con visibilidad TRUE
@@ -1307,15 +1314,15 @@
     ; introducir barco
     ?introduce_barco <- (object (is-a RONDA_INTRODUCE_BARCO) (nombre_ronda ?nombre_ronda_actual) (nombre_carta ?nombre_barco))
     ; semáforo para que en las rondas impares asigne el edificio al ayuntamiento antes de pasar de ronda
-    (or (eq ?nombre_ronda_actual RONDA_2)
-        (eq ?nombre_ronda_actual RONDA_4)
-        (eq ?nombre_ronda_actual RONDA_6)
-        (eq ?nombre_ronda_actual RONDA_8)
+    
+    (or (test (eq ?nombre_ronda_actual RONDA_2))
+        (test (eq ?nombre_ronda_actual RONDA_4))
+        (test (eq ?nombre_ronda_actual RONDA_6))
+        (test (eq ?nombre_ronda_actual RONDA_8))
         (edificio_entregado ?nombre_ronda_actual)
     )
     
     ; evita que se pase de ronda antes de actualizar el mazo cuando se entrega un edificio al ayuntamiento
-    ;(not (actualizar_mazo ?))
     (not (actualizar_mazo ? ? ?))
      =>
      
@@ -1333,14 +1340,51 @@
     (printout t"Se ha cambiado de Ronda: <"?nombre_ronda_actual "> a Ronda: <"?nombre_ronda_siguiente">." crlf)
 )
 
-; (defrule GENERAR_DESEO
-;     ; Esperar a que termine el proceso de ejecución de cambio de ronda.
-;     (not (cambiar_ronda TRUE))
-;     (turno ?jugador)
-;     (not (deseo_coger_recurso ?jugador ?recurso))
-;     (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
-;     (test (> ?cantidad_oferta 0))
-;     =>
-;     (assert (deseo_coger_recurso ?jugador ?recurso))
-;     (printout t"DESEO GENERADO" crlf)
-; )
+(defrule RONDA_EXTRA_FINAL
+    ; lanzar los flags para recorrer en bucles las relaciones y obtener los valores de las cartas?
+    ; o hacer contadores en los jugadores q te digan cuanto valor acumulado tienen los jugadores y obtenerlo de ahí?
+    ; esta segunda opción puede ser más sencilla pero requiere que se modifiquen los valores de las reglas de comprar
+    ; y vender cartas ... 
+    ; también puede reducir el nº de reglas totales...
+    (ronda_actual RONDA_EXTRA_FINAL)
+    =>
+    (printout t"RONDA FINAL ALCANZADA!" crlf)
+
+)
+
+ (defrule GENERAR_DESEO
+     ; Esperar a que termine el proceso de ejecución de cambio de ronda.
+     (not (cambiar_ronda TRUE))
+     (not (ronda_actual RONDA_EXTRA_FINAL))
+     (turno ?jugador)
+     (not (deseo_coger_recurso ?jugador ?recurso))
+     (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
+     (test (> ?cantidad_oferta 0))
+     =>
+     (assert (deseo_coger_recurso ?jugador ?recurso))
+     (printout t"DESEO GENERADO" crlf)
+ )
+
+(defrule CALCULAR_RIQUEZA_JUGADOR
+    (ronda_actual RONDA_EXTRA_FINAL)
+    ; OBTENER TODOS LOS INGRESOS Y GASTOS DE CADA JUGADOR Y determinar la riqueza de cada jugador.
+    ?ref <- (calcular_valor_edificios ?nombre_jugador)
+
+    =>
+    (assert (riqueza ?nombre_jugador ?beneficios))
+)
+
+; DETERMINAR EL GANADOR DE LA PARTIDA.
+(defrule MOSTRAR_RESULTADOS_PARTIDA
+    (ronda_actual RONDA_EXTRA_FINAL)
+    (object (is-a JUGADOR) (nombre ?nombre_jugador1))
+    (object (is-a JUGADOR) (nombre ?nombre_jugador2))
+    (test (neq ?nombre_jugador1 ?nombre_jugador2))
+    (riqueza ?nombre_jugador1 ?riqueza_j1)
+    (riqueza ?nombre_jugador2 ?riqueza_j2)
+    =>
+    (printout t"Resultados partida para 2 jugadores Le Havre:" crlf)
+    (printout t"El Jugador: <" ?nombre_jugador1 "> ha obtenido una riqueza de: <" ?riqueza_j1 "> francos. " crlf)
+    (printout t"El Jugador: <" ?nombre_jugador1 "> ha obtenido una riqueza de: <" ?riqueza_j1 "> francos. " crlf)
+
+)

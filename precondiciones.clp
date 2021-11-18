@@ -84,8 +84,8 @@
 
     ; ========= RECURSOS INICIALES DE LOS JUGADORES =========
     ; == DIEGO
-    (francos_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso FRANCO) (cantidad 50))
-    (pescado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PESCADO) (cantidad 2))
+    (francos_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso FRANCO) (cantidad 5000))
+    (pescado_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso PESCADO) (cantidad 20000))
     (madera_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso MADERA) (cantidad 2))
     (arcilla_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso ARCILLA) (cantidad 6))
     (hierro_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso HIERRO) (cantidad 10))
@@ -102,8 +102,8 @@
     (coque_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso COQUE) (cantidad 0))
     (cuero_diego of JUGADOR_TIENE_RECURSO (nombre_jugador "DIEGO") (recurso CUERO) (cantidad 0))
     ; == RICARDO
-    (francos_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso FRANCO) (cantidad 10))
-    (pescado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO) (cantidad 10))
+    (francos_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso FRANCO) (cantidad 10000))
+    (pescado_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso PESCADO) (cantidad 100000))
     (madera_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso MADERA) (cantidad 5))
     (arcilla_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso ARCILLA) (cantidad 2))
     (hierro_ricardo of JUGADOR_TIENE_RECURSO (nombre_jugador "RICARDO") (recurso HIERRO) (cantidad 10))
@@ -274,7 +274,7 @@
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "MATADERO")(cantidad_madera 1)(cantidad_arcilla 1)(cantidad_hierro 1))
 
     (of CARTA (nombre "COMPAÑIA NAVIERA") (valor 10) (tipo COMERCIAL))
-    ;(of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "COMPAÑIA NAVIERA") (posicion_en_mazo 3))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "COMPAÑIA NAVIERA") (posicion_en_mazo 3))
     ; ---> Compañía naviera (2 de comida)
     (of COSTE_ENTRADA_CARTA (nombre_carta "COMPAÑIA NAVIERA") (tipo COMIDA) (cantidad 2))
     (of COSTE_ENERGIA (nombre_carta "COMPAÑIA NAVIERA") (coste_unitario TRUE) (cantidad 3))
@@ -285,7 +285,7 @@
 
 
     (of CARTA_EDIFICIO_GENERADOR (nombre "PELETERIA") (valor 12) (tipo BASICO) (numero_recursos_salida 2))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion_en_mazo 3))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "PELETERIA") (posicion_en_mazo 4))
     (of EDIFICIO_INPUT (nombre_carta "PELETERIA") (recurso PIEL) (cantidad_maxima 4))
     (of EDIFICIO_OUTPUT (nombre_carta "PELETERIA") (recurso CUERO) (cantidad_min_generada_por_unidad 1))
     (of EDIFICIO_OUTPUT (nombre_carta "PELETERIA") (recurso FRANCO) (cantidad_min_generada_por_unidad 1))
@@ -293,7 +293,7 @@
     (of COSTE_CONSTRUCCION_CARTA (nombre_carta "PELETERIA")(cantidad_madera 1)(cantidad_ladrillo 1))
 
     (of CARTA_EDIFICIO_GENERADOR (nombre "HERRERIA") (valor 12) (tipo INDUSTRIAL) (numero_recursos_salida 1))
-    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "HERRERIA") (posicion_en_mazo 4))
+    (of CARTA_PERTENECE_A_MAZO (id_mazo 3) (nombre_carta "HERRERIA") (posicion_en_mazo 5))
     ; ---> Herrería (3 de comida o 1 franco, la comida represento todas las posibilidades?)
     (of COSTE_ENTRADA_CARTA (nombre_carta "HERRERIA")(tipo DINERO)(cantidad 1))
     (of COSTE_ENTRADA_CARTA (nombre_carta "HERRERIA")(tipo COMIDA)(cantidad 3))
@@ -357,7 +357,7 @@
     (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_7) (id_mazo 1))
 
 
-    (of JUGADOR_TIENE_CARTA (nombre_jugador "DIEGO")(nombre_carta "COMPAÑIA NAVIERA"))
+    ;(of JUGADOR_TIENE_CARTA (nombre_jugador "DIEGO")(nombre_carta "COMPAÑIA NAVIERA"))
 
 )
 
@@ -414,7 +414,7 @@
 
 
     ; COSAS QUE VAMOS METIENDO
-    (deseo_coger_recurso "DIEGO" GANADO)
+    ;(deseo_coger_recurso "DIEGO" GANADO)
     ;(deseo_coger_recurso "DIEGO" GRANO)
     ;(deseo_coger_recurso "DIEGO" FRANCO)
     ;(deseo_coger_recurso "DIEGO" MADERA)
@@ -443,19 +443,19 @@
 
     ;(deseo_vender_barco "DIEGO" "BARCO_MADERA1")
     ; pagar con pescado
-    (deseo_pagar_demanda "DIEGO" 2 0 0 0 0)
-    (deseo_pagar_demanda "RICARDO" 1 0 0 0 3)
+    (deseo_pagar_demanda "DIEGO" 40 0 0 0 0)
+    (deseo_pagar_demanda "RICARDO" 40 0 0 0 3)
 
     ;(deseo_pagar_deuda "DIEGO" 5)
     ;(deseo_pagar_deuda "DIEGO" 2)
 
     ;(deseo_entrar_edificio "DIEGO" "CONSTRUCTORA2" COMIDA PESCADO )
-    (deseo_entrar_edificio "RICARDO" "COMPAÑIA NAVIERA" COMIDA PESCADO)
+    ;(deseo_entrar_edificio "RICARDO" "COMPAÑIA NAVIERA" COMIDA PESCADO)
     ;(deseo_entrar_edificio "RICARDO" "SIDERURGIA" DINERO FRANCO )
     ;(deseo_construccion "DIEGO" "MATADERO")
 
     
-    (deseo_usar_compañia_naviera "RICARDO" 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0)
+    ;(deseo_usar_compañia_naviera "RICARDO" 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0)
     ;(deseo_generar_con_recurso "RICARDO" "MATADERO" GANADO 5)
     ;(deseo_emplear_energia "RICARDO" "AHUMADOR" 1 0 0 0)
     ;(deseo_emplear_energia ?nombre_jugador ?nombre_edificio ?cantidad_madera ?cantidad_carbon_vegetal ?cantidad_carbon ?cantidad_coque)
