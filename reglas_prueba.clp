@@ -1979,3 +1979,46 @@
     (assert (decision_pago_comida_entrar_edificios ?nombre_jugador ?otro_recurso))
     (printout t"El jugador ha cambiado su decisión de pago de comida. " crlf)
 )
+
+
+(defrule )
+
+
+(defrule OBTENER_DESEO_ENTRAR_EDIFICIO_GRATIS
+    ; Se tiene un deseo de obtener x recurso.
+
+)
+
+(defrule OBTENER_DESEO_ENTRAR_EDIFICIO_CON_COSTE_ENTRADA
+    (turno ?nombre_jugador)
+    (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?nombre_recurso ?)
+    ; el edificio genera el recurso deseado por el jugador.
+    (object (is-a CARTA) (nombre ?nombre_edificio))
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?nombre_recurso))
+    ; El edificio tiene coste de entrada
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo ?tipo_recurso) (cantidad ?cantidad_recurso_entrada))
+    ; comprobar que se tienen recursos suficientes para pagar.  
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (tipo ?tipo_recurso ) (recurso ?recurso) (cantidad ?cantidad_recurso_jugador))
+    (test (>= ?cantidad_recurso_jugador ?cantidad_recurso_entrada))
+    =>
+    (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio ?tipo_recurso ?recurso))
+
+    ;(decision_pago_comida_entrar_edificios ?nombre_jugador ?recurso)
+
+)
+
+(deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
+(deseo_emplear_energia ?nombre_jugador ?nombre_edificio ?cantidad_madera ?cantidad_carbon_vegetal ?cantidad_carbon ?cantidad_coque)
+(deseo_conseguir_recurso ?nombre_jugador ?nombre_recurso)
+
+(defrule OBTENER_DESEO_GENERAR_RECURSOS
+    (turno ?nombre_jugador)
+    (deseo_conseguir_recurso ?nombre_jugador ?recurso ?cantidad)
+
+    4 LADRILLOS 
+    4 ARCILLA 
+
+    =>
+    
+    (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
+)
