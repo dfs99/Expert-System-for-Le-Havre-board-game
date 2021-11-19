@@ -143,6 +143,9 @@ deseo_generar_con_recurso
 deseo_emplear_energia
 deseo_usar_compañia_naviera
 
+(decision_pago_comida ?nombre_jugador ?recurso)
+
+
 => para ejecutar deseos:
     => especialista : tipo_basico_recurso_alimenticio
     => edificios construir : {ed1, ed2, ed3, ...}
@@ -174,3 +177,7 @@ grano: 0
 ganado: 1
 carbon 2
 piel 2
+
+
+para obtener la info de q necesitas x recursos PARA la construccion de un edificio y por ende quieras entrar a un edificio para generarlos. 
+necesitarás una regla que segun tus prioridades te indique cuantos recursos te faltan para 

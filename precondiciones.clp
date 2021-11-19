@@ -10,19 +10,19 @@
     ; ====== RECURSOS =========
     (franco of RECURSO (nombre FRANCO))
     (madera of RECURSO (nombre MADERA))
-    (pescado of RECURSO (nombre PESCADO))
+    (pescado of RECURSO_ALIMENTICIO (nombre PESCADO) (comida_genera 1))
     (arcilla of RECURSO (nombre ARCILLA))
     (hierro of RECURSO (nombre HIERRO))
     (grano of RECURSO (nombre GRANO))
     (ganado of RECURSO (nombre GANADO))
     (carbon of RECURSO (nombre CARBON))
     (piel of RECURSO (nombre PIEL))
-    (pescado_ahumado of RECURSO (nombre PESCADO_AHUMADO))
+    (pescado_ahumado of RECURSO_ALIMENTICIO (nombre PESCADO_AHUMADO) (comida_genera 2))
     (carbon_vegetal of RECURSO (nombre CARBON_VEGETAL))
     (ladrillos of RECURSO (nombre LADRILLOS))
     (acero of RECURSO (nombre ACERO))
-    (pan of RECURSO (nombre PAN))
-    (carne of RECURSO (nombre CARNE))
+    (pan of RECURSO_ALIMENTICIO (nombre PAN) (comida_genera 3))
+    (carne of RECURSO_ALIMENTICIO (nombre CARNE) (comida_genera 3))
     (coque of RECURSO (nombre COQUE))
     (cuero of RECURSO (nombre CUERO))
     ; ====== MAZOS ======
@@ -430,6 +430,33 @@
 
     (edificio_usado "" "DIEGO")
     (edificio_usado "" "RICARDO")
+
+    ; cartas prioridad 1, esenciales para GANAR partida:
+    ; para obtener ladrillos y generar cuello botella.
+    (objetivo_carta_jugador "DIEGO" "FABRICA DE LADRILLOS" 1)
+    ; para no tener q pagar y recibir comida cada vez q entras al barco.
+    (objetivo_carta_jugador "DIEGO" "MUELLE" 1)
+    ; comprar para generar cuello botella y obtener comida del otro jugador.
+    (objetivo_carta_jugador "DIEGO" "MONTICULO DE ARCILLA" 1)
+    ; puede interesar si se tienen muchas vacas para obtener carne.
+    (objetivo_carta_jugador "DIEGO" "MATADERO" 1)
+    ; generar dinero y mejorar los recursos de comida.
+    (objetivo_carta_jugador "DIEGO" "AHUMADOR" 1)
+
+    ; EDIFICIOS PRIORIDAD 2, relativamente baratos de construir y dan buenas estadisticas de riqueza.
+    (objetivo_carta_jugador "DIEGO" "PANADERIA" 2)
+    (objetivo_carta_jugador "DIEGO" "PISCIFACTORIA" 2)
+    (objetivo_carta_jugador "DIEGO" "HORNO DE CARBON VEGETAL" 2)
+
+    ; CARTAS PRIORIDAD 3, para evitar que los jugadores se queden sin objetivos,podrán ejecutar como
+    ; última instancia estos objetivos. 
+    (objetivo_carta_jugador "DIEGO" "COQUERIA" 3)
+    (objetivo_carta_jugador "DIEGO" "BANCO" 3)
+    (objetivo_carta_jugador "DIEGO" "MINA DE CARBON" 3)
+    (objetivo_carta_jugador "DIEGO" "SIDERURGIA" 3)
+    (objetivo_carta_jugador "DIEGO" "COMPAÑIA NAVIERA" 3)
+    (objetivo_carta_jugador "DIEGO" "PELETERIA" 3)
+    (objetivo_carta_jugador "DIEGO" "HERRERIA" 3)
 
 
     ; COSAS QUE VAMOS METIENDO

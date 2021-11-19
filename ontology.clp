@@ -39,6 +39,13 @@
         (access initialize-only) (create-accessor read-write))
 )
 
+(defclass RECURSO_ALIMENTICIO
+    (is-a RECURSO)
+    (role concrete)
+    (slot comida_genera (type INTEGER) (access initialize-only) (create-accessor read-write))
+)
+
+
 (defclass BONUS
     (is-a USER)
     (role concrete)
