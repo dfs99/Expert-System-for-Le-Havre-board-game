@@ -212,6 +212,7 @@
 (defclass PARTICIPANTE_TIENE_RECURSO
     (is-a USER)
     (slot nombre_jugador (type STRING))
+    (slot tipo (type SYMBOL)(allowed-values COMIDA DINERO OTRO)(access initialize-only) (create-accessor read-write))
     (slot recurso (type SYMBOL)
         (allowed-values FRANCO MADERA PESCADO ARCILLA HIERRO GRANO GANADO CARBON PIEL
             PESCADO_AHUMADO CARBON_VEGETAL LADRILLOS ACERO PAN CARNE COQUE CUERO)
