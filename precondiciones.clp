@@ -458,6 +458,34 @@
     (objetivo_carta_jugador "DIEGO" "PELETERIA" 3)
     (objetivo_carta_jugador "DIEGO" "HERRERIA" 3)
 
+    ; ==============
+    ; cartas prioridad 1, esenciales para GANAR partida:
+    ; para obtener ladrillos y generar cuello botella.
+    (objetivo_carta_jugador "RICARDO" "FABRICA DE LADRILLOS" 1)
+    ; para no tener q pagar y recibir comida cada vez q entras al barco.
+    (objetivo_carta_jugador "RICARDO" "MUELLE" 1)
+    ; comprar para generar cuello botella y obtener comida del otro jugador.
+    (objetivo_carta_jugador "RICARDO" "MONTICULO DE ARCILLA" 1)
+    ; puede interesar si se tienen muchas vacas para obtener carne.
+    (objetivo_carta_jugador "RICARDO" "MATADERO" 1)
+    ; generar dinero y mejorar los recursos de comida.
+    (objetivo_carta_jugador "RICARDO" "AHUMADOR" 1)
+
+    ; EDIFICIOS PRIORIDAD 2, relativamente baratos de construir y dan buenas estadisticas de riqueza.
+    (objetivo_carta_jugador "RICARDO" "PANADERIA" 2)
+    (objetivo_carta_jugador "RICARDO" "PISCIFACTORIA" 2)
+    (objetivo_carta_jugador "RICARDO" "HORNO DE CARBON VEGETAL" 2)
+
+    ; CARTAS PRIORIDAD 3, para evitar que los jugadores se queden sin objetivos,podrán ejecutar como
+    ; última instancia estos objetivos. 
+    (objetivo_carta_jugador "RICARDO" "COQUERIA" 3)
+    (objetivo_carta_jugador "RICARDO" "BANCO" 3)
+    (objetivo_carta_jugador "RICARDO" "MINA DE CARBON" 3)
+    (objetivo_carta_jugador "RICARDO" "SIDERURGIA" 3)
+    (objetivo_carta_jugador "RICARDO" "COMPAÑIA NAVIERA" 3)
+    (objetivo_carta_jugador "RICARDO" "PELETERIA" 3)
+    (objetivo_carta_jugador "RICARDO" "HERRERIA" 3)
+
 
     ; COSAS QUE VAMOS METIENDO
     ;(deseo_coger_recurso "DIEGO" GANADO)
@@ -477,27 +505,27 @@
     ;(deseo_coger_recurso "RICARDO" GANADO)
     ;(fin_actividad_principal "DIEGO")
     ;(deseo_comprar_edificio "DIEGO" "CONSTRUCTORA2")
-    (deseo_comprar_edificio "DIEGO" "HORNO DE CARBON VEGETAL")
-    (deseo_comprar_edificio "RICARDO" "MUELLE")
+    ;(deseo_comprar_edificio "DIEGO" "HORNO DE CARBON VEGETAL")
+    ;(deseo_comprar_edificio "RICARDO" "MUELLE")
     ;(deseo_vender_carta "DIEGO" "CONSTRUCTORA1")
     ;(deseo_comprar_edificio "RICARDO" "CONSTRUCTORA2")
     ;(deseo_comprar_edificio "DIEGO" "BANCO")
 
 
-    (BARCO_DISPONIBLE (nombre_barco "BARCO_MADERA1"))
+    ;(BARCO_DISPONIBLE (nombre_barco "BARCO_MADERA1"))
     ;(deseo_comprar_barco "DIEGO" "BARCO_MADERA1")
     ;(deseo_comprar_barco "RICARDO" "BARCO_MADERA2")
 
     ;(deseo_vender_barco "DIEGO" "BARCO_MADERA1")
     ; pagar con pescado
-    (deseo_pagar_demanda "DIEGO" 40 0 0 0 0)
-    (deseo_pagar_demanda "RICARDO" 40 0 0 0 0)
+    ;(deseo_pagar_demanda "DIEGO" 40 0 0 0 0)
+    ;(deseo_pagar_demanda "RICARDO" 40 0 0 0 0)
 
     ;(deseo_pagar_deuda "DIEGO" 5)
     ;(deseo_pagar_deuda "DIEGO" 2)
 
-    (deseo_entrar_edificio "DIEGO" "MUELLE" COMIDA PESCADO)
-    (deseo_construccion "DIEGO" "BARCO_MADERA1")
+    ;(deseo_entrar_edificio "DIEGO" "MUELLE" COMIDA PESCADO)
+    ;(deseo_construccion "DIEGO" "BARCO_MADERA1")
     ;(deseo_entrar_edificio "RICARDO" "COMPAÑIA NAVIERA" COMIDA PESCADO)
     ;(deseo_entrar_edificio "RICARDO" "SIDERURGIA" DINERO FRANCO )
     ;(deseo_construccion "DIEGO" "FABRICA DE LADRILLOS")
