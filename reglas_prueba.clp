@@ -77,7 +77,7 @@
 	(retract ?ref)
 	(assert (actualizar_mazo ?id (- ?numero_actualizaciones_restante 1) (+ ?pos1 1)))
 	;(assert (carta_actualizada ?nombre_carta1 ?id ?pos1))
-    (printout t"El mazo <" ?id "> ha actualizado la posición de la carta <" ?nombre_carta ">, ahora se encuentra en la posción <" (- ?pos1 1) ">." crlf)
+    (printout t"El mazo <" ?id "> ha actualizado la posición de la carta <" ?nombre_carta ">, ahora se encuentra en la posición <" (- ?pos1 1) ">." crlf)
 )
 
 (defrule FIN_ACTUALIZAR_MAZO
@@ -366,7 +366,7 @@
     ?recurso_jugador <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_recurso))
     =>
     ; obtener el beneficio de la venta de la carta.
-    (bind ?ingreso (/ ?valor_carta 2))
+    (bind ?ingreso (integer (/ ?valor_carta 2)))
     ; Modificar el dinero del jugador
     (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso ?ingreso)))
     ; Decrementar la riqueza del jugador 
@@ -403,7 +403,7 @@
     ?recurso_jugador <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_recurso))
     =>
     ; obtener el beneficio de la venta de la carta.
-    (bind ?ingreso (/ ?valor_carta 2))
+    (bind ?ingreso (integer (/ ?valor_carta 2)))
     ; Modificar el dinero del jugador
     (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso ?ingreso)))
     ; Decrementar la riqueza del jugador 
@@ -447,7 +447,7 @@
     ; Actualiza los valores relacionados con el barco en el jugador
     (modify-instance ?jugador (num_barcos (- ?num_barcos 1)) (capacidad_envio (- ?capacidad_envio_jugador ?capacidad_envio_barco)) (demanda_comida_cubierta (- ?demanda_comida_cubierta ?uds_comida_genera)))
     ; Actualiza el dinero del jugador
-    (modify-instance ?recurso_jugador (cantidad (+ ?cantidad_recurso (/ ?valor_barco 2))))
+    (modify-instance ?recurso_jugador (cantidad (integer (+ ?cantidad_recurso (/ ?valor_barco 2)))))
     ; Decrementar la riqueza del jugador 
     (modify-instance ?jugador (riqueza (- ?riqueza_jugador ?valor_barco)))
     ; Insertar el barco en el mazo
@@ -456,7 +456,7 @@
     ; Elimina el deseo
     (retract ?deseo)
 
-    (printout t"El jugador <"?nombre_jugador"> ha vendido el barco <"?nombre_barco"> por <"(/ ?valor_barco 2)"> francos." crlf)
+    (printout t"El jugador <"?nombre_jugador"> ha vendido el barco <"?nombre_barco"> por <"(integer (/ ?valor_barco 2))"> francos." crlf)
 )
 
 
@@ -533,8 +533,8 @@
     ?jugador_francos <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_francos))
     ; obtener contador de pagar comida.
     ?comida_restante <- (cantidad_comida_demandada ?nombre_jugador ?ronda ?cantidad_queda_por_pagar)
-    ; queda por pagar una cantidad distinta de 0.
-    (test (> ?cantidad_queda_por_pagar 0))
+    ; queda por pagar una cantidad mayor / igual de 0.
+    (test (>= ?cantidad_queda_por_pagar 0))
     ; Tiene que tener recursos para poder pagar. Sino se endeudará.
     (test (> (+ (* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2)  (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1)) 0))  
     =>
@@ -544,6 +544,8 @@
     (modify-instance ?jugador_pan (cantidad (- ?cantidad_pan ?deseo_pagar_pan)))
     (modify-instance ?jugador_carne (cantidad (- ?cantidad_carne ?deseo_pagar_carne)))
     (modify-instance ?jugador_francos (cantidad (- ?cantidad_francos ?deseo_pagar_francos)))
+
+    (retract ?deseo)
 
     ; restar a comida por pagar la cantidad que el jugador pueda pagar con sus propios recursos
     (retract ?comida_restante )
@@ -556,7 +558,42 @@
 )
 
 ; comprobar
-(defrule PAGAR_COMIDA_ENDEUDANDOSE
+(defrule PAGAR_COMIDA_ENDEUDANDOSE_MODULO_DISTINTO_0
+    ; se está en medio de un cambio de ronda.
+    (cambiar_ronda TRUE)
+    ; obtener los datos del jugador.
+    ?jugador <- (object (is-a JUGADOR) (nombre ?nombre_jugador)(deudas ?deudas))
+    ; obtener los datos de la ronda.
+    (ronda_actual ?ronda)
+    ; obtener los recursos del jugador.
+    ?jugador_pescado <- (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso PESCADO) (cantidad 0))
+    ?jugador_pescado_ahumado <- (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso PESCADO_AHUMADO) (cantidad 0))
+    ?jugador_pan <- (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso PAN) (cantidad 0))
+    ?jugador_carne <- (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso CARNE) (cantidad 0))
+    ?jugador_francos <- (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad 0))
+    
+    ; obtener contador de pagar comida.
+    ?comida_restante <- (cantidad_comida_demandada ?nombre_jugador ?ronda ?cantidad_queda_por_pagar)
+     ; queda por pagar una cantidad distinta de 0.
+     
+    (test (> ?cantidad_queda_por_pagar 0))
+    (test (<> (mod ?cantidad_queda_por_pagar 4) 0))
+    =>
+    ; Calcular cuántos préstamos hay que tomar para poder pagar toda la comida
+    ; IMPLEMENTA LA FUNCIÓN CEIL: c = comida a pagar, v = valor deuda :
+    ;       préstamos a tomar = (c / v)+(1-((c mod v) / v))
+    (bind ?deudas_a_obtener (integer (+ (/ ?cantidad_queda_por_pagar 4) (- 1 (/ (mod ?cantidad_queda_por_pagar 4) 4)))  ))
+
+    (modify-instance ?jugador (deudas (+ ?deudas ?deudas_a_obtener)))
+    (modify-instance ?jugador_francos (cantidad (- (* ?deudas_a_obtener 4) ?cantidad_queda_por_pagar)))
+    ; actualizar hecho de cantidad comida demandada.
+    (retract ?comida_restante)
+    (assert (cantidad_comida_demandada ?nombre_jugador ?ronda 0))
+
+    (printout t"<"?nombre_jugador"> ha tomado <"?deudas_a_obtener"> deuda(s) para poder pagar <"?cantidad_queda_por_pagar"> unidad(es) de comida demandada restante(s)." crlf)
+)
+
+(defrule PAGAR_COMIDA_ENDEUDANDOSE_MODULO_0
     ; se está en medio de un cambio de ronda.
     (cambiar_ronda TRUE)
     ; obtener los datos del jugador.
@@ -574,11 +611,13 @@
     ?comida_restante <- (cantidad_comida_demandada ?nombre_jugador ?ronda ?cantidad_queda_por_pagar)
      ; queda por pagar una cantidad distinta de 0.
     (test (> ?cantidad_queda_por_pagar 0))
+    ; comprobación módulo
+    (test (= (mod ?cantidad_queda_por_pagar 4) 0))
     =>
     ; Calcular cuántos préstamos hay que tomar para poder pagar toda la comida
     ; IMPLEMENTA LA FUNCIÓN CEIL: c = comida a pagar, v = valor deuda :
     ;       préstamos a tomar = (c / v)+(1-((c mod v) / v))
-    (bind ?deudas_a_obtener (+ (/ ?cantidad_queda_por_pagar 4) (- 1 (/ (mod ?cantidad_queda_por_pagar 4) 4))))
+    (bind ?deudas_a_obtener (integer (/ ?cantidad_queda_por_pagar 4)))
 
     (modify-instance ?jugador (deudas (+ ?deudas ?deudas_a_obtener)))
     (modify-instance ?jugador_francos (cantidad (- (* ?deudas_a_obtener 4) ?cantidad_queda_por_pagar)))
@@ -588,6 +627,7 @@
 
     (printout t"<"?nombre_jugador"> ha tomado <"?deudas_a_obtener"> deuda(s) para poder pagar <"?cantidad_queda_por_pagar"> unidad(es) de comida demandada restante(s)." crlf)
 )
+
 
 (defrule AÑADIR_GANADO_POR_COSECHA
     (ronda_actual ?nombre_ronda_actual)
@@ -1611,7 +1651,7 @@
     ; deseo construir edificio
     ?deseo <- (deseo_construccion ?nombre_jugador ?nombre_carta)
     ; comprobar que se encuentra Disponible
-    (BARCO_DISPONIBLE (nombre_barco ?nombre_carta))
+    ?diponibilidad <- (BARCO_DISPONIBLE (nombre_barco ?nombre_carta))
     ?pertenencia_mazo <- (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?id_mazo) (nombre_carta ?nombre_carta) (posicion_en_mazo 1))
     ?ref_mazo <- (object (is-a MAZO)(id_mazo ?id_mazo) (numero_cartas_en_mazo ?num_cartas_mazo))
     ; Obtener la carta para modificar la riqueza del jugador
@@ -1626,6 +1666,8 @@
     (test (>= ?cantidad_hierro ?coste_hierro))
     (test (>= ?cantidad_acero ?coste_acero))
     =>
+    ; eliminar disponibilidad
+    (retract ?diponibilidad )
     ; modificar cantidad de materiales del jugador
     (modify-instance ?recurso_jugador_madera (cantidad (- ?cantidad_madera ?coste_madera)))
     (modify-instance ?recurso_jugador_hierro (cantidad (- ?cantidad_hierro ?coste_hierro)))
@@ -1773,28 +1815,152 @@
 ; )
 
 
-
-
-; MANTENER DERECHO A COSECHA
-(defrule MANTENER_DERECHO_COSECHA_GANADO 
+(defrule GENERAR_DESEO_OBTENER_BARCO
+    ; ronda actual no puede ser ronda final.
+    (ronda_actual ?ronda)
+    (test (neq ?ronda RONDA_EXTRA_FINAL))
+    ; sea el turno del jugador.
+    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
-    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador)(recurso GANADO)(cantidad ?cantidad_recurso))
-    (test (< ?cantidad_recurso 2))
-    (OFERTA_RECURSO (recurso GANADO)(cantidad ?cantidad_oferta))
-    (test (> ?cantidad_oferta 1)) ; de esta manera, 2 vacas que coges + 1 de la cosecha son 3, que es el requisito para la generación de deseos de coger recursos de la oferta
-
+    ; no ha terminado su actividad principal
+    (not (fin_actividad_principal ?nombre_jugador))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
+    ; comprobar que se encuentra Disponible
+    (BARCO_DISPONIBLE (nombre_barco ?nombre_barco))
+    (object (is-a CARTA_PERTENECE_A_MAZO) (nombre_carta ?nombre_barco) (posicion_en_mazo 1))
+    ; obtener recursos del jugador.
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso MADERA) (cantidad ?cantidad_madera_jugador))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso HIERRO) (cantidad ?cantidad_hierro_jugador))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ACERO) (cantidad ?cantidad_acero_jugador))
+    ; obtener coste construcción barco.
+    (object (is-a COSTE_CONSTRUCCION_CARTA)(nombre_carta ?nombre_barco)(cantidad_madera ?cantidad_madera)(cantidad_hierro ?cantidad_hierro)(cantidad_acero ?cantidad_acero))
+    ; Tiene suficientes recursos para construirlo.
+    (test (>= ?cantidad_madera_jugador ?cantidad_madera))
+    (test (>= ?cantidad_hierro_jugador ?cantidad_hierro))
+    (test (>= ?cantidad_acero_jugador ?cantidad_acero))
+    ; comprobar que el muelle esté disponible.
+    (object (is-a PARTICIPANTE_TIENE_CARTA)(nombre_jugador ?)(nombre_carta "MUELLE"))
+    (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_jugador ?)(nombre_edificio "MUELLE")))
+    ; Comprobar que tiene recursos para poder entrar al muelle.
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta "MUELLE")(tipo COMIDA) (cantidad ?coste_entrada))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (tipo COMIDA) (recurso ?recurso) (cantidad ?cantidad_recurso))
+    (object (is-a RECURSO_ALIMENTICIO) (nombre ?recurso) (comida_genera ?ratio))
+    ; comprobar tiene suficiente.
+    (test (>= (* ?cantidad_recurso ?ratio) ?coste_entrada))
     =>
-    (assert (deseo_coger_recurso ?nombre_jugador GANADO))
+    (assert (deseo_construccion ?nombre_jugador ?nombre_barco))
+    (assert (deseo_entrar_edificio ?nombre_jugador "MUELLE" COMIDA ?recurso))
 )
-(defrule MANTENER_DERECHO_COSECHA_GRANO
-    (turno ?nombre_jugador)
-    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador)(recurso GRANO)(cantidad ?cantidad_recurso))
-    (test (< ?cantidad_recurso 1))
-    (OFERTA_RECURSO (recurso GRANO)(cantidad ?cantidad_oferta))
-    (test (> ?cantidad_oferta 1)) ; de esta manera, 2 vacas que coges + 1 de la cosecha son 3, que es el requisito para la generación de deseos de coger recursos de la oferta
 
+(defrule GENERAR_DESEO_DEUDAS
+    ; SIEMPRE QUE PUEDA PAGARÁ UNA DEUDA.
+    (object (is-a JUGADOR) (nombre ?nombre_jugador) (deudas ?num_deudas))
+    (turno ?nombre_jugador)
+    ; cuando haya terminado su acción principal.
+    (fin_actividad_principal ?nombre_jugador)
+    ; tiene que tener al menos una deuda.
+    (test (> ?num_deudas 0))
+    ; tiene que tener suficientes francos para pagar una deuda.
+    (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador)(recurso FRANCO)(cantidad ?cantidad_francos))
+    (test (> ?cantidad_francos 4))
     =>
-    (assert (deseo_coger_recurso ?nombre_jugador GRANO))
+    (assert (deseo_pagar_deuda ?nombre_jugador 1))
+)
+
+(defrule TRANSFORMAR_ALIMENTOS
+    (turno ?nombre_jugador)
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?jugador))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
+    (object (is-a PARTICIPANTE_TIENE_RECURSO)(tipo ?tipo)(nombre_jugador ?nombre_jugador)(recurso ?recurso_entrada)(cantidad ?cantidad_entrada))
+    (or 
+        (test (eq ?recurso_entrada PESCADO))
+        (test (eq ?recurso_entrada GANADO))
+        (test (eq ?recurso_entrada GRANO))
+    )
+    (object (is-a EDIFICIO_INPUT)(nombre_carta ?nombre_edificio)(recurso ?recurso_entrada)(cantidad_maxima ?cantidad_max))
+    (object (is-a EDIFICIO_OUTPUT)(nombre_carta ?nombre_edificio)(recurso ?recurso_salida)(cantidad_min_generada_por_unidad ?ratio))
+    ; Evitar que coja los francos al calcular el output si existen +1 output.
+    (or
+        (test (eq ?recurso_salida PESCADO_AHUMADO))
+        (test (eq ?recurso_salida CARNE))
+        (test (eq ?recurso_salida PAN))
+    )
+    ; Un umbral mayor a 4.
+    (test (> ?cantidad_entrada 4))
+    =>
+    ; deseo generar recurso con input
+    (printout t "El jugador tiene : " ?cantidad_entrada " recursos de: " ?recurso_entrada "." crlf)
+    (assert (deseo_conseguir_recurso ?nombre_jugador ?recurso_salida (integer (min (* ?ratio ?cantidad_max) (* ?ratio ?cantidad_entrada)))))
+)
+
+(defrule LIMPIAR_OBJETIVOS_PRIORIDADES
+    (turno ?nombre_jugador)
+    ; ha terminado su actividad principal O le ha desaparecido el deseo de construccion.
+    (or 
+        (fin_actividad_principal ?nombre_jugador)
+        (not (deseo_construccion ?nombre_jugador ?))
+    )
+    ; El edificio del objetivo ahora es posesión de un participante
+    ; (object (is-a PARTICIPANTE_TIENE_CARTA)(nombre_carta ?nombre))
+    ; tiene un objetivo prioritario activado
+    ?objetivo <- (objetivo_prioridad_generado ?nombre_jugador ?)
+    ; no existe un hecho para actualizar el mazo.
+    (not (actualizar_mazo ? ? ?))
+    => 
+    (retract ?objetivo)
+    (printout t"Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <" ?nombre_jugador ">." crlf)
+)
+
+(defrule LIMPIAR_OBJETIVOS_CONSEGUIR_RECURSOS
+    (turno ?nombre_jugador)
+    ?deseo <- (deseo_conseguir_recurso ?nombre_jugador ? ?)
+    ; ha terminado su actividad principal.
+    (fin_actividad_principal ?nombre_jugador)
+    ; no existe un hecho para actualizar el mazo.
+    (not (actualizar_mazo ? ? ?))
+    =>
+    (retract ?deseo)
+    (printout t"Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <" ?nombre_jugador ">." crlf)
+)
+
+; todo: comprobar costes de entrada si borra todo o no
+(defrule LIMPIAR_DESEOS_ENTRAR_EDIFICIOS_SIMPLES
+    (turno ?nombre_jugador)
+    ?deseo <- (deseo_entrar_edificio ?nombre_jugador ?)
+    ; ha terminado su actividad principal.
+    (fin_actividad_principal ?nombre_jugador)
+    ; no existe un hecho para actualizar el mazo.
+    (not (actualizar_mazo ? ? ?))
+    =>
+    (retract ?deseo)
+    (printout t"Deseo entrar edificio sin coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <" ?nombre_jugador ">." crlf)
+)
+
+(defrule LIMPIAR_DESEOS_ENTRAR_EDIFICIOS_COMPLEJOS
+    (turno ?nombre_jugador)
+    ?deseo <- (deseo_entrar_edificio ?nombre_jugador ? ? ?)
+    ; ha terminado su actividad principal.
+    (fin_actividad_principal ?nombre_jugador)
+    ; no existe un hecho para actualizar el mazo.
+    (not (actualizar_mazo ? ? ?))
+    =>
+    (retract ?deseo)
+    (printout t"Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <" ?nombre_jugador ">." crlf)
+)
+
+(defrule LIMPIAR_DESEOS_GENERAR_CON_RECURSO
+    (turno ?nombre_jugador)
+    ?deseo <- (deseo_generar_con_recurso ?nombre_jugador ? ? ?)
+    ; ha terminado su actividad principal.
+    (fin_actividad_principal ?nombre_jugador)
+    ; no existe un hecho para actualizar el mazo.
+    (not (actualizar_mazo ? ? ?))
+    =>
+    (retract ?deseo)
+    (printout t"Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <" ?nombre_jugador ">." crlf)
 )
 
 
@@ -1803,12 +1969,16 @@
     ; sea el turno del jugador.
     (object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
+    ; no ha terminado su actividad principal
+    (not (fin_actividad_principal ?nombre_jugador))
 
     ; ejecutar cuando se hayan añadido los recursos a la oferta.
     (recursos_añadidos_loseta ?)
 
     ; exite objetivo prioridad 1
     (objetivo_carta_jugador ?nombre_jugador ?nombre_carta 1)
+    ; no se ha instanciado un objetivo de prioridad 1 --> evita que lance objetivos sin concretar ninguno
+    (not (objetivo_prioridad_generado ?nombre_jugador 1))
 
     ; la carta está accesible para ser construida.
     (object (is-a CARTA) (nombre ?nombre_carta))
@@ -1833,7 +2003,7 @@
 
     =>
     (assert (deseo_construccion ?nombre_jugador ?nombre_carta))
-    (assert (objetivo_prioridad_1_generado ?nombre_jugador))
+    (assert (objetivo_prioridad_generado ?nombre_jugador 1))
     (printout t"El jugador con nombre: <" ?nombre_jugador "> ha generado el deseo de construcción para la carta: <" ?nombre_carta "> con prioridad: <1>." crlf) 
 )
 
@@ -1841,10 +2011,16 @@
 (defrule OBTENER_RECURSOS_PARA_CONSTRUIR_PRIORIDAD_1
     (object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?nombre_jugador))
     ; ejecutar cuando se hayan añadido los recursos a la oferta.
     (recursos_añadidos_loseta ?)
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?nombre_jugador))
     ; exite objetivo prioridad 1
     (objetivo_carta_jugador ?nombre_jugador ?nombre_carta 1)
+    ; no se ha instanciado un objetivo de prioridad 1 --> evita que lance objetivos sin concretar ninguno
+    (not (objetivo_prioridad_generado ?nombre_jugador 1))
     ; la carta está accesible para ser construida.
     (object (is-a CARTA) (nombre ?nombre_carta))
     (object (is-a CARTA_PERTENECE_A_MAZO) (id_mazo ?) (nombre_carta ?nombre_carta) (posicion_en_mazo 1))
@@ -1868,7 +2044,7 @@
     (not (recurso_construccion ?nombre_jugador ? ? ))
     =>
     ; Semáforo prioridades.
-    (assert (objetivo_prioridad_1_generado ?nombre_jugador))
+    (assert (objetivo_prioridad_generado ?nombre_jugador 1))
     (assert (recurso_construccion ?nombre_jugador MADERA (max 0 (- ?coste_madera ?cantidad_madera)) ) )
     (assert (recurso_construccion ?nombre_jugador ARCILLA (max 0 (- ?coste_arcilla ?cantidad_arcilla)) ) )
     (assert (recurso_construccion ?nombre_jugador HIERRO (max 0 (- ?coste_hierro ?cantidad_hierro)) ) )
@@ -1878,28 +2054,41 @@
     ;(printout t"El jugador con nombre: <" ?nombre_jugador "> ha generado el deseo de construcción para la carta: <" ?nombre_carta "> con prioridad: <1>." crlf) 
 )
 
-; (defrule LIMPIAR_DESEO_RECURSO_CONSTRUCCION_INUTILES
-;     ; elimina aquellos deseos inutiles generados
-;     (turno ?nombre_jugador)
-;     ?deseo_inutil <- (recurso_construccion ?nombre_jugador ? 0)
-;     ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
-;     =>
-;     (retract ?deseo_inutil)
-;     (retract ?contador)
-;     (assert (contador_recurso_construccion ?nombre_jugador (- ?numero_restante 1)))
-; )
+(defrule LIMPIAR_DESEO_RECURSO_CONSTRUCCION_INUTILES
+    ; elimina aquellos deseos inutiles generados
+    (turno ?nombre_jugador)
+    ?deseo_inutil <- (recurso_construccion ?nombre_jugador ? 0)
+    ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
+    =>
+    (retract ?deseo_inutil)
+    (retract ?contador)
+    (assert (contador_recurso_construccion ?nombre_jugador (- ?numero_restante 1)))
+)
 
-; (defrule LIMPIAR_DESEO_RECURSO_CONSTRUCCION_RESTANTES
-;     ; elimina aquellos deseos inutiles generados
-;     (turno ?nombre_jugador)
-;     ?deseo_inutil <- (recurso_construccion ?nombre_jugador ? ?)
-;     ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
-;     (test (> ?numero_restante 0))
-;     =>
-;     (retract ?deseo_inutil)
-;     (retract ?contador)
-;     (assert (contador_recurso_construccion ?nombre_jugador (- ?numero_restante 1)))
-; )
+(defrule LIMPIAR_DESEO_RECURSO_CONSTRUCCION_RESTANTES_FIN_TURNO
+    ; elimina aquellos deseos inutiles generados
+    (turno ?nombre_jugador)
+    ; ha terminado su actividad principal
+    (fin_actividad_principal ?nombre_jugador)
+    ?deseo <- (recurso_construccion ?nombre_jugador ? ?)
+    ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
+    (test (> ?numero_restante 0))
+    =>
+    (retract ?deseo)
+    (retract ?contador)
+    (assert (contador_recurso_construccion ?nombre_jugador (- ?numero_restante 1)))
+)
+
+(defrule LIMPIAR_CONTADOR_RECURSO_CONSTRUCCION_FIN_TURNO
+    ; elimina aquellos deseos inutiles generados
+    (turno ?nombre_jugador)
+    ; ha terminado su actividad principal
+    (fin_actividad_principal ?nombre_jugador)
+    ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
+    (test (= ?numero_restante 0))
+    =>
+    (retract ?contador)
+)
 
 ; Comprobar si están en la oferta. 
 (defrule COMPROBAR_EXISTENCIA_RECURSOS_CONSTRUCCION_EN_OFERTA
@@ -1927,6 +2116,8 @@
     ; reglas encargadas de generar el recurso a través del uso de edificios. 
     (turno ?nombre_jugador)
     ?deseo_recurso_construccion <- (recurso_construccion ?nombre_jugador ?recurso ?cantidad_demandada)
+    ; no hay ningún edificio que genere madera (en el juego de 2 jugadores), por tanto, no debe ejecutarse esta regla para dicho recurso
+    (test (neq ?recurso MADERA))
     (test (> ?cantidad_demandada 0))
     ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
     ; Comprueba que el recurso no está disponible en la oferta, ya sea porque hay menos cantidad de la necearia
@@ -1950,9 +2141,158 @@
 ; (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ?cantidad_madera ?cantidad_carbon_vegetal ?cantidad_carbon ?cantidad_coque)
 ; (deseo_conseguir_recurso ?nombre_jugador ?nombre_recurso)
 
-(defrule OBTENER_DESEO_GENERAR_RECURSOS_EDIFICIOS_CON_INPUT_OPTIMO
+; (defrule OBTENER_DESEO_GENERAR_RECURSOS_EDIFICIOS_CON_INPUT_OPTIMO
+;     (turno ?nombre_jugador)
+;     ?deseo <- (deseo_conseguir_recurso ?nombre_jugador ?recurso ?cantidad)
+;     ; a través del deseo de conseguir recurso, obtenemos qué edifico nos lo genera
+;     (object (is-a EDIFICIO_OUTPUT)(nombre_carta ?nombre_edificio)(recurso ?recurso)(cantidad_min_generada_por_unidad ?ratio))
+;     ; también obtenemos qué se necesita de input en el edificio para generarlo
+;     (object (is-a EDIFICIO_INPUT)(nombre_carta ?nombre_edificio)(recurso ?recurso_entrada)(cantidad_maxima ?max_input))
+;     ; obtener recurso input del jugador. 
+;     (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_jugador))
+
+;     ; el edificio está accesible
+;     (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_edificio) (nombre_jugador ?))
+;     (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_edificio)(nombre_jugador ?)))
+    
+;     ; Forzamos que para usar un edificio generador de recursos, se vaya a conseguir la cantidad necesaria del output para cumplir el deseo. 
+;     ; De esta manera optimizamos cuándo el jugador entra en estos edificios, y evitamos que los emplee para transformar cantidades pequeñas de recursos. 
+;     ; De esta manera, cuando no pueda transformar sus inputs por no conseguir la cantidad requerida de ouput, se dedicará a tomar recursos de la oferta. 
+;     (test (>= (* ?cantidad_recurso_jugador ?ratio) ?cantidad))
+;     =>
+;     (retract ?deseo)
+;     (bind ?cantidad_a_transformar (min (* ?max_input ?ratio) (* ?cantidad_recurso_jugador ?ratio)))
+;     (assert (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar))
+;     (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio))
+; )
+
+; INPUT COSTE_ENTRADA
+    ;   -        x  (monticulo arcilla, herreria, mina carbon) OK
+    ;   x        -  (carbon vegetal, peleteria)   OK
+    ;   x        x  (panaderia, matadero, ahumador)
+    ;   -        -  (piscifactoria, )  OK
+    ;
+; Le mandas directamente a obtener ese recurso.
+(defrule OBTENER_DESEO_ENTRAR_EDIFICIO_PARA_CONSEGUIR_RECURSO_SIN_INPUT_SIN_COSTE_ENTRADA
+    ; INPUT COSTE_ENTRADA
+    ;   -        -  (piscifactoria, ) ó si lo tiene pues no le cuesta dinero.
     (turno ?nombre_jugador)
-        
+    ; tiene el deseo de conseguir recurso. 
+    ?deseo <- (deseo_conseguir_recurso ?nombre_jugador ?recurso ?cantidad)
+    ; el edificio está accesible
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_edificio) (nombre_jugador ?))
+    (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_edificio)(nombre_jugador ?)))
+    ; Existe un output para ese recurso.
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso)(cantidad_min_generada_por_unidad ?))
+    ; No existe un input para ese edificio.
+    (not (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio)(recurso ?otro_recurso) (cantidad_maxima ?max_input)))
+    ; NO Tiene coste de entrada o le pertenece y está vacio.
+    (or
+        (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo ?) (cantidad ?)))
+        (and
+            (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_edificio)(nombre_jugador ?)))
+            (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_edificio) (nombre_jugador ?nombre_jugador))
+        )
+    )
+    =>
+    (retract ?deseo)
+    (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio))
+    (printout t "El jugador genera el deseo de entrar al edificio <" ?nombre_edificio "> para intentar conseguir recurso <" ?recurso ">." crlf)
+)
+
+(defrule OBTENER_DESEO_ENTRAR_EDIFICIO_PARA_CONSEGUIR_RECURSO_CON_INPUT_SIN_COSTE_ENTRADA
+    ; INPUT COSTE_ENTRADA
+    ;   x        -  (carbon vegetal, peleteria) ó porque le pertenece el edificio.
+    (turno ?nombre_jugador)
+    ; tiene el deseo de conseguir recurso. 
+    ?deseo <- (deseo_conseguir_recurso ?nombre_jugador ?recurso ?cantidad)
+    ; el edificio está accesible
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_edificio) (nombre_jugador ?))
+    (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_edificio)(nombre_jugador ?)))
+    ; Existe un output para ese recurso.
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso) (cantidad_min_generada_por_unidad ?ratio))
+    ; Existe un input para ese edificio.
+    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio)(recurso ?recurso_entrada) (cantidad_maxima ?max_input))
+    ; NO Tiene coste de entrada o le pertenece y está vacio.
+    (or
+        (not (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo ?) (cantidad ?)))
+        (and
+            (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_edificio)(nombre_jugador ?)))
+            (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_edificio) (nombre_jugador ?nombre_jugador))
+        )
+    )
+    ; obtener recurso jugador.
+    ; obtener recurso input del jugador. 
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_jugador))
+    ; Tiene que ser mayor que 0.
+    (test (> ?cantidad_recurso_jugador 0))
+    =>
+    (retract ?deseo)
+    (bind ?cantidad_a_transformar (min (* ?max_input ?ratio) (* ?cantidad_recurso_jugador ?ratio)))
+    (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio))
+    (assert (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar))
+    (printout t "El jugador genera el deseo de entrar al edificio <" ?nombre_edificio "> para intentar conseguir recurso <" ?recurso ">." crlf)
+)
+
+(defrule OBTENER_DESEO_ENTRAR_EDIFICIO_PARA_CONSEGUIR_RECURSO_CON_INPUT_CON_COSTE_ENTRADA
+    ; INPUT COSTE_ENTRADA
+    ;   x        x  (panaderia, matadero, ahumador)
+
+    (turno ?nombre_jugador)
+    ; tiene el deseo de conseguir recurso. Donde el recurso es el material refinado.
+    ?deseo <- (deseo_conseguir_recurso ?nombre_jugador ?recurso ?cantidad)
+    ; el edificio está accesible: alguien tiene el edificio y no hay nadie dentro...
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_edificio) (nombre_jugador ?))
+    (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_edificio)(nombre_jugador ?)))
+
+    ; Gestión Inputs.
+    ; obtiene el edificio que le da el recurso deseado    
+    ; Existe un output para ese recurso.
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso) (cantidad_min_generada_por_unidad ?ratio_output))
+    ; Existe un input para ese edificio.
+    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio)(recurso ?recurso_entrada) (cantidad_maxima ?max_input))
+    ; obtener recurso input del jugador. 
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_jugador))
+
+    ; Gestión costes entrada
+    ; Tiene coste de entrada.
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo ?tipo) (cantidad ?))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (tipo ?tipo) (recurso ?recurso_usado_pagar))
+    ; Tiene que ser mayor que 0.
+    (test (> ?cantidad_recurso_jugador 0))
+    =>
+    (bind ?cantidad_a_transformar (min (* ?max_input ?ratio_output) (* ?cantidad_recurso_jugador ?ratio_output)))
+    (retract ?deseo)
+    ; le generamos el deseo para ir al edificio
+    (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio ?tipo ?recurso_usado_pagar))
+    (assert (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar))
+)
+
+(defrule OBTENER_DESEO_ENTRAR_EDIFICIO_PARA_CONSEGUIR_RECURSO_SIN_INPUT_CON_COSTE_ENTRADA
+    ; INPUT COSTE_ENTRADA
+    ;   -        x  (monticulo arcilla, herreria, mina carbon)
+    (turno ?nombre_jugador)
+    ; tiene el deseo de conseguir recurso. 
+    ?deseo <- (deseo_conseguir_recurso ?nombre_jugador ?recurso ?cantidad)
+    ; el edificio está accesible
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_edificio) (nombre_jugador ?))
+    (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_edificio)(nombre_jugador ?)))
+    ; obtener el edificio que generar el recurso objetivo.
+    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?recurso)(cantidad_min_generada_por_unidad ?))
+    ; No existe un input para ese edificio.
+    (not (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio)(recurso ?otro_recurso)))
+    ; Tiene coste de entrada.
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo ?tipo) (cantidad ?))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (tipo ?tipo) (recurso ?recurso_usado_pagar))
+    =>
+    (retract ?deseo)
+    ; le generamos el deseo para ir al edificio
+    (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio ?tipo ?recurso_usado_pagar))
+)
+
+
+(defrule OBTENER_DESEO_CONSEGUIR_RECURSO_INPUT    
+    (turno ?nombre_jugador)
     ?deseo <- (deseo_conseguir_recurso ?nombre_jugador ?recurso ?cantidad)
     ; a través del deseo de conseguir recurso, obtenemos qué edifico nos lo genera
     (object (is-a EDIFICIO_OUTPUT)(nombre_carta ?nombre_edificio)(recurso ?recurso)(cantidad_min_generada_por_unidad ?ratio))
@@ -1961,26 +2301,9 @@
     ; obtener recurso input del jugador. 
     (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (tipo ?) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_jugador))
 
-    ; Forzamos que para usar un edificio generador de recursos, se vaya a conseguir la cantidad necesaria del output para cumplir el deseo. 
-    ; De esta manera optimizamos cuándo el jugador entra en estos edificios, y evitamos que los emplee para transformar cantidades pequeñas de recursos. 
-    ; De esta manera, cuando no pueda transformar sus inputs por no conseguir la cantidad requerida de ouput, se dedicará a tomar recursos de la oferta. 
-    (test (>= (* ?cantidad_recurso_jugador ?ratio) ?cantidad))
-    =>
-    (retract ?deseo)
-    (bind ?cantidad_a_transformar (min (* ?max_input ?ratio) (* ?cantidad_recurso_jugador ?ratio)))
-    (assert (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar))
-    (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio))
-)
-
-(defrule OBTENER_DESEO_CONSEGUIR_RECURSO_INPUT
-    (turno ?nombre_jugador)
-    ?deseo <- (deseo_conseguir_recurso ?nombre_jugador ?recurso_entrada ?cantidad)
-    ; a través del deseo de conseguir recurso, obtenemos qué edifico nos lo genera
-    (object (is-a EDIFICIO_OUTPUT)(nombre_carta ?nombre_edificio)(recurso ?recurso)(cantidad_min_generada_por_unidad ?ratio))
-    ; también obtenemos qué se necesita de input en el edificio para generarlo
-    (object (is-a EDIFICIO_INPUT)(nombre_carta ?nombre_edificio)(recurso ?recurso_entrada)(cantidad_maxima ?max_input))
-    ; obtener recurso input del jugador. 
-    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (tipo ?) (recurso ?recurso_entrada) (cantidad ?cantidad_recurso_jugador))
+    ; el edificio está accesible
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_edificio) (nombre_jugador ?))
+    (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_edificio)(nombre_jugador ?)))
 
     ; Forzamos que para usar un edificio generador de recursos, se vaya a conseguir la cantidad necesaria del output para cumplir el deseo. 
     ; De esta manera optimizamos cuándo el jugador entra en estos edificios, y evitamos que los emplee para transformar cantidades pequeñas de recursos. 
@@ -1996,39 +2319,25 @@
     (assert (deseo_conseguir_recurso ?nombre_jugador ?recurso_entrada ?cantidad_necesaria))
 )
 
-; Le mandas directamente a obtener ese recurso.
-(defrule OBTENER_DESEO_ENTRAR_EDIFICIO_SIN_INPUT_CONSEGUIR_RECURSO
-    (turno ?nombre_jugador)
-    ; tiene el deseo de conseguir recurso. 
-    ?deseo <- (deseo_conseguir_recurso ?nombre_jugador ?recurso ?cantidad)
-    ; obtiene el edificio que le da el recurso deseado    
-    ; Existe un output para ese recurso.
-    (object (is-a EDIFICIO_OUTPUT)(nombre_carta ?nombre_edificio) (recurso ?recurso)(cantidad_min_generada_por_unidad ?))
-    ; No existe un input para ese edificio.
-    (object (is-a EDIFICIO_INPUT) (nombre_carta ?nombre_edificio)(recurso ?recurso)(cantidad_maxima ?))
-    =>
-    (retract ?deseo)
-    ; le generamos el deseo para ir al edificio
-    (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio))
-)
-
-
 
 
 (defrule OBTENER_DESEOS_CONSTRUCCION_CARTA_PRIORIDAD_2
     ;(object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
-    ; no se ha instanciado un objetivo de prioridad 1
-    ;
-    ;    (not (objetivo_prioridad_1_generado ?nombre_jugador))
-    (not 
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?nombre_jugador))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
+    ; No existe una carta disponible prioridad 1.
+    (not (objetivo_prioridad_generado ?nombre_jugador 1))
+    (not
         (and 
             (object (is-a CARTA_PERTENECE_A_MAZO)(id_mazo ?)(nombre_carta ?carta_prioridad)(posicion_en_mazo 1))
             (objetivo_carta_jugador ?nombre_jugador ?carta_prioridad 1)
         )
     )
-    
-
+    ; no se ha instanciado un objetivo de prioridad 2 --> evita que lance objetivos sin concretar ninguno
+    (not (objetivo_prioridad_generado ?nombre_jugador 2))
 
     ; exite objetivo prioridad 2
     (objetivo_carta_jugador ?nombre_jugador ?nombre_carta 2)
@@ -2051,15 +2360,26 @@
     (test (>= ?cantidad_acero ?coste_acero))
     =>
     (assert (deseo_construccion ?nombre_jugador ?nombre_carta))
-    (assert (objetivo_prioridad_2_generado ?nombre_jugador))
+    (assert (objetivo_prioridad_generado ?nombre_jugador 2))
     (printout t"El jugador con nombre: <" ?nombre_jugador "> ha generado el deseo de construcción para la carta: <" ?nombre_carta "> con prioridad: <2>." crlf) 
 )
 
 (defrule OBTENER_RECURSOS_PARA_CONSTRUIR_PRIORIDAD_2
-    (object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?nombre_jugador))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
     ; no se ha instanciado un objetivo de prioridad 1
-    (not (objetivo_prioridad_1_generado ?nombre_jugador))
+    (not (objetivo_prioridad_generado ?nombre_jugador 1))
+    (not
+        (and 
+            (object (is-a CARTA_PERTENECE_A_MAZO)(id_mazo ?)(nombre_carta ?carta_prioridad)(posicion_en_mazo 1))
+            (objetivo_carta_jugador ?nombre_jugador ?carta_prioridad 1)
+        )
+    )
+    ; no se ha instanciado un objetivo de prioridad 2 --> evita que lance objetivos sin concretar ninguno
+    (not (objetivo_prioridad_generado ?nombre_jugador 2))
     ; exite objetivo prioridad 2
     (objetivo_carta_jugador ?nombre_jugador ?nombre_carta 2)
     ; la carta está accesible para ser construida.
@@ -2085,7 +2405,7 @@
     (not (recurso_construccion ?nombre_jugador ? ? ))
     =>
     ; Semáforo prioridades.
-    (assert (objetivo_prioridad_2_generado ?nombre_jugador))
+    (assert (objetivo_prioridad_generado ?nombre_jugador 2))
     (assert (recurso_construccion ?nombre_jugador MADERA (max 0 (- ?coste_madera ?cantidad_madera)) ) )
     (assert (recurso_construccion ?nombre_jugador ARCILLA (max 0 (- ?coste_arcilla ?cantidad_arcilla)) ) )
     (assert (recurso_construccion ?nombre_jugador HIERRO (max 0 (- ?coste_hierro ?cantidad_hierro)) ) )
@@ -2100,10 +2420,31 @@
 (defrule OBTENER_DESEOS_CONSTRUCCION_CARTA_PRIORIDAD_3
     (object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
-
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?nombre_jugador))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
     ; no se ha instanciado un objetivo ni de prioridad 1 ni 2
-    (not (objetivo_prioridad_2_generado ?nombre_jugador))
-    (not (objetivo_prioridad_1_generado ?nombre_jugador))
+    ; No existe una carta disponible prioridad 1.
+    (not (objetivo_prioridad_generado ?nombre_jugador 1))
+    ; No existe una carta disponible prioridad 2.
+    (not (objetivo_prioridad_generado ?nombre_jugador 2))
+    ; no se ha instanciado un objetivo de prioridad 3 --> evita que lance objetivos sin concretar ninguno
+    (not (objetivo_prioridad_generado ?nombre_jugador 3))
+    ; ni tampoco cartas de prioridad 1,2 en los mazos accesibles.
+    (not
+        (and 
+            (object (is-a CARTA_PERTENECE_A_MAZO)(id_mazo ?)(nombre_carta ?carta_prioridad1)(posicion_en_mazo 1))
+            (objetivo_carta_jugador ?nombre_jugador ?carta_prioridad1 1)
+        )
+    )
+    (not 
+        (and 
+            (object (is-a CARTA_PERTENECE_A_MAZO)(id_mazo ?)(nombre_carta ?carta_prioridad2)(posicion_en_mazo 1))
+            (objetivo_carta_jugador ?nombre_jugador ?carta_prioridad2 2)
+        )
+    )
+    
     ; exite objetivo prioridad 3
     (objetivo_carta_jugador ?nombre_jugador ?nombre_carta 3)
 
@@ -2129,16 +2470,34 @@
     (test (>= ?cantidad_acero ?coste_acero))
     =>
     (assert (deseo_construccion ?nombre_jugador ?nombre_carta))
-    (assert (objetivo_prioridad_3_generado ?nombre_jugador))
+    (assert (objetivo_prioridad_generado ?nombre_jugador 3))
     (printout t"El jugador con nombre: <" ?nombre_jugador "> ha generado el deseo de construcción para la carta: <" ?nombre_carta "> con prioridad: <3>." crlf) 
 )
 
 (defrule OBTENER_RECURSOS_PARA_CONSTRUIR_PRIORIDAD_3
     (object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?nombre_jugador))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
     ; no se ha instanciado un objetivo ni de prioridad 1 ni 2
-    (not (objetivo_prioridad_2_generado ?nombre_jugador))
-    (not (objetivo_prioridad_1_generado ?nombre_jugador))
+    (not (objetivo_prioridad_generado ?nombre_jugador 2))
+    (not (objetivo_prioridad_generado ?nombre_jugador 1))
+    (not
+        (and 
+            (object (is-a CARTA_PERTENECE_A_MAZO)(id_mazo ?)(nombre_carta ?carta_prioridad1)(posicion_en_mazo 1))
+            (objetivo_carta_jugador ?nombre_jugador ?carta_prioridad1 1)
+        )
+    )
+    (not 
+        (and 
+            (object (is-a CARTA_PERTENECE_A_MAZO)(id_mazo ?)(nombre_carta ?carta_prioridad2)(posicion_en_mazo 1))
+            (objetivo_carta_jugador ?nombre_jugador ?carta_prioridad2 2)
+        )
+    )
+    ; no se ha instanciado un objetivo de prioridad 3 --> evita que lance objetivos sin concretar ninguno
+    (not (objetivo_prioridad_generado ?nombre_jugador 3))
     ; exite objetivo prioridad 3
     (objetivo_carta_jugador ?nombre_jugador ?nombre_carta 3)
     ; la carta está accesible para ser construida.
@@ -2164,7 +2523,7 @@
     (not (recurso_construccion ?nombre_jugador ? ? ))
     =>
     ; Semáforo prioridades.
-    (assert (objetivo_prioridad_3_generado ?nombre_jugador))
+    (assert (objetivo_prioridad_generado ?nombre_jugador 3))
     (assert (recurso_construccion ?nombre_jugador MADERA (max 0 (- ?coste_madera ?cantidad_madera)) ) )
     (assert (recurso_construccion ?nombre_jugador ARCILLA (max 0 (- ?coste_arcilla ?cantidad_arcilla)) ) )
     (assert (recurso_construccion ?nombre_jugador HIERRO (max 0 (- ?coste_hierro ?cantidad_hierro)) ) )
@@ -2184,6 +2543,7 @@
     ; se ha generado el deseo de construcción de un edificio.
     (deseo_construccion ?nombre_jugador ?)
     ; Comprobar que no haya jugadores en ese edificio.
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta "CONSTRUCTORA1") (nombre_jugador ?))
     (not (object (is-a JUGADOR_ESTA_EDIFICIO) (nombre_edificio "CONSTRUCTORA1")(nombre_jugador ?)))
     =>
     (assert (deseo_entrar_edificio ?nombre_jugador "CONSTRUCTORA1"))
@@ -2202,6 +2562,9 @@
     ; obtener edificio constructor.
     (object (is-a CARTA) (nombre ?nombre_carta))
     (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_carta) (tipo COMIDA) (cantidad ?coste_entrada))
+     ; el edificio está accesible
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_carta) (nombre_jugador ?))
+    (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_carta)(nombre_jugador ?)))
     ; tiene que pertenecer a algún participante, no puede estar en el mazo. 
     (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_jugador ? ) (nombre_carta ?nombre_carta))
     ; tiene que ser un edificio constructor. 
@@ -2217,8 +2580,41 @@
     (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_carta COMIDA ?recurso))
 )
 
-; ===============================================================================================================
+(defrule LIMPIAR_DESEO_CONSTRUIR_EDIFICIO_NO_PUEDE_PAGAR_ENTRADA_CONSTRUCTORA
+    (turno ?nombre_jugador)
+    ?deseo <-(deseo_construccion ?nombre_jugador ?nombre_edificio)
+    
+    ; obtener la constructora libre.
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_carta ?nombre_constructora) (nombre_jugador ?))
+    (not (object (is-a JUGADOR_ESTA_EDIFICIO)(nombre_edificio ?nombre_constructora)(nombre_jugador ?)))
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_constructora) (tipo COMIDA) (cantidad ?coste_entrada))
+    ; tiene que ser un edificio constructor con coste entrada. 
+    (or 
+        (test (eq ?nombre_constructora "CONSTRUCTORA2"))
+        (test (eq ?nombre_constructora "CONSTRUCTORA3"))
+    )
+    
+    (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador)(tipo COMIDA)(recurso PESCADO)(cantidad ?cantidad_pescado))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador)(tipo COMIDA)(recurso PESCADO_AHUMADO)(cantidad ?cantidad_pescado_ahumado))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador)(tipo COMIDA)(recurso CARNE)(cantidad ?cantidad_carne))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO)(nombre_jugador ?nombre_jugador)(tipo COMIDA)(recurso PAN)(cantidad ?cantidad_pan))
+    (object (is-a RECURSO_ALIMENTICIO) (nombre PESCADO) (comida_genera ?ratio_pescado))
+    (object (is-a RECURSO_ALIMENTICIO) (nombre PESCADO_AHUMADO) (comida_genera ?ratio_pescado_ahumado))
+    (object (is-a RECURSO_ALIMENTICIO) (nombre PAN) (comida_genera ?ratio_pan))
+    (object (is-a RECURSO_ALIMENTICIO) (nombre CARNE) (comida_genera ?ratio_carne))
+    (test (< (* ?cantidad_pescado ?ratio_pescado) ?coste_entrada))
+    (test (< (* ?cantidad_pescado_ahumado ?ratio_pescado_ahumado) ?coste_entrada))
+    (test (< (* ?cantidad_pan ?ratio_pan) ?coste_entrada))
+    (test (< (* ?cantidad_carne ?ratio_carne) ?coste_entrada))
+      =>
+    (retract ?deseo)
+    (printout t"No se ha podido construir el edificio debido a escasez de recursos alimenticios." crlf)
+    ; SE PODRÍA IMPLEMENTAR: puede pillar comida de la oferta.
+)
 
+
+; ===============================================================================================================
+; TODO: REVISAR
 ; Inicialmente la decision será pagar con pescado porque es la cantidad que más tienes. 
 (defrule CAMBIAR_DECISION_PAGO_COMIDA_ENTRAR_EDIFICIOS
     (turno ?nombre_jugador)
@@ -2240,23 +2636,7 @@
     (printout t"El jugador ha cambiado su decisión de pago de comida. " crlf)
 )
 
-(defrule OBTENER_DESEO_ENTRAR_EDIFICIO_CON_COSTE_ENTRADA
-    (turno ?nombre_jugador)
-    (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?nombre_recurso ?)
-    ; el edificio genera el recurso deseado por el jugador.
-    (object (is-a CARTA) (nombre ?nombre_edificio))
-    (object (is-a EDIFICIO_OUTPUT) (nombre_carta ?nombre_edificio) (recurso ?nombre_recurso))
-    ; El edificio tiene coste de entrada
-    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo ?tipo_recurso) (cantidad ?cantidad_recurso_entrada))
-    ; comprobar que se tienen recursos suficientes para pagar.  
-    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (tipo ?tipo_recurso ) (recurso ?recurso) (cantidad ?cantidad_recurso_jugador))
-    (test (>= ?cantidad_recurso_jugador ?cantidad_recurso_entrada))
-    =>
-    (assert (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio ?tipo_recurso ?recurso))
 
-    ;(decision_pago_comida_entrar_edificios ?nombre_jugador ?recurso)
-
-)
 
 ; (deseo_generar_con_recurso ?nombre_jugador ?nombre_edificio ?recurso_entrada ?cantidad_a_transformar)
 ; (deseo_emplear_energia ?nombre_jugador ?nombre_edificio ?cantidad_madera ?cantidad_carbon_vegetal ?cantidad_carbon ?cantidad_coque)
@@ -2364,12 +2744,52 @@
     (assert (deseo_pagar_demanda ?nombre_jugador ?cantidad_pescado ?cantidad_pescado_ahumado ?cantidad_pan ?cantidad_carne ?cantidad_franco))
 )
 
+; MANTENER DERECHO A COSECHA
+(defrule MANTENER_DERECHO_COSECHA_GANADO 
+    (turno ?nombre_jugador)
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?nombre_jugador))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
+    ; Ejecutar solo si no puedes acceder a ningún edificio.   
+    (not (objetivo_prioridad_generado ?nombre_jugador ?))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador)(recurso GANADO)(cantidad ?cantidad_recurso))
+    (test (< ?cantidad_recurso 2))
+    (OFERTA_RECURSO (recurso GANADO)(cantidad ?cantidad_oferta))
+    (test (> ?cantidad_oferta 1)) ; de esta manera, 2 vacas que coges + 1 de la cosecha son 3, que es el requisito para la generación de deseos de coger recursos de la oferta
+
+    =>
+    (assert (deseo_coger_recurso ?nombre_jugador GANADO))
+)
+(defrule MANTENER_DERECHO_COSECHA_GRANO
+    (turno ?nombre_jugador)
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?nombre_jugador))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
+    ; Ejecutar solo si no puedes acceder a ningún edificio.  
+    (not (objetivo_prioridad_generado ?nombre_jugador ?))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador)(recurso GRANO)(cantidad ?cantidad_recurso))
+    (test (< ?cantidad_recurso 1))
+    (OFERTA_RECURSO (recurso GRANO)(cantidad ?cantidad_oferta))
+    (test (> ?cantidad_oferta 1)) ; de esta manera, 2 vacas que coges + 1 de la cosecha son 3, que es el requisito para la generación de deseos de coger recursos de la oferta
+
+    =>
+    (assert (deseo_coger_recurso ?nombre_jugador GRANO))
+)
 
 (defrule GENERAR_DESEO_COGER_OFERTA_PRIORITARIO
     ; Esperar a que termine el proceso de ejecución de cambio de ronda.
     (not (cambiar_ronda TRUE))
     (not (ronda_actual RONDA_EXTRA_FINAL))
     (turno ?jugador)
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?jugador))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
+    ; Ejecutar solo si no puedes acceder a ningún edificio.  
+    
+    (not (objetivo_prioridad_generado ?nombre_jugador ?))
     (not (deseo_coger_recurso ?jugador ?recurso))
     (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
     (test (> ?cantidad_oferta 2))
@@ -2388,7 +2808,13 @@
     ; Esperar a que termine el proceso de ejecución de cambio de ronda.
     (not (cambiar_ronda TRUE))
     (not (ronda_actual RONDA_EXTRA_FINAL))
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
+    ; Ejecutar solo si no puedes acceder a ningún edificio.  
+    (not (objetivo_prioridad_generado ?nombre_jugador ?))
     (turno ?jugador)
+    ; solo puede ejecutarlo cuando no haya hecho su actividad principal.
+    (not (fin_actividad_principal ?jugador))
     (not (deseo_coger_recurso ?jugador ?recurso))
     (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
     (test (> ?cantidad_oferta 0))
