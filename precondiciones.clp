@@ -378,9 +378,6 @@
     (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_5) (id_mazo 3))
     (of RONDA_ASIGNA_EDIFICIO (nombre_ronda RONDA_7) (id_mazo 1))
 
-
-    ;(of PARTICIPANTE_TIENE_CARTA (nombre_jugador "DIEGO")(nombre_carta "COMPAÑIA NAVIERA"))
-
 )
 
 (deffacts hechos_iniciales
@@ -489,7 +486,7 @@
     (decision_pago_comida_entrar_edificios "DIEGO" PESCADO)
     (decision_pago_comida_entrar_edificios "RICARDO" PESCADO)
 
-    ; COSAS QUE VAMOS METIENDO
+    ; COSAS QUE VAMOS METIENDO PARA PROBAR LAS REGLAS.
     ;(deseo_coger_recurso "DIEGO" GANADO)
     ;(deseo_coger_recurso "DIEGO" GRANO)
     ;(deseo_coger_recurso "DIEGO" FRANCO)
