@@ -534,7 +534,9 @@
     ; obtener contador de pagar comida.
     ?comida_restante <- (cantidad_comida_demandada ?nombre_jugador ?ronda ?cantidad_queda_por_pagar)
     ; queda por pagar una cantidad distinta de 0.
-    (test (> ?cantidad_queda_por_pagar 0))     
+    (test (> ?cantidad_queda_por_pagar 0))
+    ; Tiene que tener recursos para poder pagar. Sino se endeudará.
+    (test (> (+ (* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2)  (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1)) 0))  
     =>
     (bind ?total_recursos_para_pagar (+ (* ?cantidad_pescado 1) (* ?cantidad_pescado_ahumado 2)  (* ?cantidad_pan 3) (* ?cantidad_carne 3) (* ?cantidad_francos 1) ))
     (modify-instance ?jugador_pescado (cantidad (- ?cantidad_pescado ?deseo_pagar_pescado)))
@@ -550,7 +552,7 @@
     ; eliminar deseo.
     ;(retract ?deseo)
     (printout t"Coste de ronda: <" ?coste_ronda "> y recursos disponibles jugador: <" ?total_recursos_para_pagar">." crlf)
-    (printout t"El jugador <" ?nombre_jugador "> ha pagado la demanda de comida de la ronda <" ?ronda ">. Le queda por pagar <" (- ?cantidad_queda_por_pagar ?total_recursos_para_pagar)"> unidad(es)." crlf)
+    ;(printout t"El jugador <" ?nombre_jugador "> ha pagado la demanda de comida de la ronda <" ?ronda ">. Le queda por pagar <" (- ?cantidad_queda_por_pagar ?total_recursos_para_pagar)"> unidad(es)." crlf)
 )
 
 ; comprobar
@@ -793,6 +795,8 @@
 )
 
 (defrule TOMAR_RECURSO_OFERTA
+    ; Si no existe ningún deseo de entrar al edificio.
+    (not (deseo_entrar_edificio ?nombre_jugador ?))
     ; si loseta oculta no se puede tomar recurso de la oferta.
     (object (is-a LOSETA) (posicion ?pos_jugador) (visibilidad TRUE))
     (object (is-a JUGADOR_ESTA_EN_LOSETA) (posicion ?pos_jugador) (nombre_jugador ?nombre_jugador))
@@ -1767,41 +1771,9 @@
 ;     )
 
 ; )
-; LIMPIAR GENERACIÓN DE DESEOS 
-(defrule ELIMINAR_DESEO_OFERTA
-    ?deseo_coger_recurso <- (deseo_coger_recurso ?nombre_jugador ?recurso)
-    (turno ?nombre_jugador)
-    (OFERTA_RECURSO (recurso ?recurso)(cantidad ?cantidad))
-    (test (< ?cantidad 3))
-    =>
-    (retract ?deseo_coger_recurso)    
-)
 
-(defrule GENERAR_DESEO_COGER_OFERTA_PRIORITARIO
-    ; Esperar a que termine el proceso de ejecución de cambio de ronda.
-    (not (cambiar_ronda TRUE))
-    (not (ronda_actual RONDA_EXTRA_FINAL))
-    (turno ?jugador)
-    (not (deseo_coger_recurso ?jugador ?recurso))
-    (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
-    (test (> ?cantidad_oferta 2))
-    =>
-    (assert (deseo_coger_recurso ?jugador ?recurso))
-    (printout t"DESEO GENERADO" crlf)
-)
 
-(defrule GENERAR_DESEO_COGER_OFERTA_NO_PRIORITARIO
-    ; Esperar a que termine el proceso de ejecución de cambio de ronda.
-    (not (cambiar_ronda TRUE))
-    (not (ronda_actual RONDA_EXTRA_FINAL))
-    (turno ?jugador)
-    (not (deseo_coger_recurso ?jugador ?recurso))
-    (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
-    (test (> ?cantidad_oferta 0))
-    =>
-    (assert (deseo_coger_recurso ?jugador ?recurso))
-    (printout t"DESEO GENERADO" crlf)
-)
+
 
 ; MANTENER DERECHO A COSECHA
 (defrule MANTENER_DERECHO_COSECHA_GANADO 
@@ -1827,8 +1799,13 @@
 
 
 (defrule OBTENER_DESEOS_CONSTRUCCION_CARTA_PRIORIDAD_1
+
+    ; sea el turno del jugador.
     (object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
+
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
 
     ; exite objetivo prioridad 1
     (objetivo_carta_jugador ?nombre_jugador ?nombre_carta 1)
@@ -1864,6 +1841,8 @@
 (defrule OBTENER_RECURSOS_PARA_CONSTRUIR_PRIORIDAD_1
     (object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
+    ; ejecutar cuando se hayan añadido los recursos a la oferta.
+    (recursos_añadidos_loseta ?)
     ; exite objetivo prioridad 1
     (objetivo_carta_jugador ?nombre_jugador ?nombre_carta 1)
     ; la carta está accesible para ser construida.
@@ -1899,28 +1878,28 @@
     ;(printout t"El jugador con nombre: <" ?nombre_jugador "> ha generado el deseo de construcción para la carta: <" ?nombre_carta "> con prioridad: <1>." crlf) 
 )
 
-(defrule LIMPIAR_DESEO_RECURSO_CONSTRUCCION_INUTILES
-    ; elimina aquellos deseos inutiles generados
-    (turno ?nombre_jugador)
-    ?deseo_inutil <- (recurso_construccion ?nombre_jugador ? 0)
-    ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
-    =>
-    (retract ?deseo_inutil)
-    (retract ?contador)
-    (assert (contador_recurso_construccion ?nombre_jugador (- ?numero_restante 1)))
-)
+; (defrule LIMPIAR_DESEO_RECURSO_CONSTRUCCION_INUTILES
+;     ; elimina aquellos deseos inutiles generados
+;     (turno ?nombre_jugador)
+;     ?deseo_inutil <- (recurso_construccion ?nombre_jugador ? 0)
+;     ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
+;     =>
+;     (retract ?deseo_inutil)
+;     (retract ?contador)
+;     (assert (contador_recurso_construccion ?nombre_jugador (- ?numero_restante 1)))
+; )
 
-(defrule LIMPIAR_DESEO_RECURSO_CONSTRUCCION_RESTANTES
-    ; elimina aquellos deseos inutiles generados
-    (turno ?nombre_jugador)
-    ?deseo_inutil <- (recurso_construccion ?nombre_jugador ? ?)
-    ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
-    (test (> ?numero_restante 0))
-    =>
-    (retract ?deseo_inutil)
-    (retract ?contador)
-    (assert (contador_recurso_construccion ?nombre_jugador (- ?numero_restante 1)))
-)
+; (defrule LIMPIAR_DESEO_RECURSO_CONSTRUCCION_RESTANTES
+;     ; elimina aquellos deseos inutiles generados
+;     (turno ?nombre_jugador)
+;     ?deseo_inutil <- (recurso_construccion ?nombre_jugador ? ?)
+;     ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
+;     (test (> ?numero_restante 0))
+;     =>
+;     (retract ?deseo_inutil)
+;     (retract ?contador)
+;     (assert (contador_recurso_construccion ?nombre_jugador (- ?numero_restante 1)))
+; )
 
 ; Comprobar si están en la oferta. 
 (defrule COMPROBAR_EXISTENCIA_RECURSOS_CONSTRUCCION_EN_OFERTA
@@ -1930,7 +1909,11 @@
     ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
     ; obtener el recurso de la oferta. 
     (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
+    ; La cantidad demandada debe ser mayor que 0.
+    (test (> ?cantidad_demandada 0))
     (test (>= ?cantidad_oferta ?cantidad_demandada))
+    ; no debe existir un coger recurso.
+    (not (deseo_coger_recurso ?nombre_jugador ?))
     =>
     (assert (deseo_coger_recurso ?nombre_jugador ?recurso))
     ; en este turno sólo cogerá de la oferta, por tanto deshacemos los deseos de construir edificios
@@ -1944,6 +1927,7 @@
     ; reglas encargadas de generar el recurso a través del uso de edificios. 
     (turno ?nombre_jugador)
     ?deseo_recurso_construccion <- (recurso_construccion ?nombre_jugador ?recurso ?cantidad_demandada)
+    (test (> ?cantidad_demandada 0))
     ?contador <- (contador_recurso_construccion ?nombre_jugador ?numero_restante)
     ; Comprueba que el recurso no está disponible en la oferta, ya sea porque hay menos cantidad de la necearia
     ; o porque directamente el recurso no existe en la oferta. 
@@ -2209,8 +2193,6 @@
     ; obtener jugador y que sea su turno.
     (object (is-a JUGADOR) (nombre ?nombre_jugador))
     (turno ?nombre_jugador)
-    ; no se ha generado el deseo de entrar a la constructora 1.
-    (not (deseo_entrar_edificio ?nombre_jugador "CONSTRUCTORA1"))
     ; se ha generado el deseo de construcción de un edificio.
     (deseo_construccion ?nombre_jugador ?)
     ; Se ha generado el deseo de pagar las entradas a un edificio
@@ -2303,9 +2285,31 @@
     ; evitar ejecutar bucle mismo recurso.
     (not (deseo_pago_ind ?recurso ?))
     (test (> ?cantidad_pendiente 0))
+    (test (> (mod (min (* ?cantidad_recurso ?ratio) ?cantidad_pendiente) ?ratio) 0))
     =>
     (bind ?cantidad (min (* ?cantidad_recurso ?ratio) ?cantidad_pendiente))
-    (bind ?cantidad_optima (integer (+ 1 (/ ?cantidad ?ratio)))) ;redondea por exceso
+    (bind ?cantidad_optima (integer (+ (/ ?cantidad ?ratio) (- 1 (/ (mod ?cantidad ?ratio) ?ratio))))) ;redondea por exceso
+
+    (retract ?contador)
+    (assert (contador_comida_demandada ?nombre_jugador ?nombre_ronda_actual (- ?cantidad_pendiente ?cantidad)))
+    (assert (deseo_pago_ind ?recurso ?cantidad_optima))
+)
+
+(defrule GENERAR_PAGOS_INDIVIDUALES_PROBLEMAS_0
+    ; obtener hecho sobre demanda de comida. 
+    ?contador <- (contador_comida_demandada ?nombre_jugador ?nombre_ronda_actual ?cantidad_pendiente)
+    ; obtener recurso preferente.
+    (object (is-a RECURSO_ALIMENTICIO) (nombre ?recurso) (comida_genera ?ratio))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_recurso))
+    ; evitar ejecutar bucle mismo recurso.
+    (not (deseo_pago_ind ?recurso ?))
+    (test (> ?cantidad_pendiente 0))
+    ; cuando la cantidad de recurso es 0, no se ha podido hacer una expresión matemática que obtenga el ceil por como está hecho CLIPS.
+    (test (= (mod (min (* ?cantidad_recurso ?ratio) ?cantidad_pendiente) ?ratio) 0))
+    =>
+    (bind ?cantidad  (min (* ?cantidad_recurso ?ratio) ?cantidad_pendiente))
+    (bind ?cantidad_optima (integer (/ ?cantidad ?ratio)))
+
     (retract ?contador)
     (assert (contador_comida_demandada ?nombre_jugador ?nombre_ronda_actual (- ?cantidad_pendiente ?cantidad)))
     (assert (deseo_pago_ind ?recurso ?cantidad_optima))
@@ -2324,12 +2328,21 @@
 )
 
 (defrule GENERAR_PAGO_INDIVIDUAL_FRANCOS
+    ; no exista ningun recurso de comida del jugador mayor que 0.
+    ; asi se utilizará de última instancia. 
+    (deseo_pago_ind PESCADO ?)
+    (deseo_pago_ind PESCADO_AHUMADO ?)
+    (deseo_pago_ind CARNE ?)
+    (deseo_pago_ind PAN ?)
     ?contador <- (contador_comida_demandada ?nombre_jugador ?nombre_ronda_actual ?cantidad_pendiente)
     (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso FRANCO) (cantidad ?cantidad_recurso))
     (not (deseo_pago_ind FRANCO ?))
     =>
     (bind ?cantidad (min ?cantidad_recurso ?cantidad_pendiente))
     (assert (deseo_pago_ind FRANCO ?cantidad))
+    (retract ?contador)
+    (assert (contador_comida_demandada ?nombre_jugador ?nombre_ronda_actual (- ?cantidad_pendiente ?cantidad)))
+
 )
 
 (defrule RELLENO_DESEO_PAGAR_DEMANDA
@@ -2350,3 +2363,65 @@
     (retract ?deseo_franco)
     (assert (deseo_pagar_demanda ?nombre_jugador ?cantidad_pescado ?cantidad_pescado_ahumado ?cantidad_pan ?cantidad_carne ?cantidad_franco))
 )
+
+
+(defrule GENERAR_DESEO_COGER_OFERTA_PRIORITARIO
+    ; Esperar a que termine el proceso de ejecución de cambio de ronda.
+    (not (cambiar_ronda TRUE))
+    (not (ronda_actual RONDA_EXTRA_FINAL))
+    (turno ?jugador)
+    (not (deseo_coger_recurso ?jugador ?recurso))
+    (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
+    (test (> ?cantidad_oferta 2))
+    =>
+    (assert (deseo_coger_recurso ?jugador ?recurso))
+    (printout t"DESEO GENERADO" crlf)
+)
+
+(defrule GENERAR_DESEO_COGER_OFERTA_NO_PRIORITARIO
+    (not 
+        (and 
+            (OFERTA_RECURSO (recurso ?)(cantidad ?check))
+            (test (> ?check 2))
+        )
+    )
+    ; Esperar a que termine el proceso de ejecución de cambio de ronda.
+    (not (cambiar_ronda TRUE))
+    (not (ronda_actual RONDA_EXTRA_FINAL))
+    (turno ?jugador)
+    (not (deseo_coger_recurso ?jugador ?recurso))
+    (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
+    (test (> ?cantidad_oferta 0))
+    =>
+    (assert (deseo_coger_recurso ?jugador ?recurso))
+    (printout t"DESEO GENERADO" crlf)
+)
+
+; LIMPIAR GENERACIÓN DE DESEOS 
+; (defrule ELIMINAR_DESEO_OFERTA
+;     ?deseo_coger_recurso <- (deseo_coger_recurso ?nombre_jugador ?recurso)
+;     (turno ?nombre_jugador)
+;     (OFERTA_RECURSO (recurso ?recurso)(cantidad ?cantidad))
+;     (test (< ?cantidad 3))
+;     =>
+;     (retract ?deseo_coger_recurso)    
+; )
+
+
+
+
+
+
+
+
+
+
+
+
+
+; For the brave souls who get this far: You are the chosen ones,
+; the valiant knights of programming who toil away, without rest,
+; reading our most awful code. To you, true saviors, kings of men,
+; I say this: never gonna give you up, never gonna let you down,
+; never gonna run around and desert you. Never gonna make you cry,
+; never gonna say goodbye. Never gonna tell a lie and hurt you.
