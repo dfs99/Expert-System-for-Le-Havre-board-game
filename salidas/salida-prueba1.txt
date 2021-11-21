@@ -2,7 +2,7 @@
                                 PARTIDA JUEGO LE HAVRE
  fichero prueba: prueba1.clp
  Sistema operativo empleado: WINDOWS.
- fecha ejecución: (2021 11 21 20 3 25 Sunday 324 FALSE).
+ fecha ejecución: (2021 11 21 22 19 27 Sunday 324 FALSE).
 =====================================================================================================
 La loseta con posición : <0> queda visible. 
 Se han añadido a la OFERTA los recursos de la loseta con posición: <0>
@@ -489,7 +489,7 @@ El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comid
 El jugador: <DIEGO> ha generado el derecho de pagar demanda.
 El jugador: <DIEGO> dispone de: <19> unidades [COMIDA & DINERO] para satisfacer <5> de demanda de comida restantes.
 El jugador: <DIEGO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
-El jugador ha cambiado su decisión de pago de comida del recurso: <PESCADO> al recurso <PESCADO_AHUMADO> para entrar a edificios.
+El jugador: <DIEGO> ha cambiado su decisión de pago de comida del recurso: <PESCADO> al recurso <PESCADO_AHUMADO> para entrar a edificios.
 El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
 El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
 El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
@@ -550,7 +550,7 @@ Se han añadido a la OFERTA los recursos de la loseta con posición: <3>
 -> La cantidad <1> de recurso <FRANCO>.
 -> La cantidad <1> de recurso <HIERRO>.
 El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <PELETERIA> con prioridad: <3>.
-El jugador ha cambiado su decisión de pago de comida del recurso: <PESCADO> al recurso <PAN> para entrar a edificios.
+El jugador: <RICARDO> ha cambiado su decisión de pago de comida del recurso: <PESCADO> al recurso <PAN> para entrar a edificios.
 El jugador: <RICARDO> ha generado el deseo de entrar a la constructora CON coste de entrada: <CONSTRUCTORA3> empleando el recurso: <PAN> como pago de la tarifa de entrada.
 El jugador: <RICARDO> ha entrado al edificio: <CONSTRUCTORA3> por <2> COMIDA.
 El jugador <RICARDO> ha usado el edificio <CONSTRUCTORA3> para construir la carta <PELETERIA> empleando los siguientes recursos: <1> madera, <0> arcilla, <1> ladrillos, <0> hierro y <0> acero.
@@ -965,7 +965,7 @@ El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comid
 El jugador: <DIEGO> ha generado el derecho de pagar demanda.
 El jugador: <DIEGO> dispone de: <46> unidades [COMIDA & DINERO] para satisfacer <8> de demanda de comida restantes.
 El jugador: <DIEGO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
-El jugador ha cambiado su decisión de pago de comida del recurso: <PESCADO_AHUMADO> al recurso <PAN> para entrar a edificios.
+El jugador: <DIEGO> ha cambiado su decisión de pago de comida del recurso: <PESCADO_AHUMADO> al recurso <PAN> para entrar a edificios.
 El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <3> de <CARNE>.
 El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
 El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
@@ -1029,6 +1029,60 @@ El jugador: <RICARDO> ha tomado de la oferta: <1> de <GRANO>.
 No necesario el Proceso interno de limpieza razonamiento jugador.
 Riqueza del jugador: <DIEGO> calculada.
 Riqueza del jugador: <RICARDO> calculada.
-Resultados partida para 2 jugadores Le Havre:
-El Jugador: <RICARDO> ha obtenido una riqueza de: <100> francos. 
-El Jugador: <DIEGO> ha obtenido una riqueza de: <79> francos. 
+=====================================================================================================
+RESULTADOS:
+=> El Jugador: <RICARDO> ha obtenido una riqueza de: <100> francos. 
+=> El Jugador: <DIEGO> ha obtenido una riqueza de: <79> francos. 
+=====================================================================================================
++---------------------------------------------------------------------------------------------------+
+|                                           ESTADÍSTICAS                                            |
++---------------------------------------------------------------------------------------------------+
+ Valores Globales Jugador
+    Jugador: RICARDO
+    Numero barcos: 3
+    Numero deudas: 0
+    Riqueza total [edificios + barcos]: 94
+ Cantidades recurso jugador:
+    Francos: 6
+    Pescado: 0
+    Madera: 9
+    Arcilla: 4
+    Hierro: 0
+    Grano: 1
+    Ganado: 1
+    Carbón: 2
+    Piel: 2
+    Pescado Ahumado: 0
+    Carbón Vegetal: 0
+    Ladrillos: 1
+    Acero: 0
+    Pan: 0
+    Carne: 0
+    Coque: 0
+    Cuero: 0
++---------------------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------------------------+
+ Valores Globales Jugador
+    Jugador: DIEGO
+    Numero barcos: 3
+    Numero deudas: 0
+    Riqueza total [edificios + barcos]: 46
+ Cantidades recurso jugador:
+    Francos: 33
+    Pescado: 4
+    Madera: 5
+    Arcilla: 0
+    Hierro: 2
+    Grano: 0
+    Ganado: 0
+    Carbón: 2
+    Piel: 8
+    Pescado Ahumado: 0
+    Carbón Vegetal: 0
+    Ladrillos: 0
+    Acero: 0
+    Pan: 0
+    Carne: 0
+    Coque: 0
+    Cuero: 0
++---------------------------------------------------------------------------------------------------+
