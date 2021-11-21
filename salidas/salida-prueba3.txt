@@ -1,0 +1,1229 @@
+=====================================================================================================
+                                PARTIDA JUEGO LE HAVRE
+ fichero prueba: prueba3.clp
+ Sistema operativo empleado: WINDOWS.
+ fecha ejecución: (2021 11 21 19 59 11 Sunday 324 FALSE).
+=====================================================================================================
+La loseta con posición : <0> queda visible. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <0>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <FRANCO>.
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <AHUMADOR> con prioridad: <1>.
+El jugador: <DIEGO> ha generado el deseo de entrar a la constructora SIN coste de entrada: <CONSTRUCTORA1>.
+El jugador: <DIEGO> ha entrado gratis al edificio: <CONSTRUCTORA1>. Ya sea porque le pertenece o porque no tiene coste de entrada.
+El jugador :<DIEGO> ha decidido comprar la carta: <MONTICULO DE ARCILLA> porque no existe forma de construirla con materiales.
+El jugador <DIEGO> ha usado el edificio <CONSTRUCTORA1> para construir la carta <AHUMADOR> [con bonus: PESCADOR] empleando los siguientes recursos: <2> madera, <1> arcilla, <0> ladrillos, <0> hierro y <0> acero.
+El jugador: <DIEGO> ha comprado el edificio: <MONTICULO DE ARCILLA> por <2> francos al mazo <2>.
+El mazo <2> ha actualizado la posición de la carta con nombre: <SIDERURGIA> de la posición <2> a la posición <1>.
+El mazo <2> ha actualizado la posición de la carta con nombre: <PISCIFACTORIA> de la posición <3> a la posición <2>.
+El mazo <2> ha actualizado la posición de la carta con nombre: <MINA DE CARBON> de la posición <4> a la posición <3>.
+El mazo <2> ha actualizado la posición de la carta con nombre: <PANADERIA> de la posición <5> a la posición <4>.
+El mazo <2> ha terminado de actualizarse.
+El mazo <3> ha actualizado la posición de la carta con nombre: <COMPAÑIA NAVIERA> de la posición <2> a la posición <1>.
+El mazo <3> ha actualizado la posición de la carta con nombre: <MATADERO> de la posición <3> a la posición <2>.
+El mazo <3> ha actualizado la posición de la carta con nombre: <HERRERIA> de la posición <4> a la posición <3>.
+El mazo <3> ha actualizado la posición de la carta con nombre: <PELETERIA> de la posición <5> a la posición <4>.
+El mazo <3> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <1>. 
+La loseta con posición : <1> queda visible. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <1>
+-> La cantidad <1> de recurso <FRANCO>.
+-> La cantidad <1> de recurso <MADERA>.
+El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <MUELLE> con prioridad: <1>.
+El jugador: <RICARDO> ha generado el deseo de entrar a la constructora CON coste de entrada: <CONSTRUCTORA3> empleando el recurso: <PESCADO> como pago de la tarifa de entrada.
+El jugador: <RICARDO> ha entrado al edificio: <CONSTRUCTORA3> por <2> COMIDA.
+El jugador <RICARDO> ha usado el edificio <CONSTRUCTORA3> para construir la carta <MUELLE> empleando los siguientes recursos: <2> madera, <2> arcilla, <0> ladrillos, <2> hierro y <0> acero.
+El mazo <1> ha actualizado la posición de la carta con nombre: <FABRICA DE LADRILLOS> de la posición <2> a la posición <1>.
+El mazo <1> ha actualizado la posición de la carta con nombre: <HORNO DE CARBON VEGETAL> de la posición <3> a la posición <2>.
+El mazo <1> ha actualizado la posición de la carta con nombre: <COQUERIA> de la posición <4> a la posición <3>.
+El mazo <1> ha actualizado la posición de la carta con nombre: <BANCO> de la posición <5> a la posición <4>.
+El mazo <1> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <2>. 
+La loseta con posición : <2> queda visible. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <2>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador con nombre: <DIEGO> ha generado el deseo de obtener recursos para poder construir la carta: <FABRICA DE LADRILLOS> con prioridad: <1>.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+El jugador: <DIEGO> ha generado el deseo de coger de la oferta el recurso: <MADERA> que necesitaba para la construcción de la carta.
+El jugador: <DIEGO> ha tomado de la oferta: <4> de <MADERA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Contador recursos construcción eliminado del jugador: <DIEGO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <3>. 
+La loseta con posición : <3> queda visible. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <3>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <HIERRO>.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <FABRICA DE LADRILLOS> con prioridad: <1>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de coger de la oferta el recurso: <ARCILLA> que necesitaba para la construcción de la carta.
+El jugador: <RICARDO> ha tomado de la oferta: <3> de <ARCILLA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <4>. 
+La loseta con posición : <4> queda visible. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <4>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <PESCADO>.
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <FABRICA DE LADRILLOS> con prioridad: <1>.
+El jugador: <DIEGO> ha generado el deseo de entrar a la constructora CON coste de entrada: <CONSTRUCTORA2> empleando el recurso: <PESCADO> como pago de la tarifa de entrada.
+El jugador: <DIEGO> ha entrado al edificio: <CONSTRUCTORA2> por <1> COMIDA.
+El jugador <DIEGO> ha usado el edificio <CONSTRUCTORA2> para construir la carta <FABRICA DE LADRILLOS> empleando los siguientes recursos: <2> madera, <1> arcilla, <0> ladrillos, <1> hierro y <0> acero.
+El mazo <1> ha actualizado la posición de la carta con nombre: <HORNO DE CARBON VEGETAL> de la posición <2> a la posición <1>.
+El mazo <1> ha actualizado la posición de la carta con nombre: <COQUERIA> de la posición <3> a la posición <2>.
+El mazo <1> ha actualizado la posición de la carta con nombre: <BANCO> de la posición <4> a la posición <3>.
+El mazo <1> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <5>. 
+La loseta con posición : <5> queda visible. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <5>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <HORNO DE CARBON VEGETAL> con prioridad: <2>.
+El jugador: <RICARDO> ha generado el deseo de entrar a la constructora SIN coste de entrada: <CONSTRUCTORA1>.
+El jugador: <RICARDO> ha entrado gratis al edificio: <CONSTRUCTORA1>. Ya sea porque le pertenece o porque no tiene coste de entrada.
+El jugador <RICARDO> ha usado el edificio <CONSTRUCTORA1> para construir la carta <HORNO DE CARBON VEGETAL> empleando los siguientes recursos: <0> madera, <1> arcilla, <0> ladrillos, <0> hierro y <0> acero.
+El mazo <1> ha actualizado la posición de la carta con nombre: <COQUERIA> de la posición <2> a la posición <1>.
+El mazo <1> ha actualizado la posición de la carta con nombre: <BANCO> de la posición <3> a la posición <2>.
+El mazo <1> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <6>. 
+La loseta con posición : <6> queda visible. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <6>
+-> La cantidad <1> de recurso <GANADO>.
+-> La cantidad <1> de recurso <GRANO>.
+El jugador con nombre: <DIEGO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+El jugador: <DIEGO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <DIEGO> ha generado el deseo de coger GANADO para mantener su derecho de COSECHA.
+El jugador: <DIEGO> ha tomado de la oferta: <3> de <GANADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Contador recursos construcción eliminado del jugador: <DIEGO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <0>. 
+La ronda: <RONDA_1> tiene una demanda de comida de: <4> unidades.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <RICARDO> ha generado el derecho de pagar demanda.
+El jugador: <RICARDO> dispone de: <7> unidades [COMIDA & DINERO] para satisfacer <0> de demanda de comida restantes.
+El jugador: <RICARDO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
+El jugador <DIEGO> ha recibido de la cosecha +1 GANADO.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <DIEGO> ha generado el derecho de pagar demanda.
+El jugador: <DIEGO> dispone de: <4> unidades [COMIDA & DINERO] para satisfacer <0> de demanda de comida restantes.
+El jugador: <DIEGO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
+Se ha añadido el edificio: <COQUERIA> al AYUNTAMIENTO desde el mazo <1> durante el cambio de ronda.
+El mazo <1> ha actualizado la posición de la carta con nombre: <BANCO> de la posición <2> a la posición <1>.
+El mazo <1> ha terminado de actualizarse.
+Nuevo Barco disponible para la nueva ronda: <BARCO_MADERA1>.
+Se ha cambiado de Ronda: <RONDA_1> a Ronda: <RONDA_2>.
+Se han añadido a la OFERTA los recursos de la loseta con posición: <0>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <FRANCO>.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de coger de la oferta el recurso: <MADERA> que necesitaba para la construcción de la carta.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <FABRICA DE LADRILLOS> para intentar generar el recurso <LADRILLOS> empleando como recurso de entrada: <2> unidad(es) de <ARCILLA> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador: <RICARDO> ha tomado de la oferta: <3> de <MADERA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <1>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <1>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <FRANCO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <5> unidad(es) de <GANADO>
+El jugador con nombre: <DIEGO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+El jugador: <DIEGO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <DIEGO> ha generado el deseo de coger GRANO para mantener su derecho de COSECHA.
+El jugador: <DIEGO> ha tomado de la oferta: <2> de <GRANO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Contador recursos construcción eliminado del jugador: <DIEGO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <2>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <2>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <FABRICA DE LADRILLOS> para intentar generar el recurso <LADRILLOS> empleando como recurso de entrada: <2> unidad(es) de <ARCILLA> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <PESCADO> de la oferta PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <8> de <PESCADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <3>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <3>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <HIERRO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <5> unidad(es) de <GANADO>
+El jugador con nombre: <DIEGO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+El jugador: <DIEGO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <FRANCO> de la oferta PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <7> de <FRANCO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Contador recursos construcción eliminado del jugador: <DIEGO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <4>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <4>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <PESCADO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PESCADO_AHUMADO> empleando: <6> unidad(es) de <PESCADO>
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <AHUMADOR> para intentar generar el recurso <PESCADO_AHUMADO> empleando como recurso de entrada: <6> unidad(es) de <PESCADO> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <FABRICA DE LADRILLOS> para intentar generar el recurso <LADRILLOS> empleando como recurso de entrada: <2> unidad(es) de <ARCILLA> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <PESCADO> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <1> de <PESCADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <5>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <5>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <5> unidad(es) de <GANADO>
+El jugador con nombre: <DIEGO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+El jugador: <DIEGO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <MADERA> de la oferta PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <4> de <MADERA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Contador recursos construcción eliminado del jugador: <DIEGO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <6>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <6>
+-> La cantidad <1> de recurso <GRANO>.
+-> La cantidad <1> de recurso <GANADO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PESCADO_AHUMADO> empleando: <6> unidad(es) de <PESCADO>
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <AHUMADOR> para intentar generar el recurso <PESCADO_AHUMADO> empleando como recurso de entrada: <6> unidad(es) de <PESCADO> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <FABRICA DE LADRILLOS> para intentar generar el recurso <LADRILLOS> empleando como recurso de entrada: <2> unidad(es) de <ARCILLA> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <GANADO> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <1> de <GANADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <0>. 
+La ronda: <RONDA_2> tiene una demanda de comida de: <7> unidades.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <1> de <PESCADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <2> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <DIEGO> ha generado el derecho de pagar demanda.
+El jugador: <DIEGO> dispone de: <11> unidades [COMIDA & DINERO] para satisfacer <3> de demanda de comida restantes.
+El jugador: <DIEGO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <3> de <PESCADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <RICARDO> ha generado el derecho de pagar demanda.
+El jugador: <RICARDO> dispone de: <16> unidades [COMIDA & DINERO] para satisfacer <3> de demanda de comida restantes.
+El jugador: <RICARDO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
+El jugador <RICARDO> ha recibido de la cosecha +1 GANADO.
+El jugador <DIEGO> ha recibido de la cosecha +1 GANADO.
+El jugador <DIEGO> ha recibido de la cosecha +1 GRANO.
+Nuevo Barco disponible para la nueva ronda: <BARCO_MADERA2>.
+Se ha cambiado de Ronda: <RONDA_2> a Ronda: <RONDA_3>.
+Se han añadido a la OFERTA los recursos de la loseta con posición: <0>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <FRANCO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <6> unidad(es) de <GANADO>
+El jugador con nombre: <DIEGO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+El jugador: <DIEGO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <FRANCO> de la oferta NO PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <1> de <FRANCO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Contador recursos construcción eliminado del jugador: <DIEGO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <1>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <1>
+-> La cantidad <1> de recurso <FRANCO>.
+-> La cantidad <1> de recurso <MADERA>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PESCADO_AHUMADO> empleando: <6> unidad(es) de <PESCADO>
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <AHUMADOR> para intentar generar el recurso <PESCADO_AHUMADO> empleando como recurso de entrada: <6> unidad(es) de <PESCADO> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <FABRICA DE LADRILLOS> para intentar generar el recurso <LADRILLOS> empleando como recurso de entrada: <2> unidad(es) de <ARCILLA> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <MADERA> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <1> de <MADERA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <2>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <2>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <6> unidad(es) de <GANADO>
+El jugador con nombre: <DIEGO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+El jugador: <DIEGO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <ARCILLA> de la oferta PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <4> de <ARCILLA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Contador recursos construcción eliminado del jugador: <DIEGO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <3>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <3>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <HIERRO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PESCADO_AHUMADO> empleando: <6> unidad(es) de <PESCADO>
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <AHUMADOR> para intentar generar el recurso <PESCADO_AHUMADO> empleando como recurso de entrada: <6> unidad(es) de <PESCADO> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <FABRICA DE LADRILLOS> para intentar generar el recurso <LADRILLOS> empleando como recurso de entrada: <2> unidad(es) de <ARCILLA> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <HIERRO> de la oferta PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <4> de <HIERRO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <4>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <4>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <PESCADO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <6> unidad(es) de <GANADO>
+El jugador con nombre: <DIEGO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <DIEGO> debido a que tenía 0 unidades de recurso.
+El jugador: <DIEGO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <DIEGO> ha generado el deseo de entrar al edificio <FABRICA DE LADRILLOS> para intentar generar el recurso <LADRILLOS> empleando como recurso de entrada: <4> unidad(es) de <ARCILLA>.
+El jugador: <DIEGO> ha entrado gratis al edificio: <FABRICA DE LADRILLOS>. Ya sea porque le pertenece o porque no tiene coste de entrada.
+El jugador: <DIEGO> ha transformado en el edificio: <FABRICA DE LADRILLOS> <4> recursos de <ARCILLA> en <4> recursos de <LADRILLOS> y <2> recursos de <FRANCO>.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Contador recursos construcción eliminado del jugador: <DIEGO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <5>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <5>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PESCADO_AHUMADO> empleando: <6> unidad(es) de <PESCADO>
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <AHUMADOR> para intentar generar el recurso <PESCADO_AHUMADO> empleando como recurso de entrada: <6> unidad(es) de <PESCADO> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <ARCILLA> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <1> de <ARCILLA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <6>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <6>
+-> La cantidad <1> de recurso <GANADO>.
+-> La cantidad <1> de recurso <GRANO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <6> unidad(es) de <GANADO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <GRANO> de la oferta NO PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <2> de <GRANO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <0>. 
+La ronda: <RONDA_3> tiene una demanda de comida de: <9> unidades.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <5> de <PESCADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <RICARDO> ha generado el derecho de pagar demanda.
+El jugador: <RICARDO> dispone de: <13> unidades [COMIDA & DINERO] para satisfacer <5> de demanda de comida restantes.
+El jugador: <RICARDO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <5> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <DIEGO> ha generado el derecho de pagar demanda.
+El jugador: <DIEGO> dispone de: <11> unidades [COMIDA & DINERO] para satisfacer <5> de demanda de comida restantes.
+El jugador: <DIEGO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
+El jugador <DIEGO> ha recibido de la cosecha +1 GANADO.
+El jugador <RICARDO> ha recibido de la cosecha +1 GANADO.
+El jugador <DIEGO> ha recibido de la cosecha +1 GRANO.
+Se ha añadido el edificio: <SIDERURGIA> al AYUNTAMIENTO desde el mazo <2> durante el cambio de ronda.
+El mazo <2> ha actualizado la posición de la carta con nombre: <PISCIFACTORIA> de la posición <2> a la posición <1>.
+El mazo <2> ha actualizado la posición de la carta con nombre: <MINA DE CARBON> de la posición <3> a la posición <2>.
+El mazo <2> ha actualizado la posición de la carta con nombre: <PANADERIA> de la posición <4> a la posición <3>.
+El mazo <2> ha terminado de actualizarse.
+Nuevo Barco disponible para la nueva ronda: <BARCO_MADERA3>.
+Se ha cambiado de Ronda: <RONDA_3> a Ronda: <RONDA_4>.
+Se han añadido a la OFERTA los recursos de la loseta con posición: <0>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <FRANCO>.
+El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <PISCIFACTORIA> con prioridad: <2>.
+El jugador: <RICARDO> ha generado el deseo de entrar a la constructora CON coste de entrada: <CONSTRUCTORA3> empleando el recurso: <PESCADO> como pago de la tarifa de entrada.
+El jugador: <RICARDO> ha entrado al edificio: <CONSTRUCTORA3> por <2> COMIDA.
+El jugador <RICARDO> ha usado el edificio <CONSTRUCTORA3> para construir la carta <PISCIFACTORIA> [con bonus: PESCADOR] empleando los siguientes recursos: <1> madera, <1> arcilla, <0> ladrillos, <0> hierro y <0> acero.
+El mazo <2> ha actualizado la posición de la carta con nombre: <MINA DE CARBON> de la posición <2> a la posición <1>.
+El mazo <2> ha actualizado la posición de la carta con nombre: <PANADERIA> de la posición <3> a la posición <2>.
+El mazo <2> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <1>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <1>
+-> La cantidad <1> de recurso <FRANCO>.
+-> La cantidad <1> de recurso <MADERA>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <7> unidad(es) de <GANADO>
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <6> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <MADERA> de la oferta PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <4> de <MADERA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <2>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <2>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <PESCADO> de la oferta PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <5> de <PESCADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <3>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <3>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <HIERRO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <7> unidad(es) de <GANADO>
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <6> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <HIERRO> de la oferta NO PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <1> de <HIERRO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <4>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <4>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <PESCADO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PESCADO_AHUMADO> empleando: <6> unidad(es) de <PESCADO>
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <AHUMADOR> para intentar generar el recurso <PESCADO_AHUMADO> empleando como recurso de entrada: <6> unidad(es) de <PESCADO> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <PESCADO> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <1> de <PESCADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <5>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <5>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <7> unidad(es) de <GANADO>
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <6> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <ARCILLA> de la oferta NO PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <2> de <ARCILLA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <6>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <6>
+-> La cantidad <1> de recurso <GRANO>.
+-> La cantidad <1> de recurso <GANADO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PESCADO_AHUMADO> empleando: <6> unidad(es) de <PESCADO>
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <AHUMADOR> para intentar generar el recurso <PESCADO_AHUMADO> empleando como recurso de entrada: <6> unidad(es) de <PESCADO> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <GANADO> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <2> de <GANADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <0>. 
+La ronda: <RONDA_4> tiene una demanda de comida de: <13> unidades.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <6> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <DIEGO> ha generado el derecho de pagar demanda.
+El jugador: <DIEGO> dispone de: <6> unidades [COMIDA & DINERO] para satisfacer <9> de demanda de comida restantes.
+El jugador: <DIEGO> tiene que pagar aún un total de: <3> unidades de la demanda de comida.
+El jugador: <DIEGO> tiene que pagar aún un total de: <3> unidades de la demanda de comida y no tiene recursos para asumir el pago.
+El jugador: <DIEGO> se ha visto obligado a tomar: <1> deuda(s) para poder pagar <3> unidad(es) de comida demandada restante(s).
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <8> de <PESCADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <1> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <RICARDO> ha generado el derecho de pagar demanda.
+El jugador: <RICARDO> dispone de: <13> unidades [COMIDA & DINERO] para satisfacer <9> de demanda de comida restantes.
+El jugador: <RICARDO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
+El jugador <RICARDO> ha recibido de la cosecha +1 GANADO.
+El jugador <DIEGO> ha recibido de la cosecha +1 GANADO.
+El jugador <DIEGO> ha recibido de la cosecha +1 GRANO.
+Nuevo Barco disponible para la nueva ronda: <BARCO_HIERRO1>.
+Se ha cambiado de Ronda: <RONDA_4> a Ronda: <RONDA_5>.
+Se han añadido a la OFERTA los recursos de la loseta con posición: <0>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <FRANCO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <8> unidad(es) de <GANADO>
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <7> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <FRANCO> de la oferta PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <4> de <FRANCO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <1>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <1>
+-> La cantidad <1> de recurso <FRANCO>.
+-> La cantidad <1> de recurso <MADERA>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <7> unidad(es) de <GANADO>
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <MADERA> de la oferta PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <4> de <MADERA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <2>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <2>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <8> unidad(es) de <GANADO>
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <7> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <ARCILLA> de la oferta NO PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <1> de <ARCILLA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <3>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <3>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <HIERRO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <7> unidad(es) de <GANADO>
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <HIERRO> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <1> de <HIERRO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <4>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <4>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <PESCADO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <8> unidad(es) de <GANADO>
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <7> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <PESCADO> de la oferta NO PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <3> de <PESCADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <5>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <5>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <7> unidad(es) de <GANADO>
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <COMPAÑIA NAVIERA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <ARCILLA> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <1> de <ARCILLA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <6>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <6>
+-> La cantidad <1> de recurso <GANADO>.
+-> La cantidad <1> de recurso <GRANO>.
+El jugador: <DIEGO> ha generado el deseo de obtener el barco: <BARCO_MADERA1>.
+El jugador: <DIEGO> ha entrado al edificio: <MUELLE> por <2> COMIDA.
+El jugador <DIEGO> ha usado el edificio <MUELLE> para construir el barco <BARCO_MADERA1> empleando <5> madera, <0> hierro y <0> acero.
+El jugador: <DIEGO> ha generado el deseo de pagar 1 deuda.
+El mazo <4> ha actualizado la posición de la carta con nombre: <BARCO_MADERA2> de la posición <2> a la posición <1>.
+El mazo <4> ha actualizado la posición de la carta con nombre: <BARCO_MADERA3> de la posición <3> a la posición <2>.
+El mazo <4> ha terminado de actualizarse.
+No necesario el Proceso interno de limpieza razonamiento jugador.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <0>. 
+La ronda: <RONDA_5> tiene una demanda de comida de: <15> unidades.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <1> de <PESCADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <4> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <RICARDO> ha generado el derecho de pagar demanda.
+El jugador: <RICARDO> dispone de: <5> unidades [COMIDA & DINERO] para satisfacer <11> de demanda de comida restantes.
+El jugador: <RICARDO> tiene que pagar aún un total de: <6> unidades de la demanda de comida.
+El jugador: <RICARDO> tiene que pagar aún un total de: <6> unidades de la demanda de comida y no tiene recursos para asumir el pago.
+El jugador: <RICARDO> se ha visto obligado a tomar: <2> deuda(s) para poder pagar <6> unidad(es) de comida demandada restante(s).
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <2> de <PESCADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <5> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <DIEGO> ha generado el derecho de pagar demanda.
+El jugador: <DIEGO> dispone de: <7> unidades [COMIDA & DINERO] para satisfacer <7> de demanda de comida restantes.
+El jugador: <DIEGO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
+El jugador <DIEGO> ha recibido de la cosecha +1 GANADO.
+El jugador <RICARDO> ha recibido de la cosecha +1 GANADO.
+El jugador <DIEGO> ha recibido de la cosecha +1 GRANO.
+Se ha añadido el edificio: <COMPAÑIA NAVIERA> al AYUNTAMIENTO desde el mazo <3> durante el cambio de ronda.
+El mazo <3> ha actualizado la posición de la carta con nombre: <MATADERO> de la posición <2> a la posición <1>.
+El mazo <3> ha actualizado la posición de la carta con nombre: <HERRERIA> de la posición <3> a la posición <2>.
+El mazo <3> ha actualizado la posición de la carta con nombre: <PELETERIA> de la posición <4> a la posición <3>.
+El mazo <3> ha terminado de actualizarse.
+Nuevo Barco disponible para la nueva ronda: <BARCO_HIERRO2>.
+Se ha cambiado de Ronda: <RONDA_5> a Ronda: <RONDA_6>.
+Se han añadido a la OFERTA los recursos de la loseta con posición: <0>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <FRANCO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <8> unidad(es) de <GANADO>
+El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <MATADERO> con prioridad: <1>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <FRANCO> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <2> de <FRANCO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <1>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <1>
+-> La cantidad <1> de recurso <FRANCO>.
+-> La cantidad <1> de recurso <MADERA>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <9> unidad(es) de <GANADO>
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <8> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <MATADERO> con prioridad: <1>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <MADERA> de la oferta PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <4> de <MADERA>. 
+El jugador <DIEGO> con <1> deudas ha necesitado otra deuda para poder pagar los intereses de las deudas contraidas anteriormente.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <2>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <2>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <8> unidad(es) de <GANADO>
+El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <MATADERO> con prioridad: <1>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <ARCILLA> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <1> de <ARCILLA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <3>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <3>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <HIERRO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <9> unidad(es) de <GANADO>
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <8> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <MATADERO> con prioridad: <1>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <HIERRO> de la oferta NO PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <1> de <HIERRO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <4>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <4>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <PESCADO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <8> unidad(es) de <GANADO>
+El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <MATADERO> con prioridad: <1>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <PESCADO> de la oferta NO PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <3> de <PESCADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <5>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <5>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <9> unidad(es) de <GANADO>
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <8> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <MATADERO> con prioridad: <1>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <ARCILLA> de la oferta NO PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <1> de <ARCILLA>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <6>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <6>
+-> La cantidad <1> de recurso <GRANO>.
+-> La cantidad <1> de recurso <GANADO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <8> unidad(es) de <GANADO>
+El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <MATADERO> con prioridad: <1>.
+El jugador: <RICARDO> ha generado el deseo de entrar a la constructora SIN coste de entrada: <CONSTRUCTORA1>.
+El jugador: <RICARDO> ha entrado gratis al edificio: <CONSTRUCTORA1>. Ya sea porque le pertenece o porque no tiene coste de entrada.
+El jugador <RICARDO> ha usado el edificio <CONSTRUCTORA1> para construir la carta <MATADERO> empleando los siguientes recursos: <1> madera, <1> arcilla, <0> ladrillos, <1> hierro y <0> acero.
+El mazo <3> ha actualizado la posición de la carta con nombre: <HERRERIA> de la posición <2> a la posición <1>.
+El mazo <3> ha actualizado la posición de la carta con nombre: <PELETERIA> de la posición <3> a la posición <2>.
+El mazo <3> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <0>. 
+La ronda: <RONDA_6> tiene una demanda de comida de: <17> unidades.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <3> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <DIEGO> ha generado el derecho de pagar demanda.
+El jugador: <DIEGO> dispone de: <3> unidades [COMIDA & DINERO] para satisfacer <9> de demanda de comida restantes.
+El jugador: <DIEGO> tiene que pagar aún un total de: <6> unidades de la demanda de comida.
+El jugador: <DIEGO> tiene que pagar aún un total de: <6> unidades de la demanda de comida y no tiene recursos para asumir el pago.
+El jugador: <DIEGO> se ha visto obligado a tomar: <2> deuda(s) para poder pagar <6> unidad(es) de comida demandada restante(s).
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <3> de <PESCADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <4> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <RICARDO> ha generado el derecho de pagar demanda.
+El jugador: <RICARDO> dispone de: <7> unidades [COMIDA & DINERO] para satisfacer <13> de demanda de comida restantes.
+El jugador: <RICARDO> tiene que pagar aún un total de: <6> unidades de la demanda de comida.
+El jugador: <RICARDO> tiene que pagar aún un total de: <6> unidades de la demanda de comida y no tiene recursos para asumir el pago.
+El jugador: <RICARDO> se ha visto obligado a tomar: <2> deuda(s) para poder pagar <6> unidad(es) de comida demandada restante(s).
+El jugador <RICARDO> ha recibido de la cosecha +1 GANADO.
+El jugador <DIEGO> ha recibido de la cosecha +1 GANADO.
+El jugador <DIEGO> ha recibido de la cosecha +1 GRANO.
+Nuevo Barco disponible para la nueva ronda: <BARCO_ACERO1>.
+Se ha cambiado de Ronda: <RONDA_6> a Ronda: <RONDA_7>.
+Se han añadido a la OFERTA los recursos de la loseta con posición: <0>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <FRANCO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <10> unidad(es) de <GANADO>
+El jugador: <DIEGO> ha generado el deseo de entrar al edificio <MATADERO> para intentar generar el recurso <CARNE> empleando como recurso de entrada: <10> unidad(es) de <GANADO> empleando el recurso <FRANCO> como pago de tarifa del coste de entrada.
+El jugador: <DIEGO> ha entrado al edificio: <MATADERO> por <2> DINERO.
+El jugador: <DIEGO> ha transformado en el edificio: <MATADERO> <10> recursos de <GANADO> en <5> recursos de <PIEL> y <10> recursos de <CARNE>.
+No necesario el Proceso interno de limpieza razonamiento jugador.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <1>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <1>
+-> La cantidad <1> de recurso <FRANCO>.
+-> La cantidad <1> de recurso <MADERA>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <9> unidad(es) de <GANADO>
+El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <MINA DE CARBON> con prioridad: <3>.
+No se ha podido construir el edificio debido a escasez de recursos alimenticios.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <MADERA> de la oferta PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <4> de <MADERA>. 
+El jugador <RICARDO> con <4> deudas ha pagado <1> franco debido a los intereses de sus deudas.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <2>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <2>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <DIEGO> ha generado el deseo de obtener el barco: <BARCO_MADERA2>.
+El jugador: <DIEGO> ha entrado al edificio: <MUELLE> por <2> COMIDA.
+El jugador <DIEGO> ha usado el edificio <MUELLE> para construir el barco <BARCO_MADERA2> empleando <5> madera, <0> hierro y <0> acero.
+El mazo <4> ha actualizado la posición de la carta con nombre: <BARCO_MADERA3> de la posición <2> a la posición <1>.
+El mazo <4> ha terminado de actualizarse.
+No necesario el Proceso interno de limpieza razonamiento jugador.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <3>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <3>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <HIERRO>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <CARNE> empleando: <9> unidad(es) de <GANADO>
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <MATADERO> para intentar generar el recurso <CARNE> empleando como recurso de entrada: <9> unidad(es) de <GANADO>.
+El jugador: <RICARDO> ha entrado gratis al edificio: <MATADERO>. Ya sea porque le pertenece o porque no tiene coste de entrada.
+El jugador: <RICARDO> ha transformado en el edificio: <MATADERO> <9> recursos de <GANADO> en <4> recursos de <PIEL> y <9> recursos de <CARNE>.
+No necesario el Proceso interno de limpieza razonamiento jugador.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <4>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <4>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <PESCADO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <9> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <HERRERIA> con prioridad: <3>.
+El jugador: <DIEGO> ha generado el deseo de entrar a la constructora SIN coste de entrada: <CONSTRUCTORA1>.
+El jugador: <DIEGO> ha entrado gratis al edificio: <CONSTRUCTORA1>. Ya sea porque le pertenece o porque no tiene coste de entrada.
+El jugador <DIEGO> ha usado el edificio <CONSTRUCTORA1> para construir la carta <HERRERIA> [con bonus: MARTILLO] empleando los siguientes recursos: <3> madera, <0> arcilla, <2> ladrillos, <0> hierro y <0> acero.
+El mazo <3> ha actualizado la posición de la carta con nombre: <PELETERIA> de la posición <2> a la posición <1>.
+El mazo <3> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <5>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <5>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <RICARDO> ha generado el deseo de obtener el barco: <BARCO_HIERRO1>.
+El jugador: <RICARDO> ha generado el deseo de obtener el barco: <BARCO_MADERA3>.
+El jugador con nombre: <RICARDO> ha generado el deseo de construcción para la carta: <MINA DE CARBON> con prioridad: <3>.
+El jugador ha cambiado su decisión de pago de comida del recurso: <PESCADO> al recurso <CARNE> para entrar a edificios.
+El jugador: <RICARDO> ha generado el deseo de entrar a la constructora CON coste de entrada: <CONSTRUCTORA3> empleando el recurso: <CARNE> como pago de la tarifa de entrada.
+El jugador: <RICARDO> ha entrado al edificio: <CONSTRUCTORA3> por <2> COMIDA.
+El jugador <RICARDO> ha usado el edificio <CONSTRUCTORA3> para construir la carta <MINA DE CARBON> empleando los siguientes recursos: <1> madera, <3> arcilla, <0> ladrillos, <0> hierro y <0> acero.
+El mazo <2> ha actualizado la posición de la carta con nombre: <PANADERIA> de la posición <2> a la posición <1>.
+El mazo <2> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo construcción eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo construcción eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <6>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <6>
+-> La cantidad <1> de recurso <GANADO>.
+-> La cantidad <1> de recurso <GRANO>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <9> unidad(es) de <GRANO>
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <PANADERIA> con prioridad: <2>.
+El jugador ha cambiado su decisión de pago de comida del recurso: <PESCADO> al recurso <CARNE> para entrar a edificios.
+El jugador: <DIEGO> ha generado el deseo de entrar a la constructora CON coste de entrada: <CONSTRUCTORA2> empleando el recurso: <CARNE> como pago de la tarifa de entrada.
+El jugador: <DIEGO> ha entrado al edificio: <CONSTRUCTORA2> por <1> COMIDA.
+El jugador <DIEGO> ha usado el edificio <CONSTRUCTORA2> para construir la carta <PANADERIA> empleando los siguientes recursos: <0> madera, <2> arcilla, <0> ladrillos, <0> hierro y <0> acero.
+El mazo <2> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <DIEGO>.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <0>. 
+La ronda: <RONDA_7> tiene una demanda de comida de: <18> unidades.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <1> de <CARNE>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <3> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <RICARDO> ha generado el derecho de pagar demanda.
+El jugador: <RICARDO> dispone de: <6> unidades [COMIDA & DINERO] para satisfacer <14> de demanda de comida restantes.
+El jugador: <RICARDO> tiene que pagar aún un total de: <8> unidades de la demanda de comida.
+El jugador: <RICARDO> tiene que pagar aún un total de: <8> unidades de la demanda de comida y no tiene recursos para asumir el pago.
+El jugador: <RICARDO> se ha visto obligado a tomar: <2> deuda(s) para poder pagar <8> unidad(es) de comida demandada restante(s).
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <1> de <CARNE>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <DIEGO> ha generado el derecho de pagar demanda.
+El jugador: <DIEGO> dispone de: <3> unidades [COMIDA & DINERO] para satisfacer <6> de demanda de comida restantes.
+El jugador: <DIEGO> tiene que pagar aún un total de: <3> unidades de la demanda de comida.
+El jugador: <DIEGO> tiene que pagar aún un total de: <3> unidades de la demanda de comida y no tiene recursos para asumir el pago.
+El jugador: <DIEGO> se ha visto obligado a tomar: <1> deuda(s) para poder pagar <3> unidad(es) de comida demandada restante(s).
+El jugador <DIEGO> ha recibido de la cosecha +1 GRANO.
+Se ha añadido el edificio: <BANCO> al AYUNTAMIENTO desde el mazo <1> durante el cambio de ronda.
+El mazo <1> ha terminado de actualizarse.
+Nuevo Barco disponible para la nueva ronda: <BARCO_ACERO2>.
+Se ha cambiado de Ronda: <RONDA_7> a Ronda: <RONDA_8>.
+Se han añadido a la OFERTA los recursos de la loseta con posición: <0>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <FRANCO>.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <PELETERIA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de coger GANADO para mantener su derecho de COSECHA.
+El jugador: <RICARDO> ha tomado de la oferta: <3> de <GANADO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <1>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <1>
+-> La cantidad <1> de recurso <FRANCO>.
+-> La cantidad <1> de recurso <MADERA>.
+El jugador: <DIEGO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PAN> empleando: <10> unidad(es) de <GRANO>
+El jugador: <DIEGO> ha generado el deseo de entrar al edificio <PANADERIA> para intentar generar el recurso <PAN> empleando como recurso de entrada: <10> unidad(es) de <GRANO>.
+El jugador: <DIEGO> ha entrado gratis al edificio: <PANADERIA>. Ya sea porque le pertenece o porque no tiene coste de entrada.
+El jugador: <DIEGO> ha transformado en el edificio: <PANADERIA> <10> recursos de <GRANO> en <5> recursos de <FRANCO> y <10> recursos de <PAN>.
+No necesario el Proceso interno de limpieza razonamiento jugador.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <2>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <2>
+-> La cantidad <1> de recurso <PESCADO>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador con nombre: <RICARDO> ha generado el deseo de obtener recursos para poder construir la carta: <PELETERIA> con prioridad: <3>.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+Deseo recurso construcción eliminado del jugador: <RICARDO> debido a que tenía 0 unidades de recurso.
+El jugador: <RICARDO> ha generado el deseo de conseguir el recurso: <LADRILLOS> que necesitaba para la construcción de la carta. Puede ser debido a que es un producto elaborado o no hay suficiente cantidad en la oferta.
+El jugador: <RICARDO> ha generado el deseo de coger GRANO para mantener su derecho de COSECHA.
+El jugador: <RICARDO> ha tomado de la oferta: <4> de <GRANO>. 
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo conseguir recurso eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Contador recursos construcción eliminado del jugador: <RICARDO> debido a que se finalizó su turno.
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <3>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <3>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <HIERRO>.
+El jugador con nombre: <DIEGO> ha generado el deseo de construcción para la carta: <PELETERIA> con prioridad: <3>.
+El jugador: <DIEGO> ha generado el deseo de entrar a la constructora SIN coste de entrada: <CONSTRUCTORA1>.
+El jugador: <DIEGO> ha entrado gratis al edificio: <CONSTRUCTORA1>. Ya sea porque le pertenece o porque no tiene coste de entrada.
+El jugador <DIEGO> ha usado el edificio <CONSTRUCTORA1> para construir la carta <PELETERIA> empleando los siguientes recursos: <1> madera, <0> arcilla, <1> ladrillos, <0> hierro y <0> acero.
+El jugador <DIEGO> ha pagado <1> deudas por un valor de <5>.
+El mazo <3> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Objetivo prioritario eliminado tras fin actividad principal o la desaparición del deseo de construcción del jugador: <DIEGO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <4>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <4>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <PESCADO>.
+El jugador: <RICARDO> ha generado el deseo de coger recurso: <PESCADO> de la oferta PRIORITARIO.
+El jugador: <RICARDO> ha tomado de la oferta: <6> de <PESCADO>. 
+No necesario el Proceso interno de limpieza razonamiento jugador.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <5>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <5>
+-> La cantidad <1> de recurso <MADERA>.
+-> La cantidad <1> de recurso <ARCILLA>.
+El jugador: <DIEGO> ha generado el deseo de coger recurso: <ARCILLA> de la oferta PRIORITARIO.
+El jugador: <DIEGO> ha tomado de la oferta: <4> de <ARCILLA>. 
+No necesario el Proceso interno de limpieza razonamiento jugador.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno en la posicion <6>. 
+Se han añadido a la OFERTA los recursos de la loseta con posición: <6>
+-> La cantidad <1> de recurso <GRANO>.
+-> La cantidad <1> de recurso <GANADO>.
+El jugador: <RICARDO> ha generado el deseo de obtener el barco: <BARCO_HIERRO1>.
+El jugador: <RICARDO> ha generado el deseo de obtener el barco: <BARCO_MADERA3>.
+El jugador: <RICARDO> quiere transformar un recurso alimenticio a través del deseo conseguir recurso. En concreto, quiere conseguir <PESCADO_AHUMADO> empleando: <6> unidad(es) de <PESCADO>
+El jugador: <RICARDO> ha generado el deseo de entrar al edificio <AHUMADOR> para intentar generar el recurso <PESCADO_AHUMADO> empleando como recurso de entrada: <6> unidad(es) de <PESCADO> empleando el recurso <CARNE> como pago de tarifa del coste de entrada.
+El jugador ha cambiado su decisión de pago de comida del recurso: <CARNE> al recurso <PESCADO> para entrar a edificios.
+El jugador: <RICARDO> ha generado el deseo de entrar a la constructora CON coste de entrada: <CONSTRUCTORA2> empleando el recurso: <PESCADO> como pago de la tarifa de entrada.
+El jugador: <RICARDO> ha entrado al edificio: <CONSTRUCTORA2> por <1> COMIDA.
+El jugador <RICARDO> ha usado el edificio <CONSTRUCTORA2> para construir la carta <BARCO_MADERA3> empleando los siguientes recursos: <5> madera, <0> arcilla, <0> ladrillos, <0> hierro y <0> acero.
+El mazo <4> ha terminado de actualizarse.
+Comenzando proceso interno de limpieza razonamiento jugador...
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo entrar edificio coste entrada eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo generar recurso en edificio eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Deseo construcción eliminado tras no poder ser llevado a cabo durante el turno del jugador: <RICARDO>.
+Proceso interno de limpieza razonamiento jugador finalizado.
+El jugador: <RICARDO> ha finalizado su turno. 
+El jugador: <DIEGO> ha empezado su turno en la posicion <0>. 
+La ronda: <RONDA_8> tiene una demanda de comida de: <20> unidades.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <3> de <PAN>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO>.
+El jugador: <DIEGO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <DIEGO> ha generado el derecho de pagar demanda.
+El jugador: <DIEGO> dispone de: <31> unidades [COMIDA & DINERO] para satisfacer <8> de demanda de comida restantes.
+El jugador: <DIEGO> tiene que pagar aún un total de: <0> unidades de la demanda de comida.
+El jugador ha cambiado su decisión de pago de comida del recurso: <CARNE> al recurso <PAN> para entrar a edificios.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <CARNE>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PAN>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <PESCADO_AHUMADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <1> de <PESCADO>.
+El jugador: <RICARDO> ha generado el deseo individual de pagar la demanda de comida con: <0> de <FRANCO>. Último deseo, es costoso para el jugador emplear su liquidez.
+El jugador: <RICARDO> ha generado el derecho de pagar demanda.
+El jugador: <RICARDO> dispone de: <1> unidades [COMIDA & DINERO] para satisfacer <16> de demanda de comida restantes.
+El jugador: <RICARDO> tiene que pagar aún un total de: <15> unidades de la demanda de comida.
+El jugador: <RICARDO> tiene que pagar aún un total de: <15> unidades de la demanda de comida y no tiene recursos para asumir el pago.
+El jugador: <RICARDO> se ha visto obligado a tomar: <4> deuda(s) para poder pagar <15> unidad(es) de comida demandada restante(s).
+Nuevo Barco disponible para la nueva ronda: <BARCO_LUJOSO>.
+Se ha cambiado de Ronda: <RONDA_8> a Ronda: <RONDA_EXTRA_FINAL>.
+Ha comenzado la RONDA EXTRA FINAL: 
+    => Cada jugador puede realizar una última acción.
+    => Los edificios pueden usarse por varios jugadores al mismo tiempo.
+    => Ya no se pueden realizar más compras de edificios. 
+    => Al finalizar la RONDA EXTRA FINAL las deudas serán pagadas automáticamente. 
+El jugador: <DIEGO> ha generado el deseo de entrar a la compañia naviera.
+El jugador: <DIEGO> comerciará <0> de <ACERO>.
+El jugador: <DIEGO> cambia la prioridad de los recursos de: <8> a <5> para rellenar el deseo de la compañia naviera.
+El jugador: <DIEGO> comerciará <0> de <COQUE>.
+El jugador: <DIEGO> cambia la prioridad de los recursos de: <5> a <4> para rellenar el deseo de la compañia naviera.
+El jugador: <DIEGO> comerciará <0> de <CUERO>.
+El jugador: <DIEGO> cambia la prioridad de los recursos de: <4> a <3> para rellenar el deseo de la compañia naviera.
+El jugador: <DIEGO> comerciará <6> de <PAN>.
+El jugador: <DIEGO> comerciará <0> de <CARBON>.
+El jugador: <DIEGO> comerciará <0> de <GANADO>.
+El jugador: <DIEGO> cambia la prioridad de los recursos de: <3> a <2> para rellenar el deseo de la compañia naviera.
+El jugador: <DIEGO> comerciará <0> de <CARNE>.
+El jugador: <DIEGO> comerciará <0> de <LADRILLOS>.
+El jugador: <DIEGO> comerciará <0> de <CARBON_VEGETAL>.
+El jugador: <DIEGO> comerciará <0> de <PESCADO_AHUMADO>.
+El jugador: <DIEGO> comerciará <0> de <PIEL>.
+El jugador: <DIEGO> comerciará <0> de <HIERRO>.
+El jugador: <DIEGO> cambia la prioridad de los recursos de: <2> a <1> para rellenar el deseo de la compañia naviera.
+El jugador: <DIEGO> comerciará <0> de <GRANO>.
+El jugador: <DIEGO> comerciará <0> de <ARCILLA>.
+El jugador: <DIEGO> comerciará <0> de <PESCADO>.
+El jugador: <DIEGO> comerciará <0> de <MADERA>.
+El jugador: <DIEGO> ha entrado al edificio: <COMPAÑIA NAVIERA> por <2> COMIDA.
+El jugador <DIEGO> ha obtenido <18> francos comerciando con sus barcos tras comerciar con: 
+<0> unidades de pescado.
+<0> unidades de madera.
+<0> unidades de arcilla.
+<0> unidades de hierro.
+<0> unidades de grano.
+<0> unidades de ganado.
+<0> unidades de carbon.
+<0> unidades de piel.
+<0> unidades de pescado ahumado.
+<0> unidades de carbón vegetal.
+<0> unidades de ladrillos.
+<0> unidades de acero.
+<6> unidades de pan.
+<0> unidades de carne.
+<0> unidades de coque.
+<0> unidades de cuero.
+No necesario el Proceso interno de limpieza razonamiento jugador.
+El jugador: <DIEGO> ha finalizado su turno. 
+El jugador: <RICARDO> ha empezado su turno.
+DESEO GENERADO
+El jugador: <RICARDO> ha tomado de la oferta: <1> de <GANADO>. 
+No necesario el Proceso interno de limpieza razonamiento jugador.
+Riqueza del jugador: <DIEGO> calculada.
+Riqueza del jugador: <RICARDO> calculada.
+Resultados partida para 2 jugadores Le Havre:
+El Jugador: <RICARDO> ha obtenido una riqueza de: <-15> francos. 
+El Jugador: <DIEGO> ha obtenido una riqueza de: <57> francos. 

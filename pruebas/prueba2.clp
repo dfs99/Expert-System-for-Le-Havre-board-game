@@ -1,4 +1,8 @@
-; INSTANCIAS
+; Los turnos siguen siendo Diego, Ricardo
+; Se han permutado las losetas de la partida y los intereses.
+
+
+
 (definstances instancias_iniciales
     "se llaman igual?"
     ; ====== JUGADORES ========
@@ -46,28 +50,34 @@
     (rondaExtraFinal of RONDA (nombre_ronda RONDA_EXTRA_FINAL) (coste_comida 0) (hay_cosecha FALSE))
     ; ======== LOSETAS =======
     (loseta0 of LOSETA (posicion 0))
-    (loseta1 of LOSETA (posicion 1))
+    (loseta1 of LOSETA (posicion 1)(intereses TRUE))
     (loseta2 of LOSETA (posicion 2))
     (loseta3 of LOSETA (posicion 3))
     (loseta4 of LOSETA (posicion 4))
-    (loseta5 of LOSETA (posicion 5)(intereses TRUE))
+    (loseta5 of LOSETA (posicion 5))
     (loseta6 of LOSETA (posicion 6))
     ; ========= LOSETA TIENE RECURSO ========
 
     ; POSICION INICIAL  (recurso MADERA) (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 0)   (recurso MADERA)   (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 0)   (recurso GANADO)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 0)   (recurso FRANCO)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 0)   (recurso PESCADO)  (cantidad 1))
+
     (of LOSETA_TIENE_RECURSO (posicion 1)   (recurso MADERA)   (cantidad 1))
     (of LOSETA_TIENE_RECURSO (posicion 1)   (recurso FRANCO)   (cantidad 1))
+
     (of LOSETA_TIENE_RECURSO (posicion 2)   (recurso PESCADO)  (cantidad 1))
     (of LOSETA_TIENE_RECURSO (posicion 2)   (recurso ARCILLA)  (cantidad 1))
+
     (of LOSETA_TIENE_RECURSO (posicion 3)   (recurso HIERRO)   (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 3)   (recurso FRANCO)   (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 3)   (recurso MADERA)   (cantidad 1))
+
     (of LOSETA_TIENE_RECURSO (posicion 4)   (recurso MADERA)   (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 4)   (recurso ARCILLA)  (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 4)   (recurso PESCADO)  (cantidad 1))
+
     (of LOSETA_TIENE_RECURSO (posicion 5)   (recurso MADERA)   (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 5)   (recurso PESCADO)  (cantidad 1))
-    (of LOSETA_TIENE_RECURSO (posicion 6)   (recurso PESCADO)  (cantidad 1))
+    (of LOSETA_TIENE_RECURSO (posicion 5)   (recurso ARCILLA)  (cantidad 1))
+
+    (of LOSETA_TIENE_RECURSO (posicion 6)   (recurso GANADO)  (cantidad 1))
     (of LOSETA_TIENE_RECURSO (posicion 6)   (recurso GRANO)    (cantidad 1))
 
     ; POSICION INICIAL 

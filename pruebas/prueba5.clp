@@ -1,4 +1,7 @@
-; INSTANCIAS
+; Igual prueba 1 pero con los objetivos cambiados de los edificios para que no vayan siempre a por los mismos
+; e intenten tener distintas prioridades.
+
+
 (definstances instancias_iniciales
     "se llaman igual?"
     ; ====== JUGADORES ========
@@ -427,58 +430,52 @@
 
     ; cartas prioridad 1, esenciales para GANAR partida:
     ; para obtener ladrillos y generar cuello botella.
-    (objetivo_carta_jugador "DIEGO" "FABRICA DE LADRILLOS" 1)
-    ; para no tener q pagar y recibir comida cada vez q entras al barco.
+    
     (objetivo_carta_jugador "DIEGO" "MUELLE" 1)
-    ; comprar para generar cuello botella y obtener comida del otro jugador.
-    (objetivo_carta_jugador "DIEGO" "MONTICULO DE ARCILLA" 1)
-    ; puede interesar si se tienen muchas vacas para obtener carne.
-    (objetivo_carta_jugador "DIEGO" "MATADERO" 1)
-    ; generar dinero y mejorar los recursos de comida.
+    (objetivo_carta_jugador "DIEGO" "PISCIFACTORIA" 1)
     (objetivo_carta_jugador "DIEGO" "AHUMADOR" 1)
+    (objetivo_carta_jugador "DIEGO" "HERRERIA" 1)
 
     ; EDIFICIOS PRIORIDAD 2, relativamente baratos de construir y dan buenas estadisticas de riqueza.
+    (objetivo_carta_jugador "DIEGO" "FABRICA DE LADRILLOS" 2)
+    (objetivo_carta_jugador "DIEGO" "MINA DE CARBON" 2)
     (objetivo_carta_jugador "DIEGO" "PANADERIA" 2)
-    (objetivo_carta_jugador "DIEGO" "PISCIFACTORIA" 2)
-    (objetivo_carta_jugador "DIEGO" "HORNO DE CARBON VEGETAL" 2)
+    (objetivo_carta_jugador "DIEGO" "MATADERO" 2)
+    (objetivo_carta_jugador "DIEGO" "MONTICULO DE ARCILLA" 2)
+    
 
     ; CARTAS PRIORIDAD 3, para evitar que los jugadores se queden sin objetivos,podrán ejecutar como
     ; última instancia estos objetivos. 
     (objetivo_carta_jugador "DIEGO" "COQUERIA" 3)
     (objetivo_carta_jugador "DIEGO" "BANCO" 3)
-    (objetivo_carta_jugador "DIEGO" "MINA DE CARBON" 3)
     (objetivo_carta_jugador "DIEGO" "SIDERURGIA" 3)
     (objetivo_carta_jugador "DIEGO" "COMPAÑIA NAVIERA" 3)
     (objetivo_carta_jugador "DIEGO" "PELETERIA" 3)
-    (objetivo_carta_jugador "DIEGO" "HERRERIA" 3)
+    (objetivo_carta_jugador "DIEGO" "HORNO DE CARBON VEGETAL" 3)
 
     ; ==============
-    ; cartas prioridad 1, esenciales para GANAR partida:
-    ; para obtener ladrillos y generar cuello botella.
+
     (objetivo_carta_jugador "RICARDO" "FABRICA DE LADRILLOS" 1)
-    ; para no tener q pagar y recibir comida cada vez q entras al barco.
     (objetivo_carta_jugador "RICARDO" "MUELLE" 1)
-    ; comprar para generar cuello botella y obtener comida del otro jugador.
     (objetivo_carta_jugador "RICARDO" "MONTICULO DE ARCILLA" 1)
-    ; puede interesar si se tienen muchas vacas para obtener carne.
     (objetivo_carta_jugador "RICARDO" "MATADERO" 1)
-    ; generar dinero y mejorar los recursos de comida.
-    (objetivo_carta_jugador "RICARDO" "AHUMADOR" 1)
+    (objetivo_carta_jugador "RICARDO" "PANADERIA" 1)
 
     ; EDIFICIOS PRIORIDAD 2, relativamente baratos de construir y dan buenas estadisticas de riqueza.
-    (objetivo_carta_jugador "RICARDO" "PANADERIA" 2)
-    (objetivo_carta_jugador "RICARDO" "PISCIFACTORIA" 2)
-    (objetivo_carta_jugador "RICARDO" "HORNO DE CARBON VEGETAL" 2)
+    (objetivo_carta_jugador "RICARDO" "AHUMADOR" 2)
+    (objetivo_carta_jugador "RICARDO" "COMPAÑIA NAVIERA" 2)
+    (objetivo_carta_jugador "RICARDO" "HERRERIA" 2)
+    (objetivo_carta_jugador "RICARDO" "SIDERURGIA" 2)
+    
 
     ; CARTAS PRIORIDAD 3, para evitar que los jugadores se queden sin objetivos,podrán ejecutar como
     ; última instancia estos objetivos. 
+    (objetivo_carta_jugador "RICARDO" "PISCIFACTORIA" 3)
     (objetivo_carta_jugador "RICARDO" "COQUERIA" 3)
     (objetivo_carta_jugador "RICARDO" "BANCO" 3)
     (objetivo_carta_jugador "RICARDO" "MINA DE CARBON" 3)
-    (objetivo_carta_jugador "RICARDO" "SIDERURGIA" 3)
-    (objetivo_carta_jugador "RICARDO" "COMPAÑIA NAVIERA" 3)
+    (objetivo_carta_jugador "RICARDO" "HORNO DE CARBON VEGETAL" 3)
     (objetivo_carta_jugador "RICARDO" "PELETERIA" 3)
-    (objetivo_carta_jugador "RICARDO" "HERRERIA" 3)
 
     (decision_pago_comida_entrar_edificios "DIEGO" PESCADO)
     (decision_pago_comida_entrar_edificios "RICARDO" PESCADO)
