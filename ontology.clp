@@ -37,6 +37,7 @@
         (allowed-values FRANCO MADERA PESCADO ARCILLA HIERRO GRANO GANADO CARBON PIEL
             PESCADO_AHUMADO CARBON_VEGETAL LADRILLOS ACERO PAN CARNE COQUE CUERO)
         (access initialize-only) (create-accessor read-write))
+    (slot valor_unitario_en_compañia_naviera (type INTEGER) (access initialize-only) (create-accessor read-write))
 )
 
 (defclass RECURSO_ALIMENTICIO
@@ -364,4 +365,13 @@
     (slot cantidad_ladrillo (type INTEGER) (access initialize-only) (create-accessor read-write) (default 0))
     (slot cantidad_hierro (type INTEGER) (access initialize-only) (create-accessor read-write) (default 0))
     (slot cantidad_acero (type INTEGER) (access initialize-only) (create-accessor read-write) (default 0))   
+)
+
+
+; compañia naivera
+
+(deftemplate CONTADOR_COMPAÑIA_NAVIERA 
+    (slot nombre (type STRING))
+    (slot prioridad (type INTEGER))
+    ;(contador_compañia_naviera ?nombre_jugador ?prioridad)
 )

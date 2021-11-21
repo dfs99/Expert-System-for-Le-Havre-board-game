@@ -909,13 +909,13 @@
     (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_edificio "> sin coste de entrada o porque le pertenece." crlf)
 )
 
-; OK :)
-(defrule ENTRAR_EDIFICIO_CON_COSTE_ENTRADA_RONDAS
+; ARREGLADO!
+(defrule ENTRAR_EDIFICIO_CON_COSTE_ENTRADA_DINERO_RONDAS
     ; Se puede entrar de uno en uno en el resto de las rondas.
     (ronda_actual ?nombre_ronda)
     (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
     ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
-    ?deseo <- (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio ?tipo_recurso ?nombre_recurso)
+    ?deseo <- (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio DINERO ?nombre_recurso)
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
     ; se le permite realizar una acción
@@ -929,7 +929,7 @@
     (not (object (is-a CARTA_PERTENECE_A_MAZO)(nombre_carta ?nombre_edificio)(id_mazo ?)(posicion_en_mazo ?)))
     
     ; Tiene coste de entrada.
-    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo ?tipo_recurso) (cantidad ?coste_entrada))
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo DINERO) (cantidad ?coste_entrada))
     ; comprobar que tenga recursos suficientes para entrar.
     ?recurso_jugador <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?nombre_recurso) (cantidad ?cantidad_recurso))
     (test (>= ?cantidad_recurso ?coste_entrada))
@@ -951,10 +951,54 @@
     (retract ?deseo)
     (retract ?permiso)
     ; Print final
-    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_edificio "> por <" ?coste_entrada "> " ?tipo_recurso "." crlf)
+    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_edificio "> por <" ?coste_entrada "> DINERO." crlf)
 )
 
-; todo : comprobar con ejemplo
+(defrule ENTRAR_EDIFICIO_CON_COSTE_ENTRADA_ALIMENTO_RONDAS
+    ; Se puede entrar de uno en uno en el resto de las rondas.
+    (ronda_actual ?nombre_ronda)
+    (test (neq ?nombre_ronda RONDA_EXTRA_FINAL))
+    ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
+    ?deseo <- (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio COMIDA ?nombre_recurso)
+    ; Es el turno del jugador
+    ?turno <- (turno ?nombre_jugador)
+    ; se le permite realizar una acción
+    ?permiso <- (permitir_realizar_accion ?nombre_jugador)
+    ; no exista un jugador en ese edificio.
+     (not (object (is-a JUGADOR_ESTA_EDIFICIO) (nombre_edificio ?nombre_edificio)(nombre_jugador ?)))
+    ; obtiene la posición del jugador
+    ?pos_jugador <- (object (is-a JUGADOR_ESTA_EDIFICIO) (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+    (test (neq ?edificio_actual ?nombre_edificio))
+    ; Comprobar que alguien (ya sea el ayuntamiento o un jugador) posee el edificio.
+    (not (object (is-a CARTA_PERTENECE_A_MAZO)(nombre_carta ?nombre_edificio)(id_mazo ?)(posicion_en_mazo ?)))
+    ; Tiene coste de entrada.
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo COMIDA) (cantidad ?coste_entrada))
+    ; comprobar que tenga recursos suficientes para entrar.
+    ?recurso_jugador <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?nombre_recurso) (cantidad ?cantidad_recurso))
+    (object (is-a RECURSO_ALIMENTICIO) (nombre ?nombre_recurso) (comida_genera ?ratio))
+    (test (>= (* ?cantidad_recurso ?ratio) ?coste_entrada))
+    ; Obtener los valores del propietario para pagarle.
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_jugador ?nombre_jugador_propietario)(nombre_carta ?nombre_edificio))
+    (test (neq ?nombre_jugador ?nombre_jugador_propietario))
+    ?recurso_propietario <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador_propietario)(recurso ?nombre_recurso)(cantidad ?cantidad_recurso_propietario))
+    =>
+    ; obtener la cantidad justa que deberá pagar
+    (bind ?cantidad_pagada (integer (- ?cantidad_recurso (/ ?coste_entrada ?ratio))))
+    ; Modificar el recurso del jugador
+    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?cantidad_pagada) ))
+    ; **** Modificar el recurso del propietario
+    (modify-instance ?recurso_propietario (cantidad (+ ?cantidad_recurso_propietario ?cantidad_pagada)))
+    ; indicar que el jugador está en el edificio.
+    (modify-instance ?pos_jugador (nombre_edificio ?nombre_edificio))
+    ; quitar el deseo y permiso.
+    (retract ?deseo)
+    (retract ?permiso)
+    ; Print final
+    (printout t"Cantidad tiene el jugador: " ?cantidad_recurso " -- cantidad calculada que se paga: " ?cantidad_pagada "." crlf)
+    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_edificio "> por <" ?coste_entrada "> COMIDA." crlf)
+)
+
+; todo : funciona
 (defrule ENTRAR_EDIFICIO_GRATIS_RONDA_EXTRA_FINAL
 
     ; Se puede entrar de uno en uno en el resto de las rondas.
@@ -985,13 +1029,52 @@
     (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_edificio "> sin coste de entrada o porque le pertenece." crlf)
 )
 
-; TODO: COMPROBAR QUE FUNCIONE
-(defrule ENTRAR_EDIFICIO_CON_COSTE_ENTRADA_RONDA_EXTRA_FINAL
-
+; todo: no seguro que funcione... SE HAN TENIDO QUE DESDOBLAR PORQUE SINO CALCULABAMOS MAL LOS VALORES DE LOS RECURSOS ALIMENTICIOS.
+(defrule ENTRAR_EDIFICIO_CON_COSTE_ENTRADA_ALIMENTO_RONDA_EXTRA_FINAL
     ; Se puede entrar de uno en uno en el resto de las rondas.
     (ronda_actual RONDA_EXTRA_FINAL)
     ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
-    ?deseo <- (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio ?tipo_recurso ?nombre_recurso)
+    ?deseo <- (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio COMIDA ?nombre_recurso)
+    ; Es el turno del jugador
+    ?turno <- (turno ?nombre_jugador)
+    ; se le permite realizar una acción
+    ?permiso <- (permitir_realizar_accion ?nombre_jugador)
+    ; obtiene la posición del jugador
+    ?pos_jugador <- (object (is-a JUGADOR_ESTA_EDIFICIO) (nombre_edificio ?edificio_actual) (nombre_jugador ?nombre_jugador))
+    (test (neq ?edificio_actual ?nombre_edificio))
+    ; Comprobar que alguien (ya sea el ayuntamiento o un jugador) posee el edificio.
+    (not (object (is-a CARTA_PERTENECE_A_MAZO)(nombre_carta ?nombre_edificio)(id_mazo ?)(posicion_en_mazo ?)))
+    ; Tiene coste de entrada.
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo COMIDA) (cantidad ?coste_entrada))    
+    ; comprobar que tenga recursos suficientes para entrar.
+    ?recurso_jugador <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?nombre_recurso) (cantidad ?cantidad_recurso))
+    (object (is-a RECURSO_ALIMENTICIO) (nombre ?nombre_recurso) (comida_genera ?ratio))
+    (test (>= (* ?cantidad_recurso ?ratio) ?coste_entrada))
+    ; Obtener los valores del propietario para pagarle.
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_jugador ?nombre_jugador_propietario)(nombre_carta ?nombre_edificio))
+    (test (neq ?nombre_jugador ?nombre_jugador_propietario))
+    ?recurso_propietario <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador_propietario)(recurso ?nombre_recurso)(cantidad ?cantidad_recurso_propietario))
+    =>
+    ; obtener la cantidad justa que deberá pagar
+    (bind ?cantidad_pagada (integer (- ?cantidad_recurso (/ ?coste_entrada ?ratio))))
+    ; Modificar el recurso del jugador
+    (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?cantidad_pagada) ))
+    ; **** Modificar el recurso del propietario
+    (modify-instance ?recurso_propietario (cantidad (+ ?cantidad_recurso_propietario ?cantidad_pagada)))
+    ; indicar que el jugador está en el edificio.
+    (modify-instance ?pos_jugador (nombre_edificio ?nombre_edificio))
+    ; quitar el deseo y permiso.
+    (retract ?deseo)
+    (retract ?permiso)
+    ; Print final
+    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_edificio "> por <" ?coste_entrada "> COMIDA." crlf)
+)
+
+(defrule ENTRAR_EDIFICIO_CON_COSTE_ENTRADA_MONETARIO_RONDA_EXTRA_FINAL
+    ; Se puede entrar de uno en uno en el resto de las rondas.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    ; Existe un deseo de entrar a un edificio, este tiene el tipo de recurso que quiere usar para pagar y su nombre
+    ?deseo <- (deseo_entrar_edificio ?nombre_jugador ?nombre_edificio DINERO ?nombre_recurso)
     ; Es el turno del jugador
     ?turno <- (turno ?nombre_jugador)
     ; se le permite realizar una acción
@@ -1002,15 +1085,13 @@
     ; Comprobar que alguien (ya sea el ayuntamiento o un jugador) posee el edificio.
     (not (object (is-a CARTA_PERTENECE_A_MAZO)(nombre_carta ?nombre_edificio)(id_mazo ?)(posicion_en_mazo ?)))
      ; Tiene coste de entrada.
-    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo ?tipo_recurso) (cantidad ?coste_entrada))    
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta ?nombre_edificio) (tipo DINERO) (cantidad ?coste_entrada))    
     ; comprobar que tenga recursos suficientes para entrar.
     ?recurso_jugador <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?nombre_recurso) (cantidad ?cantidad_recurso))
     (test (>= ?cantidad_recurso ?coste_entrada))
-
     (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_jugador ?nombre_jugador_propietario)(nombre_carta ?nombre_edificio))
     (test (neq ?nombre_jugador ?nombre_jugador_propietario))
     ?recurso_propietario <- (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador_propietario)(recurso ?nombre_recurso)(cantidad ?cantidad_recurso_propietario))
-
     =>
     ; Modificar el recurso del jugador
     (modify-instance ?recurso_jugador (cantidad (- ?cantidad_recurso ?coste_entrada) ))
@@ -1022,7 +1103,7 @@
     (retract ?deseo)
     (retract ?permiso)
     ; Print final
-    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_edificio "> por <" ?coste_entrada "> " ?tipo_recurso "." crlf)
+    (printout t"El jugador: <" ?nombre_jugador "> ha entrado al edificio: <" ?nombre_edificio "> por <" ?coste_entrada "> DINERO." crlf)
 )
 
 ;OK
@@ -1561,14 +1642,14 @@
     ?turno <- (turno ?nombre_jugador)
     ; El jugador debe estar en el edificio.
     (object (is-a JUGADOR_ESTA_EDIFICIO) (nombre_edificio "COMPAÑIA NAVIERA") (nombre_jugador ?nombre_jugador))
-
     ; el jugador no ha usado anteriormente el edificio sin haber entrado a otro antes
     ?edificio_usado <- (object (is-a JUGADOR_HA_USADO_EDIFICIO)(nombre_edificio ?ed)(nombre_jugador ?nombre_jugador))
     (test (neq "COMPAÑIA NAVIERA" ?ed))
     ; existe el deseo de usar la compañía naviera (contiene qué objetos vender)
     ?deseo <- (deseo_usar_compañia_naviera ?nombre_jugador ?pescado ?madera ?arcilla ?hierro ?grano ?ganado ?carbon ?piel ?pescado_ahumado ?carbon_vegetal ?ladrillos ?acero ?pan ?carne ?coque ?cuero)
+
     ; obtiene los datos del jugador.
-    ?jugador <- (object (is-a JUGADOR)(nombre ?nombre_jugador)(deudas ?)(num_barcos ?)(capacidad_envio ?capacidad_envio)(demanda_comida_cubierta ?))
+    ?jugador <- (object (is-a JUGADOR)(nombre ?nombre_jugador)(capacidad_envio ?capacidad_envio))
     ; comprobar que la suma no excede la capacidad de los barcos
     (test (<= (+ ?pescado ?madera ?arcilla ?hierro ?grano ?ganado ?carbon ?piel ?pescado_ahumado ?carbon_vegetal ?ladrillos ?acero ?pan ?carne ?coque ?cuero) ?capacidad_envio))
     ; obtencion numero de recursos del jugador.
@@ -1775,7 +1856,12 @@
     (object (is-a JUGADOR) (nombre ?nombre_jugador2) (riqueza ?riqueza_jugador2))
     (test (neq ?nombre_jugador1 ?nombre_jugador2))
     ; comprobar que ya han finalizado su actividad principal.
-    (and (not (fin_actividad_principal ?nombre_jugador1)) (not (fin_actividad_principal ?nombre_jugador1)))
+    (and 
+        (not (fin_actividad_principal ?nombre_jugador1))
+        (not (permitir_realizar_accion ?nombre_jugador1))
+        (not (fin_actividad_principal ?nombre_jugador2))
+        (not (permitir_realizar_accion ?nombre_jugador2))
+    )
     ; OBTENER TODOS LOS INGRESOS Y GASTOS DE CADA JUGADOR Y determinar la riqueza de cada jugador.
     (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador1) (recurso FRANCO) (cantidad ?cantidad_francos_jugador1))
     (not (riqueza ?nombre_jugador1 ?))
@@ -2660,6 +2746,7 @@
     (bind ?cantidad_optima (integer (+ (/ ?cantidad ?ratio) (- 1 (/ (mod ?cantidad ?ratio) ?ratio))))) ;redondea por exceso
 
     (retract ?contador)
+    (printout t"Cantidad jugador: " ?cantidad_recurso " => pero se obtiene una cantidad optima: " ?cantidad_optima "." crlf)
     (assert (contador_comida_demandada ?nombre_jugador ?nombre_ronda_actual (- ?cantidad_pendiente ?cantidad)))
     (assert (deseo_pago_ind ?recurso ?cantidad_optima))
 )
@@ -2678,7 +2765,7 @@
     =>
     (bind ?cantidad  (min (* ?cantidad_recurso ?ratio) ?cantidad_pendiente))
     (bind ?cantidad_optima (integer (/ ?cantidad ?ratio)))
-
+    (printout t"Cantidad jugador: " ?cantidad_recurso " => pero se obtiene una cantidad optima: " ?cantidad_optima "." crlf)
     (retract ?contador)
     (assert (contador_comida_demandada ?nombre_jugador ?nombre_ronda_actual (- ?cantidad_pendiente ?cantidad)))
     (assert (deseo_pago_ind ?recurso ?cantidad_optima))
@@ -2823,7 +2910,7 @@
 
 (defrule GENERAR_DESEO_COGER_OFERTA_PRIORITARIO_NO_PRIORITARIO
     ; Esperar a que termine el proceso de ejecución de cambio de ronda.
-    ;(not (cambiar_ronda TRUE))
+    
     (not (ronda_actual RONDA_EXTRA_FINAL))
     (turno ?nombre_jugador)
     ; solo puede ejecutarlo cuando no haya hecho su actividad principal. 
@@ -2843,12 +2930,205 @@
     (printout t"DESEO GENERADO" crlf)
 )
 
-
 ; ESTRATEGIA RONDA_EXTRA_FINAL
 ; SIEMPRE SE VA A LA COMPAÑIA NAVIERA SI ESTA ESTÁ DISPONIBLE EN EL JUEGO.
 ; SINO, SE COGERÁ UN RECURSO DE LA OFERTA ALEATORIO.
 
+; comprueba que se puede emplear la compañia naviera.
+(defrule OBTENER_DESEO_ENTRAR_COMPAÑIA_NAVIERA_NO_EN_PROPIEDAD
+    ; es la ronda extra final.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    ; obtener referencia jugador.
+    (object (is-a JUGADOR) (nombre ?nombre_jugador) (capacidad_envio ?capacidad_envio))
+    ; turno del jugador.
+    (turno ?nombre_jugador)
+    ; comprobar que la compañia está disponible en la partida, es decir, le pertenece a algún participante de la partida.
+    ; además ver si tiene recursos suficientes para entrar o no.
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_jugador ?otro) (nombre_carta "COMPAÑIA NAVIERA"))
+    (test (neq ?otro ?nombre_jugador))
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta "COMPAÑIA NAVIERA") (tipo COMIDA) (cantidad ?coste_entrada))
+    ; obtener la preferencia de pago para entrar a los edificios.
+    (decision_pago_comida_entrar_edificios ?nombre_jugador ?recurso)
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_recurso_jugador))
+    (object (is-a RECURSO_ALIMENTICIO) (nombre ?recurso) (comida_genera ?ratio))
+    (test (>= (* ?cantidad_recurso_jugador ?ratio) ?coste_entrada))
+    ; no se ha instanciado ya el deseo.
+    (not (deseo_usar_compañia_naviera ?nombre_jugador ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?))
+    =>
+    ; obtener el deseo de entrar al edificio
+    (assert (deseo_entrar_edificio ?nombre_jugador "COMPAÑIA NAVIERA" COMIDA ?recurso))
+    ; generar el contador para rellenar el deseo de la compañia.
+    (assert (contador_envios_compañia_naviera ?nombre_jugador ?capacidad_envio))
+    ; automáticamente generar este hecho para evitar que rellene con sus propios francos.
+    (assert (comerciar_en_compañia ?nombre_jugador FRANCO 0))
+    ; log
+    (printout t"El jugador: <" ?nombre_jugador "> ha generado el deseo de entrar a la compañia naviera." crlf)
+)
 
+(defrule OBTENER_DESEO_ENTRAR_COMPAÑIA_NAVIERA_EN_PROPIEDAD
+    ; es la ronda extra final.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    ; obtener referencia jugador.
+    (object (is-a JUGADOR) (nombre ?nombre_jugador) (capacidad_envio ?capacidad_envio))
+    ; turno del jugador.
+    (turno ?nombre_jugador)
+    ; Le pertenece el edificio.
+    (object (is-a PARTICIPANTE_TIENE_CARTA) (nombre_jugador ?nombre_jugador) (nombre_carta "COMPAÑIA NAVIERA"))
+    ; no se ha instanciado ya el deseo.
+    (not (deseo_usar_compañia_naviera ?nombre_jugador ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?))
+    =>
+    ; obtener el deseo de entrar al edificio
+    (assert (deseo_entrar_edificio ?nombre_jugador "COMPAÑIA NAVIERA"))
+    ; generar el contador para rellenar el deseo de la compañia.
+    (assert (contador_envios_compañia_naviera ?nombre_jugador ?capacidad_envio))
+    ; automáticamente generar este hecho para evitar que rellene con sus propios francos.
+    (assert (comerciar_en_compañia ?nombre_jugador FRANCO 0))
+    ; log
+    (printout t"El jugador: <" ?nombre_jugador "> ha generado el deseo de entrar a la compañia naviera." crlf)
+)
+
+(defrule CAMBIAR_PRIORIDAD_RELLENAR_DESEO_COMPAÑIA_NAVIERA
+    ; es la ronda extra final.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    (turno ?nombre_jugador)
+    ; si están instanciados todos los de una categoría pasar a la siguiente.
+    ?contador_prioridades <- (CONTADOR_COMPAÑIA_NAVIERA (nombre ?nombre_jugador) (prioridad ?prioridad))
+    (comerciar_en_compañia ?nombre_jugador ?recurso ?)
+    (object (is-a RECURSO) (nombre ?recurso) (valor_unitario_en_compañia_naviera ?prioridad))
+    (prioridad_compañia_naviera ?prioridad ?siguiente_prioridad)
+    =>
+    (modify ?contador_prioridades (prioridad ?siguiente_prioridad))
+)
+
+(defrule RELLENAR_DESEO_COMPAÑIA_NAVIERA_SIN_COSTE
+    ; es la ronda extra final.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    (turno ?nombre_jugador)
+    ?capacidad_envio_restante <- (contador_envios_compañia_naviera ?nombre_jugador ?capacidad_envio)
+    (CONTADOR_COMPAÑIA_NAVIERA (nombre ?nombre_jugador) (prioridad ?prioridad))
+    ; Obtener el recurso de la prioridad y que no haya sido generado.
+    (object (is-a RECURSO) (nombre ?recurso) (valor_unitario_en_compañia_naviera ?prioridad))
+    (not (comerciar_en_compañia ?nombre_jugador ?recurso ?))
+    ; obtener el recurso del jugador para conseguir su cantidad
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_recurso_jugador))
+    =>
+    (bind ?cantidad_a_comerciar (min ?cantidad_recurso_jugador ?capacidad_envio))
+    (assert (comerciar_en_compañia ?nombre_jugador ?recurso ?cantidad_a_comerciar))
+    ; modificar las capacidades de envio.
+    (retract ?capacidad_envio_restante)
+    (assert (contador_envios_compañia_naviera ?nombre_jugador (- ?capacidad_envio ?cantidad_a_comerciar)))
+)
+
+(defrule RELLENAR_DESEO_COMPAÑIA_NAVIERA_CON_COSTE
+    ; es la ronda extra final.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    (turno ?nombre_jugador)
+    ?capacidad_envio_restante <- (contador_envios_compañia_naviera ?nombre_jugador ?capacidad_envio)
+    (CONTADOR_COMPAÑIA_NAVIERA (nombre ?nombre_jugador) (prioridad ?prioridad))
+    ; Obtener el recurso de la prioridad y que no haya sido generado.
+    (object (is-a RECURSO) (nombre ?recurso) (valor_unitario_en_compañia_naviera ?prioridad))
+    (not (comerciar_en_compañia ?nombre_jugador ?recurso ?))
+    ; obtener el recurso del jugador para conseguir su cantidad
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_recurso_jugador))
+    ; que no sea el recurso con el que va a realizar el pago de la entrada.
+    (deseo_entrar_edificio ?nombre_jugador "COMPAÑIA NAVIERA" COMIDA ?otro_recurso)
+    (test (neq ?recurso ?otro_recurso))
+    =>
+    (bind ?cantidad_a_comerciar (min ?cantidad_recurso_jugador ?capacidad_envio))
+    (assert (comerciar_en_compañia ?nombre_jugador ?recurso ?cantidad_a_comerciar))
+    ; modificar las capacidades de envio.
+    (retract ?capacidad_envio_restante)
+    (assert (contador_envios_compañia_naviera ?nombre_jugador (- ?capacidad_envio ?cantidad_a_comerciar)))
+)
+
+(defrule BLOQUEAR_RECURSO_EMPLEADO_PARA_PAGAR_ENTRADA_COMPAÑIA_NAVIERA
+    ; es la ronda extra final.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    (deseo_entrar_edificio ?nombre_jugador "COMPAÑIA NAVIERA" COMIDA ?recurso)
+    (CONTADOR_COMPAÑIA_NAVIERA (nombre ?nombre_jugador) (prioridad ?prioridad))
+    (object (is-a COSTE_ENTRADA_CARTA) (nombre_carta "COMPAÑIA NAVIERA") (tipo COMIDA) (cantidad ?coste_entrada))
+    (object (is-a PARTICIPANTE_TIENE_RECURSO) (nombre_jugador ?nombre_jugador) (recurso ?recurso) (cantidad ?cantidad_recurso_jugador))
+    (object (is-a RECURSO_ALIMENTICIO) (nombre ?recurso) (comida_genera ?ratio) (valor_unitario_en_compañia_naviera ?prioridad))
+    ?capacidad_envio_restante <- (contador_envios_compañia_naviera ?nombre_jugador ?capacidad_envio)
+    (not (comerciar_en_compañia ?nombre_jugador ?recurso ?))
+    =>
+    (bind ?cantidad_bloqueada (+ 1 (integer (- ?cantidad_recurso_jugador (/ ?coste_entrada ?ratio)))))
+    (bind ?cantidad_comerciar (min (- ?cantidad_recurso_jugador ?cantidad_bloqueada) ?capacidad_envio))
+    (assert (comerciar_en_compañia ?nombre_jugador ?recurso ?cantidad_comerciar))
+)
+
+(defrule RELLENAR_DESEO_COMPAÑIA_NAVIERA_PARTE_2
+    ; es la ronda extra final.
+    (ronda_actual RONDA_EXTRA_FINAL)
+    ; obtener turnos y contadores.
+    (turno ?nombre_jugador)
+    ?capacidad_envio_restante <- (contador_envios_compañia_naviera ?nombre_jugador ?)
+    ?contador_prioridades <- (CONTADOR_COMPAÑIA_NAVIERA (nombre ?nombre_jugador) (prioridad 1))
+    ; obtener comercios óptimos => de más costoso a menos para obtener el mayor
+    ; beneficio posible en la compañia naviera.
+    ?comercio_pescado <- (comerciar_en_compañia ?nombre_jugador PESCADO ?pescado)
+    ?comercio_madera <- (comerciar_en_compañia ?nombre_jugador MADERA ?madera)
+    ?comercio_arcilla <- (comerciar_en_compañia ?nombre_jugador ARCILLA ?arcilla)
+    ?comercio_hierro <- (comerciar_en_compañia ?nombre_jugador HIERRO ?hierro)
+    ?comercio_grano <- (comerciar_en_compañia ?nombre_jugador GRANO ?grano)
+    ?comercio_ganado <- (comerciar_en_compañia ?nombre_jugador GANADO ?ganado)
+    ?comercio_carbon <- (comerciar_en_compañia ?nombre_jugador CARBON ?carbon)
+    ?comercio_piel <- (comerciar_en_compañia ?nombre_jugador PIEL ?piel)
+    ?comercio_pescado_ahumado <- (comerciar_en_compañia ?nombre_jugador PESCADO_AHUMADO ?pescado_ahumado)
+    ?comercio_cabon_vegetal <- (comerciar_en_compañia ?nombre_jugador CARBON_VEGETAL ?carbon_vegetal)
+    ?comercio_ladrillos <- (comerciar_en_compañia ?nombre_jugador LADRILLOS ?ladrillos)
+    ?comercio_acero <- (comerciar_en_compañia ?nombre_jugador ACERO ?acero)
+    ?comercio_pan <- (comerciar_en_compañia ?nombre_jugador PAN ?pan)
+    ?comercio_carne <- (comerciar_en_compañia ?nombre_jugador CARNE ?carne)
+    ?comercio_coque <- (comerciar_en_compañia ?nombre_jugador COQUE ?coque)
+    ?comercio_cuero <- (comerciar_en_compañia ?nombre_jugador CUERO ?cuero)
+    ?comercio_franco <- (comerciar_en_compañia ?nombre_jugador FRANCO ?franco)
+    =>
+    ; eliminar contadores.
+    (retract ?capacidad_envio_restante)
+    (retract ?contador_prioridades)
+    ; eliminar hechos temporales.
+    (retract ?comercio_pescado)
+    (retract ?comercio_madera)
+    (retract ?comercio_arcilla)
+    (retract ?comercio_hierro)
+    (retract ?comercio_grano)
+    (retract ?comercio_ganado)
+    (retract ?comercio_carbon)
+    (retract ?comercio_piel)
+    (retract ?comercio_pescado_ahumado)
+    (retract ?comercio_cabon_vegetal)
+    (retract ?comercio_ladrillos)
+    (retract ?comercio_acero)
+    (retract ?comercio_pan)
+    (retract ?comercio_carne)
+    (retract ?comercio_coque)
+    (retract ?comercio_cuero)
+    (retract ?comercio_franco)
+    ; generar deseo.
+    (assert (deseo_usar_compañia_naviera ?nombre_jugador ?pescado ?madera ?arcilla ?hierro ?grano ?ganado ?carbon ?piel ?pescado_ahumado ?carbon_vegetal ?ladrillos ?acero ?pan ?carne ?coque ?cuero))
+)
+
+; TODO: integrar esto con coger recursos de la oferta tmbn, me ha dado problemas y no consigo unificarlos con ors.
+(defrule GENERAR_DESEO_COGER_OFERTA_RONDA_EXTRA_FINAL
+    (turno ?nombre_jugador)
+    (ronda_actual RONDA_EXTRA_FINAL)     
+    (not (deseo_coger_recurso ?nombre_jugador ?recurso))
+    (OFERTA_RECURSO (recurso ?recurso) (cantidad ?cantidad_oferta))
+    (test (> ?cantidad_oferta 0))
+    (test (<= ?cantidad_oferta 3))
+    =>
+    (assert (deseo_coger_recurso ?nombre_jugador ?recurso))
+    (printout t"DESEO GENERADO" crlf)
+)
+
+; Coste: 1      Coste: 2        Coste: 3    Coste: 4    Coste: 5      Coste: 8
+; pescado       hierro          ganado      cuero       coque         acero
+; madera        piel            carbon
+; arcilla       pescado. Ahum.  pan
+; grano         carbon vegetal.
+; Franco        Ladrillo
+;               carne
 
 
 

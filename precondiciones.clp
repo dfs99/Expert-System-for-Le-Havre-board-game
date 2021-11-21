@@ -8,23 +8,23 @@
 
     ; ([Ayuntamiento] of JUGADOR (nombre AYUNTAMIENTO))
     ; ====== RECURSOS =========
-    (franco of RECURSO (nombre FRANCO))
-    (madera of RECURSO (nombre MADERA))
-    (pescado of RECURSO_ALIMENTICIO (nombre PESCADO) (comida_genera 1))
-    (arcilla of RECURSO (nombre ARCILLA))
-    (hierro of RECURSO (nombre HIERRO))
-    (grano of RECURSO (nombre GRANO))
-    (ganado of RECURSO (nombre GANADO))
-    (carbon of RECURSO (nombre CARBON))
-    (piel of RECURSO (nombre PIEL))
-    (pescado_ahumado of RECURSO_ALIMENTICIO (nombre PESCADO_AHUMADO) (comida_genera 2))
-    (carbon_vegetal of RECURSO (nombre CARBON_VEGETAL))
-    (ladrillos of RECURSO (nombre LADRILLOS))
-    (acero of RECURSO (nombre ACERO))
-    (pan of RECURSO_ALIMENTICIO (nombre PAN) (comida_genera 3))
-    (carne of RECURSO_ALIMENTICIO (nombre CARNE) (comida_genera 3))
-    (coque of RECURSO (nombre COQUE))
-    (cuero of RECURSO (nombre CUERO))
+    (franco of RECURSO (nombre FRANCO) (valor_unitario_en_compañia_naviera 1)) ;ok
+    (madera of RECURSO (nombre MADERA) (valor_unitario_en_compañia_naviera 1)) ;ok
+    (pescado of RECURSO_ALIMENTICIO (nombre PESCADO) (comida_genera 1) (valor_unitario_en_compañia_naviera 1)) ; ok
+    (arcilla of RECURSO (nombre ARCILLA)(valor_unitario_en_compañia_naviera 1)) ;ok
+    (hierro of RECURSO (nombre HIERRO) (valor_unitario_en_compañia_naviera 2)) ;ok
+    (grano of RECURSO (nombre GRANO) (valor_unitario_en_compañia_naviera 1)) ; ok
+    (ganado of RECURSO (nombre GANADO) (valor_unitario_en_compañia_naviera 3)) ;ok
+    (carbon of RECURSO (nombre CARBON)(valor_unitario_en_compañia_naviera 3)) ; ok
+    (piel of RECURSO (nombre PIEL) (valor_unitario_en_compañia_naviera 2)) ;ok
+    (pescado_ahumado of RECURSO_ALIMENTICIO (nombre PESCADO_AHUMADO) (comida_genera 2) (valor_unitario_en_compañia_naviera 2)) ; ok
+    (carbon_vegetal of RECURSO (nombre CARBON_VEGETAL) (valor_unitario_en_compañia_naviera 2)) ;ok
+    (ladrillos of RECURSO (nombre LADRILLOS) (valor_unitario_en_compañia_naviera 2)) ; ok
+    (acero of RECURSO (nombre ACERO) (valor_unitario_en_compañia_naviera 8)) ;ok
+    (pan of RECURSO_ALIMENTICIO (nombre PAN) (comida_genera 3) (valor_unitario_en_compañia_naviera 3)) ;ok
+    (carne of RECURSO_ALIMENTICIO (nombre CARNE) (comida_genera 3) (valor_unitario_en_compañia_naviera 2)) ;ok
+    (coque of RECURSO (nombre COQUE) (valor_unitario_en_compañia_naviera 5)) ; ok 
+    (cuero of RECURSO (nombre CUERO)(valor_unitario_en_compañia_naviera 4)) ; ok
     ; ====== MAZOS ======
     (mazo1 of MAZO (id_mazo 1) (numero_cartas_en_mazo 5))
     (mazo2 of MAZO (id_mazo 2) (numero_cartas_en_mazo 5))
@@ -535,4 +535,15 @@
     ;(deseo_generar_con_recurso "RICARDO" "MATADERO" GANADO 5)
     ;(deseo_emplear_energia "RICARDO" "AHUMADOR" 1 0 0 0)
     ;(deseo_emplear_energia ?nombre_jugador ?nombre_edificio ?cantidad_madera ?cantidad_carbon_vegetal ?cantidad_carbon ?cantidad_coque)
+
+    ; prioridad costes CN
+    (prioridad_compañia_naviera 8 5)
+    (prioridad_compañia_naviera 5 4)
+    (prioridad_compañia_naviera 4 3)
+    (prioridad_compañia_naviera 3 2)
+    (prioridad_compañia_naviera 2 1)
+    ;(contador_compañia_naviera "DIEGO" 8)
+    ;(contador_compañia_naviera "RICARDO" 8)
+    (CONTADOR_COMPAÑIA_NAVIERA (nombre "DIEGO") (prioridad 8))
+    (CONTADOR_COMPAÑIA_NAVIERA (nombre "RICARDO") (prioridad 8))
 )
