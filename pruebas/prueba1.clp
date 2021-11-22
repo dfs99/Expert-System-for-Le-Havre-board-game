@@ -1,6 +1,6 @@
 ; INSTANCIAS
 (definstances instancias_iniciales
-    "se llaman igual?"
+    "Instancias Iniciales Prueba 1"
     ; ====== JUGADORES ========
     (Tablero of PARTICIPANTE (nombre "AYUNTAMIENTO"))
     (Diego of JUGADOR (nombre "DIEGO")(num_barcos 1)(capacidad_envio 2)(demanda_comida_cubierta 4))
