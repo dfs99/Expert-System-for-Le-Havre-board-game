@@ -10,5 +10,5 @@ This project solves a simple solution and it's goal is to learn rule-based progr
 
 ## Participants
 
-Diego Fernández Sebastián - [@dfs99](https://github.com/dfs99)
-Ricardo Grande Cros - [@ricardograndecros](https://github.com/ricardograndecros)
+Diego Fernández Sebastián - [@dfs99](https://github.com/dfs99)  
+Ricardo Grande Cros - [@ricardograndecros](https://github.com/ricardograndecros)  
