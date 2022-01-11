@@ -1,6 +1,6 @@
 # Expert-System-for-Le-Havre-board-game
 
-[portrait image[(https://cf.geekdo-images.com/y7Rqd3S6J7vyVhicR1bqTQ__imagepage/img/jHMOi7QNOsO97jKnZMnNr8QyWUE=/fit-in/900x600/filters:no_upscale():strip_icc()/pic6091101.jpg)
+[portrait image](https://cf.geekdo-images.com/y7Rqd3S6J7vyVhicR1bqTQ__imagepage/img/jHMOi7QNOsO97jKnZMnNr8QyWUE=/fit-in/900x600/filters:no_upscale():strip_icc()/pic6091101.jpg)
 
 This project implements a rule based expert system for the board game [Le-Havre](https://boardgamegeek.com/boardgame/35677/le-havre) as part of the Kowledge Engineering course @ uc3m. 
 
